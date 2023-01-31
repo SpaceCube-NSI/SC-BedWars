@@ -11,7 +11,6 @@ public final class Main extends JavaPlugin {
         // Plugin startup logic
         this.listenerManager = new ListenerManager(this);
         this.listenerManager.registerListener();
-
     }
 
     @Override
