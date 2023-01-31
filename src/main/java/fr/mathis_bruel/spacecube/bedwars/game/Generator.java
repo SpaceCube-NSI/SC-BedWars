@@ -1,5 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 
 import java.util.Arrays;
@@ -14,6 +15,8 @@ public enum Generator {
 
     public Material material;
     public List<Double> levels;
+    public int level = 0;
+    public Location location;
 
     Generator(Material material, List<Double> levels) {
         this.material = material;
@@ -70,6 +73,48 @@ public enum Generator {
             }
         }
         return false;
+    }
+
+    public static Generator getGeneratorFromLocation(Location location) {
+        for (Generator generator : values()) {
+            if (generator.location.equals(location)) {
+                return generator;
+            }
+        }
+        return null;
+    }
+
+    public static boolean isGeneratorLocation(Location location) {
+        for (Generator generator : values()) {
+            if (generator.location.equals(location)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void addLevel() {
+        this.level++;
+    }
+
+    public void removeLevel() {
+        this.level--;
     }
 
 
