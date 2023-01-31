@@ -1,0 +1,27 @@
+name: SC BedWars
+version: '${version}'
+main: fr.mathis_bruel.spacecube.bedwars.Main
+authors: [ Mathis_Bruel ]
+description: BedWars
+website: https://www.spacecube.games/
+commands:
+  bedwars:
+    aliases: bw
+    description: Command for players
+    usage: /bedwars <stats, play, leave>
+  bedwars-a:
+    aliases:
+      - bwa
+      - bw-a
+    description: Command bedwars for admins for config the plugin
+    usage: /bedwars-a <arena, arenas, >
+    permission: bedwars.a
+permissions:
+  bedwars.stats:
+    description: Permet aux joueurs de voir ses stats
+  bedwars.play:
+    description: Permet de rejoindre une partie
+  bedwars.leave:
+    description: Permet de quitter une partie
+  bedwars.a:
+    description: Permet d'avoir la permission de la gestion du plugin
