@@ -5,6 +5,10 @@ authors: [ Mathis_Bruel ]
 description: BedWars
 website: https://www.spacecube.games/
 commands:
+  test:
+    aliases: test
+    description: Command for test
+    usage: /test
   bedwars:
     aliases: bw
     description: Command for players
