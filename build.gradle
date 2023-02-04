@@ -1,10 +1,12 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
 group = 'fr.Mathis_Bruel'
 version = '1.0-SNAPSHOT'
 
+compileJava.options.encoding = 'UTF-8'
 repositories {
     mavenCentral()
     maven {
@@ -45,4 +47,7 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+shadowJar {
+    destinationDir = file("C:\\Users\\mathi\\Documents\\ServeurTest1.8\\plugins")
 }

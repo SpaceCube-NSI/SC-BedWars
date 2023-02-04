@@ -12,29 +12,36 @@ import java.util.ArrayList;
 public class Arena {
     private World world;
     private String name;
-    private int teamsNumber;
     private int playerPerTeam;
     private ArrayList<Team> teams;
     private ArrayList<Generator> emeraldsGenerators;
     private ArrayList<Generator> diamondsGenerators;
     private Location specSpawn;
     private Location lobbySpawn;
-    private Location lobbyPos1;
-    private Location lobbyPos2;
     private ArrayList<Player> players;
 
-    public Arena(World world, String name, int teamsNumber, int playerPerTeam, ArrayList<Team> teams, ArrayList<Generator> emeraldsGenerators, ArrayList<Generator> diamondsGenerators, Location specSpawn, Location lobbySpawn, Location lobbyPos1, Location lobbyPos2) {
+    public Arena(World world, String name){
         this.world = world;
         this.name = name;
-        this.teamsNumber = teamsNumber;
+        this.playerPerTeam = 1;
+        this.teams = new ArrayList<>();
+        this.emeraldsGenerators = new ArrayList<>();
+        this.diamondsGenerators = new ArrayList<>();
+        this.specSpawn = null;
+        this.lobbySpawn = null;
+        this.players = new ArrayList<>();
+    }
+
+    public Arena(World world, String name, int playerPerTeam, ArrayList<Team> teams, ArrayList<Generator> emeraldsGenerators, ArrayList<Generator> diamondsGenerators, Location specSpawn, Location lobbySpawn) {
+        this.world = world;
+        this.name = name;
         this.playerPerTeam = playerPerTeam;
         this.teams = teams;
         this.emeraldsGenerators = emeraldsGenerators;
         this.diamondsGenerators = diamondsGenerators;
         this.specSpawn = specSpawn;
         this.lobbySpawn = lobbySpawn;
-        this.lobbyPos1 = lobbyPos1;
-        this.lobbyPos2 = lobbyPos2;
+        this.players = new ArrayList<>();
     }
 
     public World getWorld() {
@@ -51,14 +58,6 @@ public class Arena {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getTeamsNumber() {
-        return teamsNumber;
-    }
-
-    public void setTeamsNumber(int teamsNumber) {
-        this.teamsNumber = teamsNumber;
     }
 
     public int getPlayerPerTeam() {
@@ -109,22 +108,6 @@ public class Arena {
         this.lobbySpawn = lobbySpawn;
     }
 
-    public Location getLobbyPos1() {
-        return lobbyPos1;
-    }
-
-    public void setLobbyPos1(Location lobbyPos1) {
-        this.lobbyPos1 = lobbyPos1;
-    }
-
-    public Location getLobbyPos2() {
-        return lobbyPos2;
-    }
-
-    public void setLobbyPos2(Location lobbyPos2) {
-        this.lobbyPos2 = lobbyPos2;
-    }
-
     public void addTeam(Team team) {
         this.teams.add(team);
     }
@@ -155,14 +138,6 @@ public class Arena {
 
     public void removePlayer() {
         this.playerPerTeam--;
-    }
-
-    public void addTeam() {
-        this.teamsNumber++;
-    }
-
-    public void removeTeam() {
-        this.teamsNumber--;
     }
 
     public ArrayList<Player> getPlayers() {
@@ -206,27 +181,21 @@ public class Arena {
 
     public void reset() {
         this.clearAll();
-        this.setTeamsNumber(0);
         this.setPlayerPerTeam(0);
         this.setWorld(null);
         this.setName(null);
         this.setSpecSpawn(null);
         this.setLobbySpawn(null);
-        this.setLobbyPos1(null);
-        this.setLobbyPos2(null);
     }
 
     public void save() {
-        File file = new File("plugins/BedWars/arenas/" + this.getName() + ".yml");
+        File file = new File("plugins/SC_BedWars/arenas/" + this.getName() + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         config.set("world", this.getWorld().getName());
         config.set("name", this.getName());
-        config.set("teamsNumber", this.getTeamsNumber());
         config.set("playerPerTeam", this.getPlayerPerTeam());
         config.set("specSpawn", this.getSpecSpawn());
         config.set("lobbySpawn", this.getLobbySpawn());
-        config.set("lobbyPos1", this.getLobbyPos1());
-        config.set("lobbyPos2", this.getLobbyPos2());
         for (int i = 0; i < this.getTeams().size(); i++) {
             config.set("teams." + i + ".name", this.getTeams().get(i).getName());
             config.set("teams." + i + ".color", this.getTeams().get(i).getColor());

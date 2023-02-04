@@ -8,17 +8,14 @@ commands:
   test:
     aliases: test
     description: Command for test
-    usage: /test
   bedwars:
     aliases: bw
     description: Command for players
-    usage: /bedwars <stats, play, leave>
   bedwars-a:
     aliases:
       - bwa
       - bw-a
     description: Command bedwars for admins for config the plugin
-    usage: /bedwars-a <arena, arenas, >
     permission: bedwars.a
 permissions:
   bedwars.stats:

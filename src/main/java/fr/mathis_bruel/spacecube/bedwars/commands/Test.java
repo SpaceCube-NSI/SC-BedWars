@@ -38,7 +38,7 @@ public class Test implements CommandExecutor {
         ArrayList<Generator> diamonds = new ArrayList<Generator>();
         diamonds.add(diamond);
 
-        Arena test = new Arena(player.getWorld(), "Test", 4, 2, teams, emeralds, diamonds, player.getLocation(), player.getLocation(),player.getLocation(), player.getLocation());
+        Arena test = new Arena(player.getWorld(), "Test", 2, teams, emeralds, diamonds, player.getLocation(), player.getLocation());
         test.save();
         return false;
     }
