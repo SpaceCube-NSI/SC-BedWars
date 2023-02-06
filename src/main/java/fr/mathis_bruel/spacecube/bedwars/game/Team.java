@@ -11,22 +11,21 @@ public class Team {
     private String name;
     private Color color;
     private Location spawn;
-    private Generator ironSpawner;
-    private Generator goldSpawner;
+    private GeneratorTeam generatorTeam;
     private Location pnjItems;
     private Location pnjUpgrades;
     private Block bed;
     private ArrayList<Player> players;
 
-    public Team(String name, Color color, Location spawn, Generator ironSpawner, Generator goldSpawner, Location pnjItems, Location pnjUpgrades, Block bed) {
+    public Team(String name, Color color, Location spawn, GeneratorTeam generatorTeam, Location pnjItems, Location pnjUpgrades, Block bed) {
         this.name = name;
         this.color = color;
         this.spawn = spawn;
-        this.ironSpawner = ironSpawner;
-        this.goldSpawner = goldSpawner;
         this.pnjItems = pnjItems;
         this.pnjUpgrades = pnjUpgrades;
         this.bed = bed;
+        this.generatorTeam = generatorTeam;
+
     }
 
     public String getName() {
@@ -53,20 +52,12 @@ public class Team {
         this.spawn = spawn;
     }
 
-    public Generator getIronSpawner() {
-        return ironSpawner;
+    public GeneratorTeam getGeneratorTeam() {
+        return generatorTeam;
     }
 
-    public void setIronSpawner(Generator ironSpawner) {
-        this.ironSpawner = ironSpawner;
-    }
-
-    public Generator getGoldSpawner() {
-        return goldSpawner;
-    }
-
-    public void setGoldSpawner(Generator goldSpawner) {
-        this.goldSpawner = goldSpawner;
+    public void setGeneratorTeam(GeneratorTeam generatorTeam) {
+        this.generatorTeam = generatorTeam;
     }
 
     public Location getPnjItems() {

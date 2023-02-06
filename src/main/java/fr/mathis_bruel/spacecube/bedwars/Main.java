@@ -3,13 +3,17 @@ package fr.mathis_bruel.spacecube.bedwars;
 import fr.mathis_bruel.spacecube.bedwars.commands.Bedwars;
 import fr.mathis_bruel.spacecube.bedwars.commands.BedwarsAdmin;
 import fr.mathis_bruel.spacecube.bedwars.commands.Test;
+import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.manager.ListenerManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
 
 public final class Main extends JavaPlugin {
     private ListenerManager listenerManager;
     public static Main instance;
     public static String prefix = "§6[§eBedwars§6]§r ";
+    public ArrayList<Arena> arenas = new ArrayList<>();
 
     @Override
     public void onEnable() {

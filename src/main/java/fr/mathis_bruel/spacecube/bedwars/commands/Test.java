@@ -1,16 +1,8 @@
 package fr.mathis_bruel.spacecube.bedwars.commands;
 
-import fr.mathis_bruel.spacecube.bedwars.game.Arena;
-import fr.mathis_bruel.spacecube.bedwars.game.Generator;
-import fr.mathis_bruel.spacecube.bedwars.game.GeneratorType;
-import fr.mathis_bruel.spacecube.bedwars.game.Team;
-import org.bukkit.Color;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
 
 public class Test implements CommandExecutor {
 
@@ -19,7 +11,7 @@ public class Test implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         // create arena test
-        Player player = (Player) sender;
+        /*Player player = (Player) sender;
         Generator ironSpawner = new Generator(GeneratorType.IRON, 1, player.getLocation());
         Generator goldSpawner = new Generator(GeneratorType.GOLD, 1, player.getLocation());
         Team team = new Team("Test", Color.RED, player.getLocation(), ironSpawner, goldSpawner, player.getLocation(), player.getLocation(), player.getLocation().getBlock());
@@ -39,7 +31,7 @@ public class Test implements CommandExecutor {
         diamonds.add(diamond);
 
         Arena test = new Arena(player.getWorld(), "Test", 2, teams, emeralds, diamonds, player.getLocation(), player.getLocation());
-        test.save();
+        test.save();*/
         return false;
     }
 }

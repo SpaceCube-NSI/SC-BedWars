@@ -1,5 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
+import fr.mathis_bruel.spacecube.bedwars.manager.Utils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -196,11 +197,15 @@ public class Arena {
         config.set("playerPerTeam", this.getPlayerPerTeam());
         config.set("specSpawn", this.getSpecSpawn());
         config.set("lobbySpawn", this.getLobbySpawn());
-        for (int i = 0; i < this.getTeams().size(); i++) {
-            config.set("teams." + i + ".name", this.getTeams().get(i).getName());
-            config.set("teams." + i + ".color", this.getTeams().get(i).getColor());
-            config.set("teams." + i + ".spawn", this.getTeams().get(i).getSpawn());
-            config.set("teams." + i + ".bed", this.getTeams().get(i).getBed());
+        for(int i = 0; i < this.getTeams().size(); i++) {
+            // save all information of team
+            Team team = this.getTeams().get(i);
+            config.set("teams." + i + ".name", team.getName());
+            config.set("teams." + i + ".color", team.getColor().toString());
+            config.set("teams." + i + ".spawn", Utils.parseLocToString(team.getSpawn()));
+            config.set("teams." + i + ".bed", Utils.parseLocToString(team.getBed().getLocation()));
+            config.set("teams." + i + ".players", team.getPlayers());
+
         }
         for (int i = 0; i < this.getEmeraldsGenerators().size(); i++) {
             config.set("emeraldsGenerators." + i + ".location", this.getEmeraldsGenerators().get(i).getLocation());
@@ -217,6 +222,42 @@ public class Arena {
         }
     }
 
+
+    /*public static void init(){
+        // load all arenas and add in list in Main class
+        File folder = new File("plugins/SC_BedWars/arenas/");
+        File[] files = folder.listFiles();
+        for (File file : files) {
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            World world = Bukkit.getWorld(config.getString("world"));
+            String name = config.getString("name");
+            int playerPerTeam = config.getInt("playerPerTeam");
+            Location specSpawn = (Location) config.get("specSpawn");
+            Location lobbySpawn = (Location) config.get("lobbySpawn");
+            ArrayList<Team> teams = new ArrayList<>();
+            for (int i = 0; i < config.getConfigurationSection("teams").getKeys(false).size(); i++) {
+                String teamName = config.getString("teams." + i + ".name");
+                String teamColor = config.getString("teams." + i + ".color");
+                Location teamSpawn = (Location) config.get("teams." + i + ".spawn");
+                Block teamBed = (Block) config.get("teams." + i + ".bed");
+                teams.add(new Team(teamName, Utils.getColor(teamColor), teamSpawn, teamBed));
+            }
+            ArrayList<Generator> emeraldsGenerators = new ArrayList<>();
+            for (int i = 0; i < config.getConfigurationSection("emeraldsGenerators").getKeys(false).size(); i++) {
+                Location location = (Location) config.get("emeraldsGenerators." + i + ".location");
+                int level = config.getInt("emeraldsGenerators." + i + ".level");
+                emeraldsGenerators.add(new Generator(location, level));
+            }
+            ArrayList<Generator> diamondsGenerators = new ArrayList<>();
+            for (int i = 0; i < config.getConfigurationSection("diamondsGenerators").getKeys(false).size(); i++) {
+                Location location = (Location) config.get("diamondsGenerators." + i + ".location");
+                int level = config.getInt("diamondsGenerators." + i + ".level");
+                diamondsGenerators.add(new Generator(location, level));
+            }
+            Main.getInstance().arenas.add(new Arena(world, name, playerPerTeam, specSpawn, lobbySpawn, teams, emeraldsGenerators, diamondsGenerators));
+        }
+    }
+*/
 
 
 }

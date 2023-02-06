@@ -10,7 +10,7 @@ public enum GeneratorType {
     IRON(Material.IRON_INGOT, Arrays.asList(5.0, 2.5, 2.0)),
     GOLD(Material.GOLD_INGOT, Arrays.asList(5.0, 2.5, 2.0)),
     DIAMOND(Material.DIAMOND, Arrays.asList(10.0, 5.0, 2.5)),
-    EMERALD(Material.EMERALD, Arrays.asList(20.0, 15.0, 13.5));
+    EMERALD(Material.EMERALD, Arrays.asList(20.0));
 
     public Material material;
     public List<Double> levels;

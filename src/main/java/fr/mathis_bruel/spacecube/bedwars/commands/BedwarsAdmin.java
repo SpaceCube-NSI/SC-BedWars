@@ -1,8 +1,9 @@
 package fr.mathis_bruel.spacecube.bedwars.commands;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
-import fr.mathis_bruel.spacecube.bedwars.game.Arena;
+import fr.mathis_bruel.spacecube.bedwars.game.*;
 import fr.mathis_bruel.spacecube.bedwars.manager.Utils;
+import org.bukkit.Color;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -201,7 +202,11 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
             Player player = (Player) sender;
             switch (args[1].toLowerCase()) {
                 case "create":
+                    GeneratorTeam generatorTeam = new GeneratorTeam(player.getLocation(), 1, 1, 1);
+                    Team team = new Team(args[2], Color.RED, player.getLocation(), generatorTeam, player.getLocation(), player.getLocation(), player.getLocation().getBlock());
+
                     Arena arena = new Arena(player.getWorld(), args[2]);
+                    arena.addTeam(team);
                     arena.save();
                     sender.sendMessage(prefix + "§aArena created.");
                     break;
