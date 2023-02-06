@@ -9,6 +9,8 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -388,8 +390,13 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     break;
                 }
                 case "team": {
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
                     switch (args[3].toLowerCase()) {
-                        Arena arena = Arena.getArenaByName(args[2]);
+
                         case "setspawn": {
                             Team team = arena.getTeamByName(args[4]);
                             if (team == null) {
@@ -402,32 +409,48 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                             break;
                         }
                         case "setbed": {
-
                             Team team = arena.getTeamByName(args[4]);
                             if (team == null) {
                                 sender.sendMessage(prefix + "§cThis team doesn't exist.");
                                 return true;
                             }
-                            team.setBed(player.getTargetBlock());
+                            Block block = Utils.getTargetBlock(player, 5);
+                            if (block == null) {
+                                sender.sendMessage(prefix + "§cYou must look at a block.");
+                                return true;
+                            }
+                            if(block.getType() != Material.BED_BLOCK) {
+                                sender.sendMessage(prefix + "§cYou must look at a bed.");
+                                return true;
+                            }
+                            team.setBed(block);
                             arena.save();
                             sender.sendMessage(prefix + "§aBed set.");
                             break;
                         }
-                        case "setshop": {
-                            if (arena == null) {
-                                sender.sendMessage(prefix + "§cThis arena doesn't exist.");
-                                return true;
-                            }
+                        case "setshopitems": {
                             Team team = arena.getTeamByName(args[4]);
                             if (team == null) {
                                 sender.sendMessage(prefix + "§cThis team doesn't exist.");
                                 return true;
                             }
-                            team.setShop(player.getLocation());
+                            team.setPnjItems(player.getLocation());
                             arena.save();
-                            sender.sendMessage(prefix + "§aShop set.");
+                            sender.sendMessage(prefix + "§aShop items set.");
                             break;
                         }
+                        case "setshopupgrades": {
+                            Team team = arena.getTeamByName(args[4]);
+                            if (team == null) {
+                                sender.sendMessage(prefix + "§cThis team doesn't exist.");
+                                return true;
+                            }
+                            team.setPnjUpgrades(player.getLocation());
+                            arena.save();
+                            sender.sendMessage(prefix + "§aShop upgrades set.");
+                            break;
+                        }
+
                         default:
                             sender.sendMessage(prefix + "§cUnknown command. Type §f/bedwars-a help §cfor help.");
                             break;
