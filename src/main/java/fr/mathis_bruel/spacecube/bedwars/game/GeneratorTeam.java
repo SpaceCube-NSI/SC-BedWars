@@ -14,6 +14,12 @@ public class GeneratorTeam {
         this.levelGold = levelGold;
         this.levelDiamond = levelDiamond;
     }
+    public GeneratorTeam(Location location){
+        this.location = location;
+        this.levelIron = 1;
+        this.levelGold = 1;
+        this.levelDiamond = 1;
+    }
 
     public Location getLocation() {
         return location;

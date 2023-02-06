@@ -1,6 +1,8 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
+import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.manager.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -188,6 +190,17 @@ public class Arena {
         this.setSpecSpawn(null);
         this.setLobbySpawn(null);
     }
+    public void delete(){
+        this.reset();
+        // delete file
+        File file = new File(Main.getInstance().getDataFolder() + "/arenas/" + this.getName() + ".yml");
+        if(file.delete())
+            Bukkit.getLogger().info("File " + this.getName() + ".yml deleted");
+        else {
+            Bukkit.getLogger().warning("The file " + this.getName() + ".yml doesn't exist !");
+        }
+        Main.getInstance().arenas.remove(this);
+    }
 
     public void save() {
         File file = new File("plugins/SC_BedWars/arenas/" + this.getName() + ".yml");
@@ -195,8 +208,8 @@ public class Arena {
         config.set("world", this.getWorld().getName());
         config.set("name", this.getName());
         config.set("playerPerTeam", this.getPlayerPerTeam());
-        config.set("specSpawn", this.getSpecSpawn());
-        config.set("lobbySpawn", this.getLobbySpawn());
+        config.set("specSpawn", Utils.parseLocToString(this.getSpecSpawn()));
+        config.set("lobbySpawn", Utils.parseLocToString(this.getLobbySpawn()));
         for(int i = 0; i < this.getTeams().size(); i++) {
             // save all information of team
             Team team = this.getTeams().get(i);
@@ -205,59 +218,85 @@ public class Arena {
             config.set("teams." + i + ".spawn", Utils.parseLocToString(team.getSpawn()));
             config.set("teams." + i + ".bed", Utils.parseLocToString(team.getBed().getLocation()));
             config.set("teams." + i + ".players", team.getPlayers());
+            for(int j = 0; j < team.getGenerators().size(); j++) {
+                // save all information of generator
+                GeneratorTeam generator = team.getGenerator(j);
+                config.set("teams." + i + ".generators." + j + ".location", Utils.parseLocToString(generator.getLocation()));
+            }
+            // save pnj
+            config.set("teams." + i + ".pnjItems", Utils.parseLocToString(team.getPnjItems()));
+            config.set("teams." + i + ".pnjUpgrades", Utils.parseLocToString(team.getPnjUpgrades()));
+
 
         }
         for (int i = 0; i < this.getEmeraldsGenerators().size(); i++) {
             config.set("emeraldsGenerators." + i + ".location", this.getEmeraldsGenerators().get(i).getLocation());
-            config.set("emeraldsGenerators." + i + ".level", this.getEmeraldsGenerators().get(i).getLevel());
         }
         for (int i = 0; i < this.getDiamondsGenerators().size(); i++) {
             config.set("diamondsGenerators." + i + ".location", this.getDiamondsGenerators().get(i).getLocation());
-            config.set("diamondsGenerators." + i + ".level", this.getDiamondsGenerators().get(i).getLevel());
         }
         try {
             config.save(file);
+            Main.getInstance().arenas.add(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    /*public static void init(){
+    public static void init(){
         // load all arenas and add in list in Main class
         File folder = new File("plugins/SC_BedWars/arenas/");
         File[] files = folder.listFiles();
         for (File file : files) {
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-            World world = Bukkit.getWorld(config.getString("world"));
-            String name = config.getString("name");
-            int playerPerTeam = config.getInt("playerPerTeam");
-            Location specSpawn = (Location) config.get("specSpawn");
-            Location lobbySpawn = (Location) config.get("lobbySpawn");
-            ArrayList<Team> teams = new ArrayList<>();
-            for (int i = 0; i < config.getConfigurationSection("teams").getKeys(false).size(); i++) {
-                String teamName = config.getString("teams." + i + ".name");
-                String teamColor = config.getString("teams." + i + ".color");
-                Location teamSpawn = (Location) config.get("teams." + i + ".spawn");
-                Block teamBed = (Block) config.get("teams." + i + ".bed");
-                teams.add(new Team(teamName, Utils.getColor(teamColor), teamSpawn, teamBed));
+            Arena arena = new Arena(Bukkit.getWorld(config.getString("world")), config.getString("name"));
+            arena.setPlayerPerTeam(config.getInt("playerPerTeam"));
+            arena.setSpecSpawn(Utils.parseStringToLoc(config.getString("specSpawn")));
+            arena.setLobbySpawn(Utils.parseStringToLoc(config.getString("lobbySpawn")));
+            for (String key : config.getConfigurationSection("teams").getKeys(false)) {
+                Team team = new Team(config.getString("teams." + key + ".name"), Utils.getColor(config.getString("teams." + key + ".color")));
+                team.setSpawn(Utils.parseStringToLoc(config.getString("teams." + key + ".spawn")));
+                Location bedLoc = Utils.parseStringToLoc(config.getString("teams." + key + ".bed"));
+                team.setBed(bedLoc.getBlock());
+                team.setPlayers((ArrayList<Player>) config.get("teams." + key + ".players"));
+                for (String key2 : config.getConfigurationSection("teams." + key + ".generators").getKeys(false)) {
+                    GeneratorTeam generator = new GeneratorTeam(Utils.parseStringToLoc(config.getString("teams." + key + ".generators." + key2 + ".location")));
+                    team.addGenerator(generator);
+                }
+                team.setPnjItems(Utils.parseStringToLoc(config.getString("teams." + key + ".pnjItems")));
+                team.setPnjUpgrades(Utils.parseStringToLoc(config.getString("teams." + key + ".pnjUpgrades")));
+                arena.addTeam(team);
             }
-            ArrayList<Generator> emeraldsGenerators = new ArrayList<>();
-            for (int i = 0; i < config.getConfigurationSection("emeraldsGenerators").getKeys(false).size(); i++) {
-                Location location = (Location) config.get("emeraldsGenerators." + i + ".location");
-                int level = config.getInt("emeraldsGenerators." + i + ".level");
-                emeraldsGenerators.add(new Generator(location, level));
+            if(config.getConfigurationSection("emeraldsGenerators") != null) {
+                for (String key : config.getConfigurationSection("emeraldsGenerators").getKeys(false)) {
+                    Generator generator = new Generator(GeneratorType.EMERALD, 1, Utils.parseStringToLoc(config.getString("emeraldsGenerators." + key + ".location")));
+                    arena.addEmeraldsGenerator(generator);
+                }
+            }else{
+                arena.setEmeraldsGenerators(new ArrayList<Generator>());
             }
-            ArrayList<Generator> diamondsGenerators = new ArrayList<>();
-            for (int i = 0; i < config.getConfigurationSection("diamondsGenerators").getKeys(false).size(); i++) {
-                Location location = (Location) config.get("diamondsGenerators." + i + ".location");
-                int level = config.getInt("diamondsGenerators." + i + ".level");
-                diamondsGenerators.add(new Generator(location, level));
+            if(config.getConfigurationSection("diamondsGenerators") != null) {
+                for (String key : config.getConfigurationSection("diamondsGenerators").getKeys(false)) {
+                    Generator generator = new Generator(GeneratorType.DIAMOND, 1, Utils.parseStringToLoc(config.getString("diamondsGenerators." + key + ".location")));
+                    arena.addDiamondsGenerator(generator);
+                }
+            }else{
+                arena.setDiamondsGenerators(new ArrayList<Generator>());
             }
-            Main.getInstance().arenas.add(new Arena(world, name, playerPerTeam, specSpawn, lobbySpawn, teams, emeraldsGenerators, diamondsGenerators));
+            Main.getInstance().arenas.add(arena);
         }
     }
-*/
+
+    public static Arena getArenaByName(String name) {
+        for (Arena arena : Main.getInstance().arenas) {
+            if (arena.getName().equalsIgnoreCase(name)) {
+                return arena;
+            }
+        }
+        return null;
+    }
+
 
 
 }

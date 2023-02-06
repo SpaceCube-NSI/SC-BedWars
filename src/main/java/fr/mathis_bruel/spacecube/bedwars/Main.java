@@ -25,6 +25,7 @@ public final class Main extends JavaPlugin {
         this.getCommand("bedwars-a").setExecutor(new BedwarsAdmin());
         instance = this;
         saveDefaultConfig();
+        Arena.init();
     }
 
     @Override

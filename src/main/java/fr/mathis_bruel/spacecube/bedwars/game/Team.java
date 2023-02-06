@@ -11,21 +11,31 @@ public class Team {
     private String name;
     private Color color;
     private Location spawn;
-    private GeneratorTeam generatorTeam;
+    private ArrayList<GeneratorTeam> generators;
     private Location pnjItems;
     private Location pnjUpgrades;
     private Block bed;
     private ArrayList<Player> players;
 
-    public Team(String name, Color color, Location spawn, GeneratorTeam generatorTeam, Location pnjItems, Location pnjUpgrades, Block bed) {
+    public Team(String name, Color color, Location spawn, ArrayList<GeneratorTeam> generators, Location pnjItems, Location pnjUpgrades, Block bed) {
         this.name = name;
         this.color = color;
         this.spawn = spawn;
         this.pnjItems = pnjItems;
         this.pnjUpgrades = pnjUpgrades;
         this.bed = bed;
-        this.generatorTeam = generatorTeam;
+        this.generators = generators;
 
+    }
+
+    public Team(String name, Color color){
+        this.name = name;
+        this.color = color;
+        this.spawn = null;
+        this.pnjItems = null;
+        this.pnjUpgrades = null;
+        this.bed = null;
+        this.generators = new ArrayList<>();
     }
 
     public String getName() {
@@ -52,12 +62,24 @@ public class Team {
         this.spawn = spawn;
     }
 
-    public GeneratorTeam getGeneratorTeam() {
-        return generatorTeam;
+    public ArrayList<GeneratorTeam> getGenerators() {
+        return generators;
     }
 
-    public void setGeneratorTeam(GeneratorTeam generatorTeam) {
-        this.generatorTeam = generatorTeam;
+    public void addGenerator(GeneratorTeam generatorTeam) {
+        this.generators.add(generatorTeam);
+    }
+
+    public void removeGenerator(GeneratorTeam generatorTeam) {
+        this.generators.remove(generatorTeam);
+    }
+
+    public void setGenerators(ArrayList<GeneratorTeam> generatorTeam) {
+        this.generators = generatorTeam;
+    }
+
+    public GeneratorTeam getGenerator(int index) {
+        return this.generators.get(index);
     }
 
     public Location getPnjItems() {
