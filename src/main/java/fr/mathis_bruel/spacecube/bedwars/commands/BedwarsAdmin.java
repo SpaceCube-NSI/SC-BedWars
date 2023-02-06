@@ -2,14 +2,13 @@ package fr.mathis_bruel.spacecube.bedwars.commands;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
-import fr.mathis_bruel.spacecube.bedwars.game.GeneratorTeam;
-import fr.mathis_bruel.spacecube.bedwars.game.Team;
 import fr.mathis_bruel.spacecube.bedwars.manager.Utils;
+import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Color;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -57,13 +56,13 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§c/bedwars-a arena addTeam <arenaName> <color> §7 - §fAdd a team to an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena removeTeam <arenaName> §7 - §fRemove a team from an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> §7 - §fList all the teams of an arena");
-                    sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setColor <teamName> <color> §7 - §fSet the color of a team");
-                    sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setSpawn <teamName> §7 - §fSet the spawn of a team");
-                    sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setBed <teamName> §7 - §fSet the bed of a team (target block)");
-                    sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setShopItems <teamName> §7 - §fSet the shop items of a team");
-                    sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setShopUpgrades <teamName> §7 - §fSet the shop upgrades of a team");
-                    sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setIron <teamName> §7 - §fSet the iron of a team");
-                    sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setGold <teamName> §7 - §fSet the gold of a team");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setColor <teamName> <color> §7 - §fSet the color of a team");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setSpawn <teamName> §7 - §fSet the spawn of a team");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setBed <teamName> §7 - §fSet the bed of a team (target block)");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setShopItems <teamName> §7 - §fSet the shop items of a team");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setShopUpgrades <teamName> §7 - §fSet the shop upgrades of a team");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> addGenerator <teamName> §7 - §fAdd a generator to a team");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> removeGenerator <teamName> §7 - §fRemove a generator from a team");
                     sender.sendMessage(prefix + "§c/bedwars-a arena addGenerator <arenaName> <type> §7 - §fAdd a generator to an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena removeGenerator <arenaName> §7 - §fRemove a generator from an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena generators <arenaName> §7 - §fList all the generators of an arena");
@@ -169,13 +168,13 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     case "team":
                         sender.sendMessage("--------------------------------");
                         sender.sendMessage(prefix + "§cBedwarsAdmin arena team command:");
-                        sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setColor <teamName> <color> §7 - §fSet the color of a team");
-                        sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setSpawn <teamName> §7 - §fSet the spawn of a team");
-                        sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setBed <teamName> §7 - §fSet the bed of a team (target block)");
-                        sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setShopItems <teamName> §7 - §fSet the shop items of a team");
-                        sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setShopUpgrades <teamName> §7 - §fSet the shop upgrades of a team");
-                        sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setIron <teamName> §7 - §fSet the iron of a team");
-                        sender.sendMessage(prefix + "§c/bedwars-a arena teams <arenaName> setGold <teamName> §7 - §fSet the gold of a team");
+                        sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setColor <teamName> <color> §7 - §fSet the color of a team");
+                        sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setSpawn <teamName> §7 - §fSet the spawn of a team");
+                        sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setBed <teamName> §7 - §fSet the bed of a team (target block)");
+                        sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setShopItems <teamName> §7 - §fSet the shop items of a team");
+                        sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setShopUpgrades <teamName> §7 - §fSet the shop upgrades of a team");
+                        sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> addGenerator <teamName> §7 - §fAdd a generator to a team");
+                        sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> removeGenerator <teamName> §7 - §fRemove a generator from a team");
                         sender.sendMessage("--------------------------------");
                         break;
                     case "addgenerator":
@@ -222,31 +221,35 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     // all coords was clickable and teleport the player to the coords
                     TextComponent lobby = new TextComponent(" §7(§5TP to lobby§7)");
                     TextComponent lobby2 = new TextComponent();
-                    if(arena.getLobbySpawn() != null) lobby2 = new TextComponent(prefix + "§cLobby: §f" + arena.getLobbySpawn().getBlockX() + " " + arena.getLobbySpawn().getBlockY() + " " + arena.getLobbySpawn().getBlockZ());
+                    if (arena.getLobbySpawn() != null)
+                        lobby2 = new TextComponent(prefix + "§cLobby: §f" + arena.getLobbySpawn().getBlockX() + " " + arena.getLobbySpawn().getBlockY() + " " + arena.getLobbySpawn().getBlockZ() + " " + arena.getLobbySpawn().getYaw() + " " + arena.getLobbySpawn().getPitch());
                     lobby.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to teleport to the lobby").create()));
-                    if(arena.getLobbySpawn() != null) lobby.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + arena.getLobbySpawn().getX() + " " + arena.getLobbySpawn().getY() + " " + arena.getLobbySpawn().getZ()));
+                    if (arena.getLobbySpawn() != null)
+                        lobby.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + arena.getLobbySpawn().getX() + " " + arena.getLobbySpawn().getY() + " " + arena.getLobbySpawn().getZ() + " " + arena.getLobbySpawn().getYaw() + " " + arena.getLobbySpawn().getPitch()));
 
                     TextComponent spec = new TextComponent(" §7(§5TP to spec§7)");
                     TextComponent spec2 = new TextComponent();
-                    if(arena.getSpecSpawn() != null) spec2 = new TextComponent(prefix + "§cSpec: §f" + arena.getSpecSpawn().getBlockX() + " " + arena.getSpecSpawn().getBlockY() + " " + arena.getSpecSpawn().getBlockZ());
+                    if (arena.getSpecSpawn() != null)
+                        spec2 = new TextComponent(prefix + "§cSpec: §f" + arena.getSpecSpawn().getBlockX() + " " + arena.getSpecSpawn().getBlockY() + " " + arena.getSpecSpawn().getBlockZ());
                     spec.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to teleport to the spec").create()));
-                    if(arena.getSpecSpawn() != null) spec.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + arena.getSpecSpawn().getX() + " " + arena.getSpecSpawn().getY() + " " + arena.getSpecSpawn().getZ()));
+                    if (arena.getSpecSpawn() != null)
+                        spec.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + arena.getSpecSpawn().getX() + " " + arena.getSpecSpawn().getY() + " " + arena.getSpecSpawn().getZ()));
                     sender.sendMessage("--------------------------------");
                     sender.sendMessage(prefix + "§cBedwarsAdmin arena infos command:");
                     sender.sendMessage(prefix + "§cName: §f" + arena.getName());
                     sender.sendMessage(prefix + "§cWorld: §f" + arena.getWorld().getName());
                     sender.sendMessage(prefix + "§cPlayers per team: §f" + arena.getPlayerPerTeam());
                     sender.sendMessage(prefix + "§cTeams: §f" + arena.getTeams().size());
-                    if(arena.getLobbySpawn() != null) {
-                        if(sender instanceof Player){
+                    if (arena.getLobbySpawn() != null) {
+                        if (sender instanceof Player) {
                             player.spigot().sendMessage(lobby2, lobby);
                         } else {
                             sender.sendMessage(prefix + "§cLobby: §f" + arena.getLobbySpawn().getX() + " " + arena.getLobbySpawn().getY() + " " + arena.getLobbySpawn().getZ());
                         }
 
                     }
-                    if(arena.getSpecSpawn() != null) {
-                        if(sender instanceof Player){
+                    if (arena.getSpecSpawn() != null) {
+                        if (sender instanceof Player) {
                             player.spigot().sendMessage(spec2, spec);
                         } else {
                             sender.sendMessage(prefix + "§cSpec: §f" + arena.getSpecSpawn().getX() + " " + arena.getSpecSpawn().getY() + " " + arena.getSpecSpawn().getZ());
@@ -259,15 +262,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                 }
 
                 case "create": {
-                    GeneratorTeam generatorTeam = new GeneratorTeam(player.getLocation(), 1, 1, 1);
-                    ArrayList<GeneratorTeam> generatorTeams = new ArrayList<>();
-                    generatorTeams.add(generatorTeam);
-                    Team team = new Team(args[2], Color.RED, player.getLocation(), generatorTeams, player.getLocation(), player.getLocation(), player.getLocation().getBlock());
-
                     Arena arena = new Arena(player.getWorld(), args[2]);
-                    arena.addTeam(team);
-                    arena.setLobbySpawn(player.getLocation());
-                    arena.setSpecSpawn(player.getLocation());
                     arena.save();
                     sender.sendMessage(prefix + "§aArena created.");
                     break;
@@ -282,7 +277,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§aArena deleted.");
                     break;
                 }
-                case "setspawnspectator":{
+                case "setspawnspectator": {
                     Arena arena = Arena.getArenaByName(args[2]);
                     if (arena == null) {
                         sender.sendMessage(prefix + "§cThis arena doesn't exist.");
@@ -293,7 +288,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§aSpawn spectator set.");
                     break;
                 }
-                case "setlobby":{
+                case "setlobby": {
                     Arena arena = Arena.getArenaByName(args[2]);
                     if (arena == null) {
                         sender.sendMessage(prefix + "§cThis arena doesn't exist.");
@@ -304,14 +299,14 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§aSpawn set.");
                     break;
                 }
-                case "setplayersperteam":{
+                case "setplayersperteam": {
                     Arena arena = Arena.getArenaByName(args[2]);
                     if (arena == null) {
                         sender.sendMessage(prefix + "§cThis arena doesn't exist.");
                         return true;
                     }
                     // is number
-                    if(!Utils.isNumber(args[3])){
+                    if (!Utils.isNumber(args[3])) {
                         sender.sendMessage(prefix + "§cThis is not a number.");
                         return true;
                     }
@@ -322,7 +317,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                 }
                 case "addteam":
                     sender.sendMessage(prefix + "§cBedwarsAdmin arena addTeam command:");
-                    sender.sendMessage(prefix + "§c/bedwars-a arena addTeam <arenaName> <color> §7 - §fAdd a team to an arena");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena addTeam <arenaName> <teamName> <color> §7 - §fAdd a team to an arena");
                     break;
                 case "removeteam":
                     sender.sendMessage(prefix + "§cBedwarsAdmin arena removeTeam command:");
@@ -347,6 +342,97 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                 default:
                     sender.sendMessage(prefix + "§cUnknown command. Type §f/bedwars-a help §cfor help.");
                     break;
+            }
+        }
+
+        if (args.length == 4) {
+            switch (args[1].toLowerCase()) {
+                case "addteam":
+                    sender.sendMessage(prefix + "§cBedwarsAdmin arena addTeam command:");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena addTeam <arenaName> <teamName> <color> §7 - §fAdd a team to an arena");
+                    break;
+                default:
+                    sender.sendMessage(prefix + "§cUnknown command. Type §f/bedwars-a help §cfor help.");
+                    break;
+            }
+        }
+        if (args.length == 5) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(prefix + "§cYou must be a player to use this command.");
+                return true;
+            }
+            Player player = (Player) sender;
+
+            switch (args[1].toLowerCase()) {
+                case "addteam": {
+                    Arena arena = Arena.getArenaByName(args[2]);
+
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
+                    ChatColor color = Utils.getColor(args[4].toUpperCase());
+                    if (color == null) {
+                        sender.sendMessage(prefix + "§cThis color doesn't exist.");
+                        //send colors list with color in chat
+                        sender.sendMessage(prefix + "§cColors list:");
+                        for (ChatColor chatColor : Utils.getAllColor()) {
+                            sender.sendMessage(prefix + Utils.getColorString(chatColor) + chatColor.name());
+                        }
+                        return true;
+                    }
+                    Team team = new Team(args[3], color);
+                    arena.addTeam(team);
+                    arena.save();
+                    sender.sendMessage(prefix + "§aTeam added.");
+                    break;
+                }
+                case "team": {
+                    switch (args[3].toLowerCase()) {
+                        Arena arena = Arena.getArenaByName(args[2]);
+                        case "setspawn": {
+                            Team team = arena.getTeamByName(args[4]);
+                            if (team == null) {
+                                sender.sendMessage(prefix + "§cThis team doesn't exist.");
+                                return true;
+                            }
+                            team.setSpawn(player.getLocation());
+                            arena.save();
+                            sender.sendMessage(prefix + "§aSpawn set.");
+                            break;
+                        }
+                        case "setbed": {
+
+                            Team team = arena.getTeamByName(args[4]);
+                            if (team == null) {
+                                sender.sendMessage(prefix + "§cThis team doesn't exist.");
+                                return true;
+                            }
+                            team.setBed(player.getTargetBlock());
+                            arena.save();
+                            sender.sendMessage(prefix + "§aBed set.");
+                            break;
+                        }
+                        case "setshop": {
+                            if (arena == null) {
+                                sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                                return true;
+                            }
+                            Team team = arena.getTeamByName(args[4]);
+                            if (team == null) {
+                                sender.sendMessage(prefix + "§cThis team doesn't exist.");
+                                return true;
+                            }
+                            team.setShop(player.getLocation());
+                            arena.save();
+                            sender.sendMessage(prefix + "§aShop set.");
+                            break;
+                        }
+                        default:
+                            sender.sendMessage(prefix + "§cUnknown command. Type §f/bedwars-a help §cfor help.");
+                            break;
+                    }
+                }
             }
         }
 

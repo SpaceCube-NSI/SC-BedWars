@@ -1,7 +1,11 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
+import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
+import fr.mathis_bruel.spacecube.bedwars.generator.GeneratorType;
 import fr.mathis_bruel.spacecube.bedwars.manager.Utils;
+import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
+import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -73,6 +77,14 @@ public class Arena {
 
     public ArrayList<Team> getTeams() {
         return teams;
+    }
+
+    public Team getTeamByName(String name){
+        for(Team team : teams){
+            if(team.getName().equalsIgnoreCase(name))
+                return team;
+        }
+        return null;
     }
 
     public void setTeams(ArrayList<Team> teams) {
@@ -191,13 +203,12 @@ public class Arena {
         this.setLobbySpawn(null);
     }
     public void delete(){
-        this.reset();
         // delete file
         File file = new File(Main.getInstance().getDataFolder() + "/arenas/" + this.getName() + ".yml");
         if(file.delete())
             Bukkit.getLogger().info("File " + this.getName() + ".yml deleted");
         else {
-            Bukkit.getLogger().warning("The file " + this.getName() + ".yml doesn't exist !");
+            Bukkit.getLogger().warning("The file " + this.getName() + ".yml can't be deleted");
         }
         Main.getInstance().arenas.remove(this);
     }
@@ -208,24 +219,24 @@ public class Arena {
         config.set("world", this.getWorld().getName());
         config.set("name", this.getName());
         config.set("playerPerTeam", this.getPlayerPerTeam());
-        config.set("specSpawn", Utils.parseLocToString(this.getSpecSpawn()));
-        config.set("lobbySpawn", Utils.parseLocToString(this.getLobbySpawn()));
+        if(this.getSpecSpawn() != null) config.set("specSpawn", Utils.parseLocToString(this.getSpecSpawn()));
+        if(this.getLobbySpawn() != null) config.set("lobbySpawn", Utils.parseLocToString(this.getLobbySpawn()));
         for(int i = 0; i < this.getTeams().size(); i++) {
             // save all information of team
             Team team = this.getTeams().get(i);
             config.set("teams." + i + ".name", team.getName());
-            config.set("teams." + i + ".color", team.getColor().toString());
-            config.set("teams." + i + ".spawn", Utils.parseLocToString(team.getSpawn()));
-            config.set("teams." + i + ".bed", Utils.parseLocToString(team.getBed().getLocation()));
-            config.set("teams." + i + ".players", team.getPlayers());
+            config.set("teams." + i + ".color", team.getColor().name());
+            if(team.getSpawn() != null) config.set("teams." + i + ".spawn", Utils.parseLocToString(team.getSpawn()));
+            if(team.getBed() != null) config.set("teams." + i + ".bed", Utils.parseLocToString(team.getBed().getLocation()));
+            if(team.getPlayers() != null) config.set("teams." + i + ".players", team.getPlayers());
             for(int j = 0; j < team.getGenerators().size(); j++) {
                 // save all information of generator
                 GeneratorTeam generator = team.getGenerator(j);
                 config.set("teams." + i + ".generators." + j + ".location", Utils.parseLocToString(generator.getLocation()));
             }
             // save pnj
-            config.set("teams." + i + ".pnjItems", Utils.parseLocToString(team.getPnjItems()));
-            config.set("teams." + i + ".pnjUpgrades", Utils.parseLocToString(team.getPnjUpgrades()));
+            if(team.getPnjItems() != null) config.set("teams." + i + ".pnjItems", Utils.parseLocToString(team.getPnjItems()));
+            if(team.getPnjUpgrades() != null) config.set("teams." + i + ".pnjUpgrades", Utils.parseLocToString(team.getPnjUpgrades()));
 
 
         }
@@ -252,9 +263,9 @@ public class Arena {
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             Arena arena = new Arena(Bukkit.getWorld(config.getString("world")), config.getString("name"));
             arena.setPlayerPerTeam(config.getInt("playerPerTeam"));
-            arena.setSpecSpawn(Utils.parseStringToLoc(config.getString("specSpawn")));
-            arena.setLobbySpawn(Utils.parseStringToLoc(config.getString("lobbySpawn")));
-            for (String key : config.getConfigurationSection("teams").getKeys(false)) {
+            if(config.getString("specSpawn") != null) arena.setSpecSpawn(Utils.parseStringToLoc(config.getString("specSpawn")));
+            if(config.getString("lobbySpawn") != null) arena.setLobbySpawn(Utils.parseStringToLoc(config.getString("lobbySpawn")));
+            if (config.getConfigurationSection("teams") != null) for (String key : config.getConfigurationSection("teams").getKeys(false)) {
                 Team team = new Team(config.getString("teams." + key + ".name"), Utils.getColor(config.getString("teams." + key + ".color")));
                 team.setSpawn(Utils.parseStringToLoc(config.getString("teams." + key + ".spawn")));
                 Location bedLoc = Utils.parseStringToLoc(config.getString("teams." + key + ".bed"));

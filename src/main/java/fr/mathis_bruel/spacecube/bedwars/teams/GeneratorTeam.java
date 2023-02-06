@@ -1,4 +1,4 @@
-package fr.mathis_bruel.spacecube.bedwars.game;
+package fr.mathis_bruel.spacecube.bedwars.teams;
 
 import org.bukkit.Location;
 

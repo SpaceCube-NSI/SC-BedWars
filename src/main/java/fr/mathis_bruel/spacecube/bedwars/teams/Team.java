@@ -1,6 +1,6 @@
-package fr.mathis_bruel.spacecube.bedwars.game;
+package fr.mathis_bruel.spacecube.bedwars.teams;
 
-import org.bukkit.Color;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Team {
     private String name;
-    private Color color;
+    private ChatColor ChatColor;
     private Location spawn;
     private ArrayList<GeneratorTeam> generators;
     private Location pnjItems;
@@ -17,9 +17,9 @@ public class Team {
     private Block bed;
     private ArrayList<Player> players;
 
-    public Team(String name, Color color, Location spawn, ArrayList<GeneratorTeam> generators, Location pnjItems, Location pnjUpgrades, Block bed) {
+    public Team(String name, ChatColor ChatColor, Location spawn, ArrayList<GeneratorTeam> generators, Location pnjItems, Location pnjUpgrades, Block bed) {
         this.name = name;
-        this.color = color;
+        this.ChatColor = ChatColor;
         this.spawn = spawn;
         this.pnjItems = pnjItems;
         this.pnjUpgrades = pnjUpgrades;
@@ -28,9 +28,9 @@ public class Team {
 
     }
 
-    public Team(String name, Color color){
+    public Team(String name, ChatColor ChatColor){
         this.name = name;
-        this.color = color;
+        this.ChatColor = ChatColor;
         this.spawn = null;
         this.pnjItems = null;
         this.pnjUpgrades = null;
@@ -46,12 +46,12 @@ public class Team {
         this.name = name;
     }
 
-    public Color getColor() {
-        return color;
+    public ChatColor getColor() {
+        return ChatColor;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setColor(ChatColor ChatColor) {
+        this.ChatColor = ChatColor;
     }
 
     public Location getSpawn() {

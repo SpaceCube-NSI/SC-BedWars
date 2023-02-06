@@ -1,4 +1,4 @@
-package fr.mathis_bruel.spacecube.bedwars.game;
+package fr.mathis_bruel.spacecube.bedwars.generator;
 
 import org.bukkit.Material;
 
