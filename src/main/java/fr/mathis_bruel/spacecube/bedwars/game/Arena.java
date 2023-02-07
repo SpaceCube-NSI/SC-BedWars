@@ -267,16 +267,20 @@ public class Arena {
             if(config.getString("lobbySpawn") != null) arena.setLobbySpawn(Utils.parseStringToLoc(config.getString("lobbySpawn")));
             if (config.getConfigurationSection("teams") != null) for (String key : config.getConfigurationSection("teams").getKeys(false)) {
                 Team team = new Team(config.getString("teams." + key + ".name"), Utils.getColor(config.getString("teams." + key + ".color")));
-                team.setSpawn(Utils.parseStringToLoc(config.getString("teams." + key + ".spawn")));
-                Location bedLoc = Utils.parseStringToLoc(config.getString("teams." + key + ".bed"));
-                team.setBed(bedLoc.getBlock());
-                team.setPlayers((ArrayList<Player>) config.get("teams." + key + ".players"));
-                for (String key2 : config.getConfigurationSection("teams." + key + ".generators").getKeys(false)) {
-                    GeneratorTeam generator = new GeneratorTeam(Utils.parseStringToLoc(config.getString("teams." + key + ".generators." + key2 + ".location")));
-                    team.addGenerator(generator);
+                if(config.getString("teams." + key + ".spawn") != null)team.setSpawn(Utils.parseStringToLoc(config.getString("teams." + key + ".spawn")));
+                if(config.getString("teams." + key + ".bed") != null) {
+                    Location bedLoc = Utils.parseStringToLoc(config.getString("teams." + key + ".bed"));
+                    team.setBed(bedLoc.getBlock());
                 }
-                team.setPnjItems(Utils.parseStringToLoc(config.getString("teams." + key + ".pnjItems")));
-                team.setPnjUpgrades(Utils.parseStringToLoc(config.getString("teams." + key + ".pnjUpgrades")));
+                team.setPlayers((ArrayList<Player>) config.get("teams." + key + ".players"));
+                if(config.getString("teams." + key + ".generators") != null) {
+                    for (String key2 : config.getConfigurationSection("teams." + key + ".generators").getKeys(false)) {
+                        GeneratorTeam generator = new GeneratorTeam(Utils.parseStringToLoc(config.getString("teams." + key + ".generators." + key2 + ".location")));
+                        team.addGenerator(generator);
+                    }
+                }
+                if(config.getString("teams." + key + ".pnjItems") != null)team.setPnjItems(Utils.parseStringToLoc(config.getString("teams." + key + ".pnjItems")));
+                if(config.getString("teams." + key + ".pnjUpgrades") != null)team.setPnjUpgrades(Utils.parseStringToLoc(config.getString("teams." + key + ".pnjUpgrades")));
                 arena.addTeam(team);
             }
             if(config.getConfigurationSection("emeraldsGenerators") != null) {
