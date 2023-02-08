@@ -2,9 +2,11 @@ package fr.mathis_bruel.spacecube.bedwars.commands;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.Inventory;
 
 public class Bedwars implements CommandExecutor {
     @Override
@@ -76,7 +78,16 @@ public class Bedwars implements CommandExecutor {
                     sender.sendMessage(prefix + "§cComing soon!");
                     sender.sendMessage("--------------------------------");
                     break;
-                case "shopItems":
+                case "shopItems":{
+
+                    Inventory inv = Bukkit.createInventory(null, 9, "Shop Items");
+
+
+
+                    break;
+                }
+
+
 
                 default:
                     sender.sendMessage("--------------------------------");
