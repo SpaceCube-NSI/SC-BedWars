@@ -2,11 +2,12 @@ package fr.mathis_bruel.spacecube.bedwars.commands;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
-import org.bukkit.Bukkit;
+import fr.mathis_bruel.spacecube.bedwars.gui.ShopItems;
+import fr.mathis_bruel.spacecube.bedwars.gui.ShopItemsArmor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.entity.Player;
 
 public class Bedwars implements CommandExecutor {
     @Override
@@ -14,6 +15,9 @@ public class Bedwars implements CommandExecutor {
         String prefix = Main.getPrefix();
 
         if (args.length == 0) {
+            Player player = (Player) sender;
+            player.openInventory(ShopItems.getInventory());
+
             sender.sendMessage("--------------------------------");
             sender.sendMessage(prefix + "§cBedwars commands:");
             sender.sendMessage(prefix + "§c/bedwars join <arena> §7- §fJoin an arena");
@@ -78,17 +82,10 @@ public class Bedwars implements CommandExecutor {
                     sender.sendMessage(prefix + "§cComing soon!");
                     sender.sendMessage("--------------------------------");
                     break;
-                case "shopItems":{
-
-                    Inventory inv = Bukkit.createInventory(null, 9, "Shop Items");
-
-
-
+                case "shopItems":
+                    Player player = (Player) sender;
+                    player.openInventory(ShopItems.getInventory(Main.getInstance().arenas.get(0).getTeams().get(0)));
                     break;
-                }
-
-
-
                 default:
                     sender.sendMessage("--------------------------------");
                     sender.sendMessage(prefix + "§cNo command found! Type §f/bedwars help §cfor help");
