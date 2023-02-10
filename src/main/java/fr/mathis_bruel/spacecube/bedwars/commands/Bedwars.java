@@ -2,8 +2,7 @@ package fr.mathis_bruel.spacecube.bedwars.commands;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
-import fr.mathis_bruel.spacecube.bedwars.gui.ShopItems;
-import fr.mathis_bruel.spacecube.bedwars.gui.ShopTheSpecialist;
+import fr.mathis_bruel.spacecube.bedwars.gui.Join;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,10 +15,9 @@ public class Bedwars implements CommandExecutor {
 
         if (args.length == 0) {
             Player player = (Player) sender;
-            player.openInventory(ShopTheSpecialist.getInventory());
             sender.sendMessage("--------------------------------");
             sender.sendMessage(prefix + "§cBedwars commands:");
-            sender.sendMessage(prefix + "§c/bedwars join <arena> §7- §fJoin an arena");
+            sender.sendMessage(prefix + "§c/bedwars join [arena] §7- §fJoin an arena");
             sender.sendMessage(prefix + "§c/bedwars leave §7- §fLeave the arena you are in");
             sender.sendMessage(prefix + "§c/bedwars list §7- §fList all the arenas");
             sender.sendMessage(prefix + "§c/bedwars stats §7- §fShow your stats");
@@ -81,10 +79,13 @@ public class Bedwars implements CommandExecutor {
                     sender.sendMessage(prefix + "§cComing soon!");
                     sender.sendMessage("--------------------------------");
                     break;
-                case "shopItems":
-                    Player player = (Player) sender;
-                    player.openInventory(ShopItems.getInventory(Main.getInstance().arenas.get(0).getTeams().get(0)));
+                case "join": {
+                    if((sender instanceof Player)){
+                        Player player = (Player) sender;
+                        player.openInventory(Join.getInventory());
+                    }else sender.sendMessage(prefix + "§cYou must be a player to use this command!");
                     break;
+                }
                 default:
                     sender.sendMessage("--------------------------------");
                     sender.sendMessage(prefix + "§cNo command found! Type §f/bedwars help §cfor help");

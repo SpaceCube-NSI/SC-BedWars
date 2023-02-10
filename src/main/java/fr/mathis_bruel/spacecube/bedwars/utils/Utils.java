@@ -1,9 +1,11 @@
 package fr.mathis_bruel.spacecube.bedwars.utils;
 
+import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.BlockIterator;
 
@@ -163,7 +165,7 @@ public class Utils {
     }
 
     public static ChatColor[] getAllColor() {
-        return new ChatColor[] {ChatColor.RED, ChatColor.BLUE, ChatColor.GREEN, ChatColor.YELLOW, ChatColor.WHITE, ChatColor.BLACK, ChatColor.DARK_RED, ChatColor.DARK_BLUE, ChatColor.DARK_GREEN, ChatColor.DARK_AQUA, ChatColor.DARK_PURPLE, ChatColor.DARK_GRAY, ChatColor.GOLD, ChatColor.AQUA, ChatColor.LIGHT_PURPLE, ChatColor.GRAY};
+        return new ChatColor[]{ChatColor.RED, ChatColor.BLUE, ChatColor.GREEN, ChatColor.YELLOW, ChatColor.WHITE, ChatColor.BLACK, ChatColor.DARK_RED, ChatColor.DARK_BLUE, ChatColor.DARK_GREEN, ChatColor.DARK_AQUA, ChatColor.DARK_PURPLE, ChatColor.DARK_GRAY, ChatColor.GOLD, ChatColor.AQUA, ChatColor.LIGHT_PURPLE, ChatColor.GRAY};
     }
 
     public static final Block getTargetBlock(Player player, int range) {
@@ -179,7 +181,7 @@ public class Utils {
         return lastBlock;
     }
 
-    public static Short getDataColor(ChatColor color){
+    public static Short getDataColor(ChatColor color) {
         switch (color.name().toUpperCase()) {
             case "RED":
                 return 14;
@@ -230,5 +232,42 @@ public class Utils {
         return item;
     }
 
+    public static ItemStack getIcon(Manager manager) {
+        switch (manager.getManagerState().getCurrentState()) {
+            case WAITING: {
+                ItemStack item = new ItemStack(Material.WOOL, 1, (short) 5);
+                ItemMeta meta = item.getItemMeta();
+                meta.setDisplayName("§a" + manager.getArena().getName());
+                ArrayList<String> lore = new ArrayList<String>();
+                lore.add("§7Players: §a" + manager.getPlayers().size() + "§7/§4" + manager.getArena().getPlayerPerTeam() * manager.getArena().getTeams().size());
+                lore.add("§7State: §aWaiting");
+                meta.setLore(lore);
+                item.setItemMeta(meta);
+                return item;
+            }
+            case STARTING: {
+                ItemStack item2 = new ItemStack(Material.WOOL, 1, (short) 1);
+                ItemMeta meta2 = item2.getItemMeta();
+                meta2.setDisplayName("§a" + manager.getArena().getName());
+                ArrayList<String> lore2 = new ArrayList<String>();
+                lore2.add("§7Players: §a" + manager.getPlayers().size() + "§7/§4" + manager.getArena().getPlayerPerTeam() * manager.getArena().getTeams().size());
+                lore2.add("§7State: §aStarting");
+                meta2.setLore(lore2);
+                item2.setItemMeta(meta2);
+                return item2;
+            }
+            default:
+                ItemStack item2 = new ItemStack(Material.WOOL, 1, (short) 4);
+                ItemMeta meta2 = item2.getItemMeta();
+                meta2.setDisplayName("§a" + manager.getArena().getName());
+                ArrayList<String> lore2 = new ArrayList<String>();
+                lore2.add("§7Players: §a" + manager.getPlayers().size() + "§7/§4" + manager.getArena().getPlayerPerTeam() * manager.getArena().getTeams().size());
+                lore2.add("§7State: §a" + manager.getManagerState().getCurrentState().name());
+                meta2.setLore(lore2);
+                item2.setItemMeta(meta2);
+                return item2;
+        }
 
+
+    }
 }

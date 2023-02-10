@@ -30,6 +30,7 @@ public final class Main extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
         Arena.init();
+        Manager.init();
         hdb = new HeadDatabaseAPI();
     }
 
