@@ -2,7 +2,7 @@ package fr.mathis_bruel.spacecube.bedwars.commands;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
-import fr.mathis_bruel.spacecube.bedwars.manager.Utils;
+import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;

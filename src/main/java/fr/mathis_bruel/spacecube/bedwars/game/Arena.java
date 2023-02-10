@@ -3,7 +3,7 @@ package fr.mathis_bruel.spacecube.bedwars.game;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
 import fr.mathis_bruel.spacecube.bedwars.generator.GeneratorType;
-import fr.mathis_bruel.spacecube.bedwars.manager.Utils;
+import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.Bukkit;
@@ -25,7 +25,6 @@ public class Arena {
     private ArrayList<Generator> diamondsGenerators;
     private Location specSpawn;
     private Location lobbySpawn;
-    private ArrayList<Player> players;
 
     public Arena(World world, String name){
         this.world = world;
@@ -36,7 +35,6 @@ public class Arena {
         this.diamondsGenerators = new ArrayList<>();
         this.specSpawn = null;
         this.lobbySpawn = null;
-        this.players = new ArrayList<>();
     }
 
     public Arena(World world, String name, int playerPerTeam, ArrayList<Team> teams, ArrayList<Generator> emeraldsGenerators, ArrayList<Generator> diamondsGenerators, Location specSpawn, Location lobbySpawn) {
@@ -48,7 +46,6 @@ public class Arena {
         this.diamondsGenerators = diamondsGenerators;
         this.specSpawn = specSpawn;
         this.lobbySpawn = lobbySpawn;
-        this.players = new ArrayList<>();
     }
 
     public World getWorld() {
@@ -151,30 +148,6 @@ public class Arena {
         this.playerPerTeam++;
     }
 
-    public void removePlayer() {
-        this.playerPerTeam--;
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
-    public void addPlayer(Player player) {
-        this.players.add(player);
-    }
-
-    public void removePlayer(Player player) {
-        this.players.remove(player);
-    }
-
-    public void clearPlayers() {
-        this.players.clear();
-    }
-
     public void clearTeams() {
         this.teams.clear();
     }
@@ -188,7 +161,6 @@ public class Arena {
     }
 
     public void clearAll() {
-        this.clearPlayers();
         this.clearTeams();
         this.clearEmeraldsGenerators();
         this.clearDiamondsGenerators();

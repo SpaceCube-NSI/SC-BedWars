@@ -3,7 +3,7 @@ package fr.mathis_bruel.spacecube.bedwars.commands;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.gui.ShopItems;
-import fr.mathis_bruel.spacecube.bedwars.gui.ShopItemsArmor;
+import fr.mathis_bruel.spacecube.bedwars.gui.ShopTheSpecialist;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,8 +16,7 @@ public class Bedwars implements CommandExecutor {
 
         if (args.length == 0) {
             Player player = (Player) sender;
-            player.openInventory(ShopItems.getInventory());
-
+            player.openInventory(ShopTheSpecialist.getInventory());
             sender.sendMessage("--------------------------------");
             sender.sendMessage(prefix + "§cBedwars commands:");
             sender.sendMessage(prefix + "§c/bedwars join <arena> §7- §fJoin an arena");

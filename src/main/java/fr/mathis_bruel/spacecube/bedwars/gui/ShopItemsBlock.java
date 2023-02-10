@@ -1,6 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.gui;
 
-import fr.mathis_bruel.spacecube.bedwars.manager.Utils;
+import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

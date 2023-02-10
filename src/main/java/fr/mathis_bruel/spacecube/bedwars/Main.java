@@ -4,7 +4,9 @@ import fr.mathis_bruel.spacecube.bedwars.commands.Bedwars;
 import fr.mathis_bruel.spacecube.bedwars.commands.BedwarsAdmin;
 import fr.mathis_bruel.spacecube.bedwars.commands.Test;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
+import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.manager.ListenerManager;
+import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ public final class Main extends JavaPlugin {
     public static Main instance;
     public static String prefix = "§6[§eBedwars§6]§r ";
     public ArrayList<Arena> arenas = new ArrayList<>();
+    public static HeadDatabaseAPI hdb;
+    public ArrayList<Manager> managers = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -26,6 +30,7 @@ public final class Main extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
         Arena.init();
+        hdb = new HeadDatabaseAPI();
     }
 
     @Override
@@ -39,6 +44,10 @@ public final class Main extends JavaPlugin {
 
     public static Main getInstance() {
         return instance;
+    }
+
+    public static HeadDatabaseAPI getHdb() {
+        return hdb;
     }
 
 

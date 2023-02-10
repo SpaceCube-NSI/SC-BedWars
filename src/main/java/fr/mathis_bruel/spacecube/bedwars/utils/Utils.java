@@ -1,9 +1,13 @@
-package fr.mathis_bruel.spacecube.bedwars.manager;
+package fr.mathis_bruel.spacecube.bedwars.utils;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.BlockIterator;
+
+import java.util.ArrayList;
 
 public class Utils {
     public static Location parseStringToLoc(String string) {
@@ -212,6 +216,18 @@ public class Utils {
             default:
                 return null;
         }
+    }
+
+    public static ItemStack getHead(Player player) {
+        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        SkullMeta skull = (SkullMeta) item.getItemMeta();
+        skull.setDisplayName(player.getName());
+        ArrayList<String> lore = new ArrayList<String>();
+        lore.add("Custom head");
+        skull.setLore(lore);
+        skull.setOwner(player.getName());
+        item.setItemMeta(skull);
+        return item;
     }
 
 
