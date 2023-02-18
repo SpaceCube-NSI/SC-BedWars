@@ -1,9 +1,11 @@
 package fr.mathis_bruel.spacecube.bedwars.teams;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 
@@ -16,6 +18,7 @@ public class Team {
     private Location pnjUpgrades;
     private Block bed;
     private ArrayList<Player> players;
+    private Inventory enderchest;
 
     public Team(String name, ChatColor ChatColor, Location spawn, ArrayList<GeneratorTeam> generators, Location pnjItems, Location pnjUpgrades, Block bed) {
         this.name = name;
@@ -25,10 +28,12 @@ public class Team {
         this.pnjUpgrades = pnjUpgrades;
         this.bed = bed;
         this.generators = generators;
+        this.players = new ArrayList<>();
+        this.enderchest = Bukkit.createInventory(null, 3 * 9, ChatColor + "Enderchest" + name);
 
     }
 
-    public Team(String name, ChatColor ChatColor){
+    public Team(String name, ChatColor ChatColor) {
         this.name = name;
         this.ChatColor = ChatColor;
         this.spawn = null;
@@ -36,6 +41,7 @@ public class Team {
         this.pnjUpgrades = null;
         this.bed = null;
         this.generators = new ArrayList<>();
+        this.enderchest = Bukkit.createInventory(null, 3 * 9, ChatColor + "Enderchest " + name);
     }
 
     public String getName() {
@@ -84,8 +90,8 @@ public class Team {
 
     public GeneratorTeam getGenerator(Location location) {
         // if ~ 1 blocks
-        for(GeneratorTeam generatorTeam : generators) {
-            if(generatorTeam.getLocation().distance(location) < 1)
+        for (GeneratorTeam generatorTeam : generators) {
+            if (generatorTeam.getLocation().distance(location) < 1)
                 return generatorTeam;
         }
         return null;
@@ -135,6 +141,26 @@ public class Team {
         players.remove(player);
     }
 
+    public Inventory getEnderchest() {
+        return enderchest;
+    }
+
+    public void setEnderchest(Inventory enderchest) {
+        this.enderchest = enderchest;
+    }
+
+    public void addEnderchestItem(int slot, org.bukkit.inventory.ItemStack itemStack) {
+        enderchest.setItem(slot, itemStack);
+    }
+
+    public void removeEnderchestItem(int slot) {
+        enderchest.setItem(slot, null);
+    }
+
+    public void clearEnderchest() {
+        enderchest.clear();
+    }
+
     public boolean isPlayerInTeam(Player player) {
         return players.contains(player);
     }
@@ -144,11 +170,11 @@ public class Team {
     }
 
     public void setBedAlive(boolean alive) {
-        if(alive) {
-            if(bed.getType().toString().contains("BED_BLOCK"))
+        if (alive) {
+            if (bed.getType().toString().contains("BED_BLOCK"))
                 bed.setType(bed.getType());
         } else {
-            if(bed.getType().toString().contains("BED"))
+            if (bed.getType().toString().contains("BED"))
                 bed.setType(bed.getType());
         }
     }
@@ -158,21 +184,18 @@ public class Team {
     }
 
     public void setBedAlive(boolean alive, boolean force) {
-        if(force) {
-            if(alive) {
-                if(bed.getType().toString().contains("BED_BLOCK"))
+        if (force) {
+            if (alive) {
+                if (bed.getType().toString().contains("BED_BLOCK"))
                     bed.setType(bed.getType());
             } else {
-                if(bed.getType().toString().contains("BED"))
+                if (bed.getType().toString().contains("BED"))
                     bed.setType(bed.getType());
             }
         } else {
             setBedAlive(alive);
         }
     }
-
-
-
 
 
 }

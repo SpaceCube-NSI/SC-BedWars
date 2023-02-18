@@ -325,6 +325,14 @@ public class Arena {
         return null;
     }
 
+    public static Arena getArenaByID(int id) {
+        Arena arena = Main.getInstance().arenas.get(id);
+        if(arena != null){
+            return arena;
+        }
+        return null;
+    }
+
 
 
 }

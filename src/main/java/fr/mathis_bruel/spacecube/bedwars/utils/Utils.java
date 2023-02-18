@@ -1,5 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.utils;
 
+import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -241,6 +242,7 @@ public class Utils {
                 ArrayList<String> lore = new ArrayList<String>();
                 lore.add("§7Players: §a" + manager.getPlayers().size() + "§7/§4" + manager.getArena().getPlayerPerTeam() * manager.getArena().getTeams().size());
                 lore.add("§7State: §aWaiting");
+                lore.add("§7Id: §a" + Main.getInstance().arenas.indexOf(manager.getArena()));
                 meta.setLore(lore);
                 item.setItemMeta(meta);
                 return item;
@@ -252,6 +254,7 @@ public class Utils {
                 ArrayList<String> lore2 = new ArrayList<String>();
                 lore2.add("§7Players: §a" + manager.getPlayers().size() + "§7/§4" + manager.getArena().getPlayerPerTeam() * manager.getArena().getTeams().size());
                 lore2.add("§7State: §aStarting");
+                lore2.add("§7Id: §a" + Main.getInstance().arenas.indexOf(manager.getArena()));
                 meta2.setLore(lore2);
                 item2.setItemMeta(meta2);
                 return item2;
@@ -263,6 +266,7 @@ public class Utils {
                 ArrayList<String> lore2 = new ArrayList<String>();
                 lore2.add("§7Players: §a" + manager.getPlayers().size() + "§7/§4" + manager.getArena().getPlayerPerTeam() * manager.getArena().getTeams().size());
                 lore2.add("§7State: §a" + manager.getManagerState().getCurrentState().name());
+                lore2.add("§7Id: §a" + Main.getInstance().arenas.indexOf(manager.getArena()));
                 meta2.setLore(lore2);
                 item2.setItemMeta(meta2);
                 return item2;
