@@ -278,6 +278,9 @@ public class Arena {
             arena.setPlayerPerTeam(config.getInt("playerPerTeam"));
             if(config.getString("specSpawn") != null) arena.setSpecSpawn(Utils.parseStringToLoc(config.getString("specSpawn")));
             if(config.getString("lobbySpawn") != null) arena.setLobbySpawn(Utils.parseStringToLoc(config.getString("lobbySpawn")));
+            if(config.getInt("maxPlayers") != 0) arena.setMaxPlayers(config.getInt("maxPlayers"));
+            if(config.getInt("minPlayers") != 0) arena.setMinPlayers(config.getInt("minPlayers"));
+
             if (config.getConfigurationSection("teams") != null) for (String key : config.getConfigurationSection("teams").getKeys(false)) {
                 Team team = new Team(config.getString("teams." + key + ".name"), Utils.getColor(config.getString("teams." + key + ".color")));
                 if(config.getString("teams." + key + ".spawn") != null)team.setSpawn(Utils.parseStringToLoc(config.getString("teams." + key + ".spawn")));

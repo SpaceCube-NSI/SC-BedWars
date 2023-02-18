@@ -85,7 +85,8 @@ public class JoinChoice {
                 player.openInventory(Join.getInventory());
                 return;
             } else {
-                Arena arena = Arena.getArenaByName(currentName);
+                int id = Integer.parseInt(current.getItemMeta().getLore().get(2).substring(8));
+                Arena arena = Arena.getArenaByID(id);
                 if (arena == null) {
                     player.sendMessage(Main.getPrefix() + "§cError while getting the arena.");
                     return;
@@ -95,11 +96,12 @@ public class JoinChoice {
                     player.sendMessage(Main.getPrefix() + "§cError while getting the manager.");
                     return;
                 }
+                System.out.println(manager.getPlayers().size() + " " + manager.getArena().getMaxPlayers());
                 if (manager.getPlayers().size() >= manager.getArena().getMaxPlayers()) {
                     player.sendMessage(Main.getPrefix() + "§cThis game is full.");
                     return;
                 }
-                manager.addPlayer(player);
+                manager.join(player);
                 player.closeInventory();
                 return;
             }
