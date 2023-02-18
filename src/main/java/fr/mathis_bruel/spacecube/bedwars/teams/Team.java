@@ -17,8 +17,9 @@ public class Team {
     private Location pnjItems;
     private Location pnjUpgrades;
     private Block bed;
-    private ArrayList<Player> players;
+    private ArrayList<Player> players = new ArrayList<Player>();
     private Inventory enderchest;
+    private Boolean isBedAlive = true;
 
     public Team(String name, ChatColor ChatColor, Location spawn, ArrayList<GeneratorTeam> generators, Location pnjItems, Location pnjUpgrades, Block bed) {
         this.name = name;
@@ -28,7 +29,6 @@ public class Team {
         this.pnjUpgrades = pnjUpgrades;
         this.bed = bed;
         this.generators = generators;
-        this.players = new ArrayList<>();
         this.enderchest = Bukkit.createInventory(null, 3 * 9, ChatColor + "Enderchest" + name);
 
     }
@@ -166,35 +166,25 @@ public class Team {
     }
 
     public boolean isBedAlive() {
-        return bed.getType().toString().contains("BED");
+        return isBedAlive;
     }
 
-    public void setBedAlive(boolean alive) {
-        if (alive) {
-            if (bed.getType().toString().contains("BED_BLOCK"))
-                bed.setType(bed.getType());
-        } else {
-            if (bed.getType().toString().contains("BED"))
-                bed.setType(bed.getType());
-        }
+    public void setBedAlive(boolean bedAlive) {
+        isBedAlive = bedAlive;
     }
 
-    public void setBedAlive() {
-        setBedAlive(isBedAlive());
+    public void destroyBed(){
+        bed.breakNaturally();
+        isBedAlive = false;
     }
 
-    public void setBedAlive(boolean alive, boolean force) {
-        if (force) {
-            if (alive) {
-                if (bed.getType().toString().contains("BED_BLOCK"))
-                    bed.setType(bed.getType());
-            } else {
-                if (bed.getType().toString().contains("BED"))
-                    bed.setType(bed.getType());
-            }
-        } else {
-            setBedAlive(alive);
-        }
+    public void respawnBed(){
+        bed.setType(org.bukkit.Material.BED_BLOCK);
+        isBedAlive = true;
+    }
+
+    public boolean isBedIsBreak(){
+        return bed.getType() != org.bukkit.Material.BED_BLOCK;
     }
 
 

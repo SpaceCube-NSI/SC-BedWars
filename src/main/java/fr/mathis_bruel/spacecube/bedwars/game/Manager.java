@@ -1,6 +1,7 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
+import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,10 +24,10 @@ public class Manager {
         this.players = new ArrayList<>();
         this.specators = new ArrayList<>();
         this.managerState = new ManagerState(arena);
-        this.startingTime = 30;
+        this.startingTime = 5;
         Runnable start = new Runnable();
         start.manager = this;
-        start.runTaskTimer(Main.getInstance(), 0, 10);
+        start.runTaskTimer(Main.getInstance(), 0, 20);
     }
 
     public ManagerState getManagerState() {
@@ -104,6 +105,15 @@ public class Manager {
         else return false;
     }
 
+    public Team getTeam(Player player){
+        if(isPlayer(player)){
+            for(Team team : arena.getTeams()){
+                if(team.getPlayers().contains(player)) return team;
+            }
+        }
+        return null;
+    }
+
 
 
 
@@ -127,7 +137,7 @@ public class Manager {
             headPlayer.setItemMeta(headPlayerMeta);
             player.getInventory().setItem(4, headPlayer);
             this.players.forEach(p -> {
-                if(p != player) p.sendMessage("§a" + player.getName() + " §7joined the game ! §7(§3" + this.players.size() + "§7/§4" + arena.getMaxPlayers() + "§7)");
+               p.sendMessage("§a" + player.getName() + " §7joined the game ! §7(§3" + this.players.size() + "§7/§4" + arena.getMaxPlayers() + "§7)");
             });
             return "You joined the game!";
         }

@@ -8,12 +8,10 @@ import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.manager.ListenerManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public final class Main extends JavaPlugin {
     private ListenerManager listenerManager;
@@ -37,6 +35,28 @@ public final class Main extends JavaPlugin {
         Arena.init();
         Manager.init();
         hdb = new HeadDatabaseAPI();
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            FastBoard board = new FastBoard(player);
+            board.updateTitle("§6§lBedWars");
+            board.updateLines(Arrays.asList(
+                    "§f",
+                    "§fNiveau: §f" + 0,
+                    "§f",
+                    "§fProgrès: §b" + 0 + "§7/§a"+ 0,
+                    "§8[§7 §a▊▊▊                §8]",
+                    "§f",
+                    "§fCoins: §e" + 0,
+                    "§f",
+                    "§fKills: §a" + 0,
+                    "§fDeaths: §a" + 0,
+                    "§fWins: §a" + 0,
+                    "§fStreak: §a" + 0,
+                    "§f",
+                    "§6§lwww.spacecube.games"
+
+            ));
+            addBoard(player.getUniqueId(), board);
+        });
     }
 
     @Override

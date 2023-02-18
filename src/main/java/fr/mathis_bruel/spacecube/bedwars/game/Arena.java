@@ -3,14 +3,13 @@ package fr.mathis_bruel.spacecube.bedwars.game;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
 import fr.mathis_bruel.spacecube.bedwars.generator.GeneratorType;
-import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
+import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -288,7 +287,6 @@ public class Arena {
                     Location bedLoc = Utils.parseStringToLoc(config.getString("teams." + key + ".bed"));
                     team.setBed(bedLoc.getBlock());
                 }
-                team.setPlayers((ArrayList<Player>) config.get("teams." + key + ".players"));
                 if(config.getString("teams." + key + ".generators") != null) {
                     for (String key2 : config.getConfigurationSection("teams." + key + ".generators").getKeys(false)) {
                         GeneratorTeam generator = new GeneratorTeam(Utils.parseStringToLoc(config.getString("teams." + key + ".generators." + key2 + ".location")));
@@ -315,6 +313,7 @@ public class Arena {
             }else{
                 arena.setDiamondsGenerators(new ArrayList<Generator>());
             }
+
             Main.getInstance().arenas.add(arena);
         }
     }
