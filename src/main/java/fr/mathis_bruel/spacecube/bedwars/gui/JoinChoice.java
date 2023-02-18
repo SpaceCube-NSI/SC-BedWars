@@ -1,9 +1,13 @@
 package fr.mathis_bruel.spacecube.bedwars.gui;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
+import fr.mathis_bruel.spacecube.bedwars.game.Arena;
+import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -45,6 +49,8 @@ public class JoinChoice {
             ItemStack item = Utils.getIcon(manager);
             inv.addItem(item);
         });
+        inv.setItem(45, close);
+        inv.setItem(53, back);
 
         ItemStack random = new ItemStack(Material.FIREWORK);
         ItemMeta randomChoiceMeta = random.getItemMeta();
@@ -57,7 +63,50 @@ public class JoinChoice {
         return inv;
     }
 
-    public static void execute() {
+    public static void execute(InventoryClickEvent e) {
+        Player player = (Player) e.getWhoClicked();
+        e.setCancelled(true);
+        ItemStack current = e.getCurrentItem();
+        if (current.getType() == Material.AIR) return;
+        String currentName = current.getItemMeta().getDisplayName();
+
+
+        if (currentName.equals("§6Join a random game")) {
+            player.closeInventory();
+            player.sendMessage(Main.getPrefix() + "Is currently in development.");
+            return;
+        }
+        if (!currentName.equals(" ")) {
+            if (currentName.equals("§cClose")) {
+                player.closeInventory();
+                return;
+            } else if (currentName.equals("§5Back")) {
+                player.closeInventory();
+                player.openInventory(Join.getInventory());
+                return;
+            } else {
+                Arena arena = Arena.getArenaByName(currentName);
+                if (arena == null) {
+                    player.sendMessage(Main.getPrefix() + "§cError while getting the arena.");
+                    return;
+                }
+                Manager manager = Manager.getManager(arena);
+                if (manager == null) {
+                    player.sendMessage(Main.getPrefix() + "§cError while getting the manager.");
+                    return;
+                }
+                if (manager.getPlayers().size() >= manager.getArena().getMaxPlayers()) {
+                    player.sendMessage(Main.getPrefix() + "§cThis game is full.");
+                    return;
+                }
+                manager.addPlayer(player);
+                player.closeInventory();
+                return;
+            }
+
+        }
+
+        return;
 
     }
 }

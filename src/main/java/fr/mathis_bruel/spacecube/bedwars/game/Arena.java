@@ -25,6 +25,8 @@ public class Arena {
     private ArrayList<Generator> diamondsGenerators;
     private Location specSpawn;
     private Location lobbySpawn;
+    private int maxPlayers;
+    private int minPlayers;
 
     public Arena(World world, String name){
         this.world = world;
@@ -35,9 +37,11 @@ public class Arena {
         this.diamondsGenerators = new ArrayList<>();
         this.specSpawn = null;
         this.lobbySpawn = null;
+        this.maxPlayers = 0;
+        this.minPlayers = 0;
     }
 
-    public Arena(World world, String name, int playerPerTeam, ArrayList<Team> teams, ArrayList<Generator> emeraldsGenerators, ArrayList<Generator> diamondsGenerators, Location specSpawn, Location lobbySpawn) {
+    public Arena(World world, String name, int playerPerTeam, ArrayList<Team> teams, ArrayList<Generator> emeraldsGenerators, ArrayList<Generator> diamondsGenerators, Location specSpawn, Location lobbySpawn, int maxPlayers, int minPlayers) {
         this.world = world;
         this.name = name;
         this.playerPerTeam = playerPerTeam;
@@ -46,6 +50,9 @@ public class Arena {
         this.diamondsGenerators = diamondsGenerators;
         this.specSpawn = specSpawn;
         this.lobbySpawn = lobbySpawn;
+        this.maxPlayers = maxPlayers;
+        this.minPlayers = minPlayers;
+
     }
 
     public World getWorld() {
@@ -120,6 +127,22 @@ public class Arena {
         this.lobbySpawn = lobbySpawn;
     }
 
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public void setMinPlayers(int minPlayers) {
+        this.minPlayers = minPlayers;
+    }
+
+    public int getMinPlayers() {
+        return minPlayers;
+    }
+
     public void addTeam(Team team) {
         this.teams.add(team);
     }
@@ -160,6 +183,8 @@ public class Arena {
         this.diamondsGenerators.clear();
     }
 
+
+
     public void clearAll() {
         this.clearTeams();
         this.clearEmeraldsGenerators();
@@ -191,6 +216,8 @@ public class Arena {
         config.set("world", this.getWorld().getName());
         config.set("name", this.getName());
         config.set("playerPerTeam", this.getPlayerPerTeam());
+        config.set("maxPlayers", this.getMaxPlayers());
+        config.set("minPlayers", this.getMinPlayers());
         if(this.getSpecSpawn() != null) config.set("specSpawn", Utils.parseLocToString(this.getSpecSpawn()));
         if(this.getLobbySpawn() != null) config.set("lobbySpawn", Utils.parseLocToString(this.getLobbySpawn()));
         for(int i = 0; i < this.getTeams().size(); i++) {
@@ -225,6 +252,20 @@ public class Arena {
             e.printStackTrace();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public static void init(){

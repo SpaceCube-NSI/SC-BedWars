@@ -2,8 +2,8 @@ package fr.mathis_bruel.spacecube.bedwars.commands;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
-import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
+import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -50,6 +50,8 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§cBedwarsAdmin arena commands:");
                     sender.sendMessage(prefix + "§c/bedwars-a arena list §7 - §fList all the arenas");
                     sender.sendMessage(prefix + "§c/bedwars-a arena infos <arena> §7 - §fShow infos about an arena");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena setMinPlayers <arena> <minPlayers> §7 - §fSet the minimum players of an arena");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena setMaxPlayers <arena> <maxPlayers> §7 - §fSet the maximum players of an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena create <arenaName> §7 - §fCreate an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena delete <arenaName> §7 - §fDelete an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena setSpawnSpectator <arenaName> §7 - §fSet the spectator spawn of an arena");
@@ -117,6 +119,18 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                             sender.sendMessage(prefix + "§c- §f" + arena.getName());
 
                         }
+                        sender.sendMessage("--------------------------------");
+                        break;
+                    case "setMinPlayers":
+                        sender.sendMessage("--------------------------------");
+                        sender.sendMessage(prefix + "§cBedwarsAdmin arena setMinPlayers command:");
+                        sender.sendMessage(prefix + "§c/bedwars-a arena setMinPlayers <arenaName> <minPlayers> §7 - §fSet the min players of an arena");
+                        sender.sendMessage("--------------------------------");
+                        break;
+                    case "setMaxPlayers":
+                        sender.sendMessage("--------------------------------");
+                        sender.sendMessage(prefix + "§cBedwarsAdmin arena setMaxPlayers command:");
+                        sender.sendMessage(prefix + "§c/bedwars-a arena setMaxPlayers <arenaName> <maxPlayers> §7 - §fSet the max players of an arena");
                         sender.sendMessage("--------------------------------");
                         break;
                     case "create":
@@ -317,6 +331,15 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§aPlayers per team set.");
                     break;
                 }
+                case "setMaxPlayers":
+                    sender.sendMessage(prefix + "§cBedwarsAdmin arena setMaxPlayers command:");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena setMaxPlayers <arenaName> <maxPlayers> §7 - §fSet the max players of an arena");
+                    break;
+                case "setMinPlayers":
+                    sender.sendMessage(prefix + "§cBedwarsAdmin arena setMinPlayers command:");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena setMinPlayers <arenaName> <minPlayers> §7 - §fSet the min players of an arena");
+                    break;
+
                 case "addteam":
                     sender.sendMessage(prefix + "§cBedwarsAdmin arena addTeam command:");
                     sender.sendMessage(prefix + "§c/bedwars-a arena addTeam <arenaName> <teamName> <color> §7 - §fAdd a team to an arena");
@@ -353,6 +376,38 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§cBedwarsAdmin arena addTeam command:");
                     sender.sendMessage(prefix + "§c/bedwars-a arena addTeam <arenaName> <teamName> <color> §7 - §fAdd a team to an arena");
                     break;
+                case "setmaxplayers": {
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
+                    // is number
+                    if (!Utils.isNumber(args[3])) {
+                        sender.sendMessage(prefix + "§cThis is not a number.");
+                        return true;
+                    }
+                    arena.setMaxPlayers(Integer.parseInt(args[3]));
+                    arena.save();
+                    sender.sendMessage(prefix + "§aMax players set. §7(§6" + args[3] + "§7)");
+                    break;
+                }
+                case "setminplayers": {
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
+                    // is number
+                    if (!Utils.isNumber(args[3])) {
+                        sender.sendMessage(prefix + "§cThis is not a number.");
+                        return true;
+                    }
+                    arena.setMinPlayers(Integer.parseInt(args[3]));
+                    arena.save();
+                    sender.sendMessage(prefix + "§aMin players set. §7(§6" + args[3] + "§7)");
+                    break;
+                }
                 default:
                     sender.sendMessage(prefix + "§cUnknown command. Type §f/bedwars-a help §cfor help.");
                     break;
@@ -419,7 +474,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                                 sender.sendMessage(prefix + "§cYou must look at a block.");
                                 return true;
                             }
-                            if(block.getType() != Material.BED_BLOCK) {
+                            if (block.getType() != Material.BED_BLOCK) {
                                 sender.sendMessage(prefix + "§cYou must look at a bed.");
                                 return true;
                             }

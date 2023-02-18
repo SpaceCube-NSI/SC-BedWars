@@ -49,5 +49,5 @@ processResources {
     }
 }
 shadowJar {
-    destinationDir = file("C:\\Users\\mathi\\Documents\\serverTest1.8\\plugins")
+    destinationDir = file("C:\\Users\\mathi\\Documents\\ServeurTest1.8\\plugins")
 }
