@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package fr.mathis_bruel.spacecube.bedwars.scoreboard;
+package fr.mathis_bruel.spacecube.bedwars.manager.scoreboard;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
