@@ -81,8 +81,10 @@ public class Manager {
 
 
 
+
     public String join(Player player){
         if(isPlayer(player) || isSpecator(player)) return "§cYou are already in this game !";
+        if(Manager.isCurrentlyInGame(player)) return "§cYou are already in a game !";
         if(managerState.getCurrentState() == State.WAITING){
             addPlayer(player);
             player.teleport(arena.getLobbySpawn());
@@ -135,6 +137,42 @@ public class Manager {
 
     }
 
+    public void leave(Player player) {
+        if (isPlayer(player)) {
+            this.removePlayer(player);
+            player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
+            player.getInventory().clear();
+            player.getInventory().setArmorContents(null);
+            player.setHealth(20);
+            player.setFoodLevel(20);
+            player.setFireTicks(0);
+            player.setExp(0);
+            player.setLevel(0);
+            player.setAllowFlight(false);
+            player.setFlying(false);
+            player.setGameMode(Main.getInstance().getServer().getDefaultGameMode());
+            player.sendMessage("§aYou left the game!");
+        } else if (isSpecator(player)) {
+            this.removeSpecator(player);
+            player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
+            player.getInventory().clear();
+            player.getInventory().setArmorContents(null);
+            player.setHealth(20);
+            player.setFoodLevel(20);
+            player.setFireTicks(0);
+            player.setExp(0);
+            player.setLevel(0);
+            player.setAllowFlight(false);
+            player.setFlying(false);
+            player.setGameMode(Main.getInstance().getServer().getDefaultGameMode());
+            player.sendMessage("§aYou left the game!");
+        } else {
+            player.sendMessage("§cYou are not in this game!");
+        }
+    }
+
+
+
 
 
     public static void init(){
@@ -146,6 +184,24 @@ public class Manager {
     public static Manager getManager(Arena arena){
         for (Manager manager : Main.getInstance().managers) {
             if(manager.getArena() == arena){
+                return manager;
+            }
+        }
+        return null;
+    }
+
+    public static boolean isCurrentlyInGame(Player player){
+        for (Manager manager : Main.getInstance().managers) {
+            if(manager.isPlayer(player) || manager.isSpecator(player)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Manager getManager(Player player){
+        for (Manager manager : Main.getInstance().managers) {
+            if(manager.isPlayer(player) || manager.isSpecator(player)){
                 return manager;
             }
         }

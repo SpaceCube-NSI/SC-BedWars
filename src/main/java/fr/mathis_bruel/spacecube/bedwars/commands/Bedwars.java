@@ -2,6 +2,7 @@ package fr.mathis_bruel.spacecube.bedwars.commands;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
+import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.gui.Join;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -73,12 +74,13 @@ public class Bedwars implements CommandExecutor {
                     sender.sendMessage(prefix + "§cComing soon!");
                     sender.sendMessage("--------------------------------");
                     break;
-                case "leave":
-                    sender.sendMessage("--------------------------------");
-                    sender.sendMessage(prefix + "§cBedwars leave:");
-                    sender.sendMessage(prefix + "§cComing soon!");
-                    sender.sendMessage("--------------------------------");
+                case "leave" :{
+                    Player player = (Player) sender;
+                    if (Manager.isCurrentlyInGame(player)) {
+                        Manager.getManager(player).leave(player);
+                    } else sender.sendMessage(prefix + "§cYou are not in a game!");
                     break;
+                }
                 case "join": {
                     if((sender instanceof Player)){
                         Player player = (Player) sender;
