@@ -4,10 +4,13 @@ import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.gui.Join;
+import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public class Bedwars implements CommandExecutor {
     @Override
@@ -79,6 +82,25 @@ public class Bedwars implements CommandExecutor {
                     if (Manager.isCurrentlyInGame(player)) {
                         Manager.getManager(player).leave(player);
                     } else sender.sendMessage(prefix + "§cYou are not in a game!");
+                    FastBoard board = Main.getBoard(player.getUniqueId());
+                    board.updateLines(Arrays.asList(
+                            "§f",
+                            "§fNiveau: §f" + 0,
+                            "§f",
+                            "§fProgrès: §b" + 0 + "§7/§a"+ 0,
+                            "§8[§7 §a▊▊▊                §8]",
+                            "§f",
+                            "§fCoins: §e" + 0,
+                            "§f",
+                            "§fKills: §a" + 0,
+                            "§fDeaths: §a" + 0,
+                            "§fWins: §a" + 0,
+                            "§fStreak: §a" + 0,
+                            "§f",
+                            "§6§lwww.spacecube.games"
+
+                    ));
+
                     break;
                 }
                 case "join": {

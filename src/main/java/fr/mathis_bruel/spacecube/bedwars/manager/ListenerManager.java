@@ -1,9 +1,7 @@
 package fr.mathis_bruel.spacecube.bedwars.manager;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
-import fr.mathis_bruel.spacecube.bedwars.events.BlockPlace;
-import fr.mathis_bruel.spacecube.bedwars.events.Click;
-import fr.mathis_bruel.spacecube.bedwars.events.InventoryClick;
+import fr.mathis_bruel.spacecube.bedwars.events.*;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -24,6 +22,8 @@ public class ListenerManager {
         this.listeners.add(new BlockPlace());
         this.listeners.add(new InventoryClick());
         this.listeners.add(new Click());
+        this.listeners.add(new Join());
+        this.listeners.add(new Leave());
 
 
 

@@ -16,12 +16,17 @@ public class Manager {
     private ArrayList<Player> players;
     private ArrayList<Player> specators;
     private ManagerState managerState;
+    private int startingTime;
 
     public Manager(Arena arena) {
         this.arena = arena;
         this.players = new ArrayList<>();
         this.specators = new ArrayList<>();
         this.managerState = new ManagerState(arena);
+        this.startingTime = 30;
+        Runnable start = new Runnable();
+        start.manager = this;
+        start.runTaskTimer(Main.getInstance(), 0, 10);
     }
 
     public ManagerState getManagerState() {
@@ -69,6 +74,26 @@ public class Manager {
         this.specators.clear();
     }
 
+    public int getStartingTime() {
+        return startingTime;
+    }
+
+    public void setStartingTime(int startingTime) {
+        this.startingTime = startingTime;
+    }
+
+    public void addStartingTime(int startingTime) {
+        this.startingTime += startingTime;
+    }
+
+    public void removeStartingTime(int startingTime) {
+        this.startingTime -= startingTime;
+    }
+
+    public void resetStartingTime() {
+        this.startingTime = 30;
+    }
+
     public boolean isSpecator(Player player){
         if(this.specators.contains(player)) return true;
         else return false;
@@ -101,6 +126,9 @@ public class Manager {
             headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
             headPlayer.setItemMeta(headPlayerMeta);
             player.getInventory().setItem(4, headPlayer);
+            this.players.forEach(p -> {
+                if(p != player) p.sendMessage("§a" + player.getName() + " §7joined the game ! §7(§3" + this.players.size() + "§7/§4" + arena.getMaxPlayers() + "§7)");
+            });
             return "You joined the game!";
         }
         else if(managerState.getCurrentState() == State.RUNNING){

@@ -6,10 +6,14 @@ import fr.mathis_bruel.spacecube.bedwars.commands.Test;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.manager.ListenerManager;
+import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public final class Main extends JavaPlugin {
     private ListenerManager listenerManager;
@@ -18,6 +22,7 @@ public final class Main extends JavaPlugin {
     public ArrayList<Arena> arenas = new ArrayList<>();
     public static HeadDatabaseAPI hdb;
     public ArrayList<Manager> managers = new ArrayList<>();
+    private static final Map<UUID, FastBoard> boards = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -50,6 +55,28 @@ public final class Main extends JavaPlugin {
     public static HeadDatabaseAPI getHdb() {
         return hdb;
     }
+
+    public static  Map<UUID, FastBoard> getBoards() {
+        return boards;
+    }
+
+    public static FastBoard getBoard(UUID uuid) {
+        return boards.get(uuid);
+    }
+
+    public static void addBoard(UUID uuid, FastBoard board) {
+        boards.put(uuid, board);
+    }
+
+    public static void removeBoard(UUID uuid) {
+        boards.remove(uuid);
+    }
+
+    public static void clearBoards() {
+        boards.clear();
+    }
+
+
 
 
 
