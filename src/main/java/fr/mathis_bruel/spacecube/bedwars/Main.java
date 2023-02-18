@@ -9,11 +9,12 @@ import fr.mathis_bruel.spacecube.bedwars.manager.ListenerManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 
-public final class Main extends JavaPlugin {
+public final class Main extends JavaPlugin implements Listener {
     private ListenerManager listenerManager;
     public static Main instance;
     public static String prefix = "§6[§eBedwars§6]§r ";
@@ -24,6 +25,12 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        /*RegisteredListener registeredListener = new RegisteredListener(this, (listener, event) -> {
+            System.out.println(event.getEventName());
+        }, EventPriority.NORMAL, this, false);
+        for (HandlerList handler : HandlerList.getHandlerLists())
+            handler.register(registeredListener);*/
         // Plugin startup logic
         this.listenerManager = new ListenerManager(this);
         this.listenerManager.registerListener();
@@ -61,7 +68,6 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
     }
 
     public static String getPrefix() {
@@ -95,6 +101,7 @@ public final class Main extends JavaPlugin {
     public static void clearBoards() {
         boards.clear();
     }
+
 
 
 

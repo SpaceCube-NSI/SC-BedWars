@@ -59,6 +59,7 @@ public class Runnable extends BukkitRunnable {
                     }
                 }
                 manager.getManagerState().setState(State.RUNNING);
+                manager.setShops();
             } else {
                 manager.setStartingTime(manager.getStartingTime() - 1);
 
