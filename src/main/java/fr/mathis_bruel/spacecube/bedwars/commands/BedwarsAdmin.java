@@ -2,6 +2,7 @@ package fr.mathis_bruel.spacecube.bedwars.commands;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
+import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -67,6 +68,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setShopUpgrades <teamName> §7 - §fSet the shop upgrades of a team");
                     sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> addGenerator <teamName> §7 - §fAdd a generator to a team");
                     sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> removeGenerator <teamName> §7 - §fRemove a generator from a team");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> infos <teamName> §7 - §fShow infos about a team");
                     sender.sendMessage(prefix + "§c/bedwars-a arena addGenerator <arenaName> <type> §7 - §fAdd a generator to an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena removeGenerator <arenaName> §7 - §fRemove a generator from an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena generators <arenaName> §7 - §fList all the generators of an arena");
@@ -364,6 +366,18 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§cBedwarsAdmin arena generators command:");
                     sender.sendMessage(prefix + "§c/bedwars-a arena generators <arenaName> §7 - §fShow the generators of an arena");
                     break;
+                case "team":
+                    sender.sendMessage("--------------------------------");
+                    sender.sendMessage(prefix + "§cBedwarsAdmin arena team command:");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setColor <teamName> <color> §7 - §fSet the color of a team");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setSpawn <teamName> §7 - §fSet the spawn of a team");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setBed <teamName> §7 - §fSet the bed of a team (target block)");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setShopItems <teamName> §7 - §fSet the shop items of a team");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> setShopUpgrades <teamName> §7 - §fSet the shop upgrades of a team");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> addGenerator <teamName> §7 - §fAdd a generator to a team");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> removeGenerator <teamName> §7 - §fRemove a generator from a team");
+                    sender.sendMessage("--------------------------------");
+                    break;
                 default:
                     sender.sendMessage(prefix + "§cUnknown command. Type §f/bedwars-a help §cfor help.");
                     break;
@@ -444,15 +458,14 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§aTeam added.");
                     break;
                 }
-                case "team": {
-                    Arena arena = Arena.getArenaByName(args[2]);
-                    if (arena == null) {
-                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
-                        return true;
-                    }
+                case "team":
                     switch (args[3].toLowerCase()) {
-
                         case "setspawn": {
+                            Arena arena = Arena.getArenaByName(args[2]);
+                            if (arena == null) {
+                                sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                                return true;
+                            }
                             Team team = arena.getTeamByName(args[4]);
                             if (team == null) {
                                 sender.sendMessage(prefix + "§cThis team doesn't exist.");
@@ -460,10 +473,15 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                             }
                             team.setSpawn(player.getLocation());
                             arena.save();
-                            sender.sendMessage(prefix + "§aSpawn set.");
+                            sender.sendMessage(prefix + "§aSpawn set for the team " + team.getColor() + team.getName() + "§a.");
                             break;
                         }
                         case "setbed": {
+                            Arena arena = Arena.getArenaByName(args[2]);
+                            if (arena == null) {
+                                sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                                return true;
+                            }
                             Team team = arena.getTeamByName(args[4]);
                             if (team == null) {
                                 sender.sendMessage(prefix + "§cThis team doesn't exist.");
@@ -474,16 +492,26 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                                 sender.sendMessage(prefix + "§cYou must look at a block.");
                                 return true;
                             }
-                            if (block.getType() != Material.BED_BLOCK) {
+                            if (block.getType().equals(Material.BED_BLOCK)) {
+                                team.setBed(block);
+                                arena.save();
+                                sender.sendMessage(prefix + "§aBed set for the team " + team.getColor() + team.getName() + "§a.");
+                            } else {
                                 sender.sendMessage(prefix + "§cYou must look at a bed.");
-                                return true;
                             }
-                            team.setBed(block);
-                            arena.save();
-                            sender.sendMessage(prefix + "§aBed set.");
+                            break;
+                        }
+                        case "setcolor": {
+                            sender.sendMessage(prefix + "§cBedwarsAdmin arena team setColor command:");
+                            sender.sendMessage(prefix + "§c/bedwars-a arena team setColor <arenaName> <teamName> <color> §7 - §fSet the color of a team");
                             break;
                         }
                         case "setshopitems": {
+                            Arena arena = Arena.getArenaByName(args[2]);
+                            if (arena == null) {
+                                sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                                return true;
+                            }
                             Team team = arena.getTeamByName(args[4]);
                             if (team == null) {
                                 sender.sendMessage(prefix + "§cThis team doesn't exist.");
@@ -491,10 +519,15 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                             }
                             team.setPnjItems(player.getLocation());
                             arena.save();
-                            sender.sendMessage(prefix + "§aShop items set.");
+                            sender.sendMessage(prefix + "§aShop items set for the team " + team.getColor() + team.getName() + "§a.");
                             break;
                         }
                         case "setshopupgrades": {
+                            Arena arena = Arena.getArenaByName(args[2]);
+                            if (arena == null) {
+                                sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                                return true;
+                            }
                             Team team = arena.getTeamByName(args[4]);
                             if (team == null) {
                                 sender.sendMessage(prefix + "§cThis team doesn't exist.");
@@ -502,15 +535,119 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                             }
                             team.setPnjUpgrades(player.getLocation());
                             arena.save();
-                            sender.sendMessage(prefix + "§aShop upgrades set.");
+                            sender.sendMessage(prefix + "§aShop upgrades set for the team " + team.getColor() + team.getName() + "§a.");
                             break;
                         }
+                        case "addgenerator": {
+                            Arena arena = Arena.getArenaByName(args[2]);
+                            if (arena == null) {
+                                sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                                return true;
+                            }
+                            Team team = arena.getTeamByName(args[4]);
+                            if (team == null) {
+                                sender.sendMessage(prefix + "§cThis team doesn't exist.");
+                                return true;
+                            }
+                            if (team.isGenerator(player.getLocation())) {
+                                sender.sendMessage(prefix + "§cThis generator already exists.");
+                                return true;
+                            }
+                            GeneratorTeam generatorTeam = new GeneratorTeam(player.getLocation());
+                            team.addGenerator(generatorTeam);
+                            arena.save();
+                            sender.sendMessage(prefix + "§aGenerator added.");
+                            break;
+                        }
+                        case "removegenerator": {
+                            Arena arena = Arena.getArenaByName(args[2]);
+                            if (arena == null) {
+                                sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                                return true;
+                            }
+                            Team team = arena.getTeamByName(args[4]);
+                            if (team == null) {
+                                sender.sendMessage(prefix + "§cThis team doesn't exist.");
+                                return true;
+                            }
+                            if (!team.isGenerator(player.getLocation())) {
+                                sender.sendMessage(prefix + "§cThis generator doesn't exist.");
+                                return true;
+                            }
+                            GeneratorTeam generatorTeam = team.getGenerator(player.getLocation());
+                            team.removeGenerator(generatorTeam);
+                            arena.save();
+                            break;
+                        }
+                        case "infos": {
+                            Arena arena = Arena.getArenaByName(args[2]);
+                            if (arena == null) {
+                                sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                                return true;
+                            }
+                            Team team = arena.getTeamByName(args[4]);
+                            if (team == null) {
+                                sender.sendMessage(prefix + "§cThis team doesn't exist.");
+                                return true;
+                            }
+                            // send all informations about the team | create a textcomponent for all locations for click on it to tp
+                            if (sender instanceof Player) {
+                                player.sendMessage(prefix + "§aInformations about the team " + team.getColor() + team.getName() + "§a:");
+                                player.sendMessage(prefix + "§aName: §f" + team.getName());
+                                player.sendMessage(prefix + "§aColor: §f" + team.getColor() + Utils.getColorName(team.getColor()));
+                                if (team.getBed() != null) {
+                                    TextComponent bed = new TextComponent(prefix + "§aBed: §f" + team.getBed().getX() + " " + team.getBed().getY() + " " + team.getBed().getZ());
+                                    bed.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + team.getBed().getX() + " " + team.getBed().getY() + " " + team.getBed().getZ()));
+                                    bed.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§aClick to teleport").create()));
+                                    player.spigot().sendMessage(bed);
+                                } else {
+                                    player.sendMessage(prefix + "§aBed: §cNot set");
+                                }
+                                if (team.getPnjItems() != null) {
+                                    TextComponent pnjItems = new TextComponent(prefix + "§aShop items: §f" + team.getPnjItems().getX() + " " + team.getPnjItems().getY() + " " + team.getPnjItems().getZ());
+                                    pnjItems.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + team.getPnjItems().getX() + " " + team.getPnjItems().getY() + " " + team.getPnjItems().getZ()));
+                                    pnjItems.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§aClick to teleport").create()));
+                                    player.spigot().sendMessage(pnjItems);
+                                } else {
+                                    player.sendMessage(prefix + "§aShop items: §cNot set");
+                                }
+                                if (team.getPnjUpgrades() != null) {
+                                    TextComponent pnjUpgrades = new TextComponent(prefix + "§aShop upgrades: §f" + team.getPnjUpgrades().getX() + " " + team.getPnjUpgrades().getY() + " " + team.getPnjUpgrades().getZ());
+                                    pnjUpgrades.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + team.getPnjUpgrades().getX() + " " + team.getPnjUpgrades().getY() + " " + team.getPnjUpgrades().getZ()));
+                                    pnjUpgrades.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§aClick to teleport").create()));
+                                    player.spigot().sendMessage(pnjUpgrades);
+                                } else {
+                                    player.sendMessage(prefix + "§aShop upgrades: §cNot set");
+                                }
+                                if (team.getSpawn() != null) {
+                                    TextComponent spawn = new TextComponent(prefix + "§aSpawn: §f" + team.getSpawn().getX() + " " + team.getSpawn().getY() + " " + team.getSpawn().getZ());
+                                    spawn.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + team.getSpawn().getX() + " " + team.getSpawn().getY() + " " + team.getSpawn().getZ()));
+                                    spawn.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§aClick to teleport").create()));
+                                    player.spigot().sendMessage(spawn);
+                                } else {
+                                    player.sendMessage(prefix + "§aSpawn: §cNot set");
+                                }
+                                // generators
+                                if (team.getGenerators().size() == 0) {
+                                    player.sendMessage(prefix + "§aGenerators: §cNone");
+                                } else {
+                                    player.sendMessage(prefix + "§aGenerators:");
+                                    for (GeneratorTeam generatorTeam : team.getGenerators()) {
+                                        TextComponent generator = new TextComponent(prefix + "§f- §a" + generatorTeam.getLocation().getX() + " " + generatorTeam.getLocation().getY() + " " + generatorTeam.getLocation().getZ());
+                                        generator.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + generatorTeam.getLocation().getX() + " " + generatorTeam.getLocation().getY() + " " + generatorTeam.getLocation().getZ()));
+                                        generator.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§aClick to teleport").create()));
+                                        player.spigot().sendMessage(generator);
+                                    }
+                                }
+                            } else
+                                sender.sendMessage(prefix + "§aInformations about the team " + team.getColor() + team.getName() + "§a:");
+                            break;
 
+                        }
                         default:
                             sender.sendMessage(prefix + "§cUnknown command. Type §f/bedwars-a help §cfor help.");
                             break;
                     }
-                }
             }
         }
 

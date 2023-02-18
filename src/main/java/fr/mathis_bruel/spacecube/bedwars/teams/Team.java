@@ -82,6 +82,19 @@ public class Team {
         return this.generators.get(index);
     }
 
+    public GeneratorTeam getGenerator(Location location) {
+        // if ~ 1 blocks
+        for(GeneratorTeam generatorTeam : generators) {
+            if(generatorTeam.getLocation().distance(location) < 1)
+                return generatorTeam;
+        }
+        return null;
+    }
+
+    public boolean isGenerator(Location location) {
+        return getGenerator(location) != null;
+    }
+
     public Location getPnjItems() {
         return pnjItems;
     }
