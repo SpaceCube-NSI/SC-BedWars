@@ -24,6 +24,9 @@ public class ListenerManager {
         this.listeners.add(new Click());
         this.listeners.add(new Join());
         this.listeners.add(new Leave());
+        this.listeners.add(new InteractEntity());
+        this.listeners.add(new InteractNPCEvent());
+
 
 
 

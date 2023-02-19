@@ -119,7 +119,7 @@ public class Runnable extends BukkitRunnable {
                 board.updateLines(Arrays.asList(
                         "",
                         "§e§lTeams Left",
-                        teamsLeft.toString(),
+                        "§l"+teamsLeft.toString(),
                         "",
                         "§f§lYour Team",
                         "§7Color: " + team.getColor() + team.getName(),

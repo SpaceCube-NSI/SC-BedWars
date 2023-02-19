@@ -1,15 +1,18 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
-import com.mojang.authlib.GameProfile;
+import es.eltrueno.npc.TruenoNPC;
+import es.eltrueno.npc.TruenoNPCApi;
+import es.eltrueno.npc.skin.TruenoNPCSkin;
+import es.eltrueno.npc.skin.TruenoNPCSkinBuilder;
 import fr.mathis_bruel.spacecube.bedwars.Main;
+import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
-import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Bukkit;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
+import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +20,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.UUID;
 
 public class Manager {
 
@@ -129,42 +131,16 @@ public class Manager {
 
     public void setShops(){
         for(Team team : arena.getTeams()){
+            TruenoNPCSkin skin = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), 131234);
             Location location = team.getPnjItems();
-            MinecraftServer nmsServer = ((CraftServer) Bukkit.getServer()).getServer();
-            WorldServer nmsWorld = ((CraftWorld) location.getWorld()).getHandle();
-            GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "§a§l" + "Items");
-
-            EntityPlayer npc = new EntityPlayer(nmsServer, nmsWorld, gameProfile, new PlayerInteractManager(nmsWorld));
-            Player npcPlayer = npc.getBukkitEntity().getPlayer();
-            npcPlayer.setPlayerListName("");
-
-            npc.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-
-            for(Player player: Manager.getManager(arena).getPlayers()) {
-                PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-                connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, npc));
-                connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc));
-            }
+            TruenoNPC npc = TruenoNPCApi.createNPC(Main.getInstance(), location, skin);
 
             Location location2 = team.getPnjUpgrades();
-            MinecraftServer nmsServer2 = ((CraftServer) Bukkit.getServer()).getServer();
-            WorldServer nmsWorld2 = ((CraftWorld) location2.getWorld()).getHandle();
-            GameProfile gameProfile2 = new GameProfile(UUID.randomUUID(), "§a§l" + "Upgrades");
 
-            EntityPlayer npc2 = new EntityPlayer(nmsServer2, nmsWorld2, gameProfile2, new PlayerInteractManager(nmsWorld2));
-            Player npcPlayer2 = npc2.getBukkitEntity().getPlayer();
-            npcPlayer2.setPlayerListName("");
+            TruenoNPC npc2 = TruenoNPCApi.createNPC(Main.getInstance(), location2, skin);
 
-            npc2.setLocation(location2.getX(), location2.getY(), location2.getZ(), location2.getYaw(), location2.getPitch());
-
-            for(Player player: Manager.getManager(arena).getPlayers()) {
-                PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-                connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, npc2));
-                connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc2));
-            }
-
-            npcs.add(npc);
-            npcs.add(npc2);
+            Main.addShop(npc.getNpcID(), TypeShop.THE_SPECIALIST);
+            Main.addShop(npc2.getNpcID(), TypeShop.ENCHANTER);
 
         }
     }

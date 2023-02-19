@@ -1,22 +1,15 @@
 package fr.mathis_bruel.spacecube.bedwars.events;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
-import fr.mathis_bruel.spacecube.bedwars.game.Manager;
-import fr.mathis_bruel.spacecube.bedwars.gui.ShopItems;
-import fr.mathis_bruel.spacecube.bedwars.teams.Team;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.List;
-
 public class Click implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent event) {
+        System.out.println("Click");
         if (event.getItem() != null ) {
             if(event.getItem().getItemMeta().getDisplayName() != null) {
                 String name = event.getItem().getItemMeta().getDisplayName();
@@ -33,25 +26,27 @@ public class Click implements Listener {
                 }
             }
         }
-        System.out.println(1);
-        List<Entity> list = event.getPlayer().getNearbyEntities(10, 10, 10);
-        System.out.println(event.getPlayer().getNearbyEntities(10, 10, 10));
-        Entity entity = list.get(0);
-        System.out.println(1);
-        Player player = event.getPlayer();
-        Team team = Manager.getManager(player).getTeam(player);
-        if (team == null) return;
-        System.out.println(1);
-        if (entity instanceof Player) {
-            System.out.println(1);
-            EntityPlayer entityPlayer = (EntityPlayer) entity;
-            if (entityPlayer.getCustomName().equals("§a§l" + "Items")) {
-                player.openInventory(ShopItems.getInventory(team));
+        /*if(Manager.isCurrentlyInGame(event.getPlayer())) {
+            Team team = Manager.getManager(event.getPlayer()).getTeam(event.getPlayer());
+            for (NPC npc : Main.getNpcs()) {
+                if (npc.getDistanceSquared(event.getPlayer()) < 2) {
+                    if (npc.getName().equals("§a§l" + "Items")) {
+                        event.getPlayer().openInventory(ShopItems.getInventory(team));
+                        return;
+                    }
+                    if(npc.getName().equals( "§a§l" + "Upgrades")){
+                        event.getPlayer().sendMessage(Main.getPrefix() + "§fIs currently in development");
+                        return;
+                    }
+
+                }
             }
-            if (entityPlayer.getCustomName().equals("§a§l" + "Upgrades")) {
-                player.openInventory(ShopItems.getInventory(team));
-            }
-        }
+        }*/
+
+
+
+
+
     }
 
 }

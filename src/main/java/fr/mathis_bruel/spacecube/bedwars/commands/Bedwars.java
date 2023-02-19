@@ -18,7 +18,6 @@ public class Bedwars implements CommandExecutor {
         String prefix = Main.getPrefix();
 
         if (args.length == 0) {
-            Player player = (Player) sender;
             sender.sendMessage("--------------------------------");
             sender.sendMessage(prefix + "§cBedwars commands:");
             sender.sendMessage(prefix + "§c/bedwars join [arena] §7- §fJoin an arena");
