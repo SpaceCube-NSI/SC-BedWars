@@ -7,10 +7,11 @@ import java.util.List;
 
 public enum GeneratorType {
     //  generatorType(Matrerial.type, Levels[0,1,2,3,..])
-    IRON(Material.IRON_INGOT, Arrays.asList(5.0, 2.5, 2.0)),
-    GOLD(Material.GOLD_INGOT, Arrays.asList(5.0, 2.5, 2.0)),
-    DIAMOND(Material.DIAMOND, Arrays.asList(10.0, 5.0, 2.5)),
-    EMERALD(Material.EMERALD, Arrays.asList(20.0));
+    IRON(Material.IRON_INGOT, Arrays.asList(0.0,10.0, 5.0, 2.0)),
+    GOLD(Material.GOLD_INGOT, Arrays.asList(0.0,10.0, 5.0, 2.0)),
+    DIAMOND(Material.DIAMOND, Arrays.asList(0.0,10.0, 5.0, 2.0)),
+    EMERALD_MAP(Material.EMERALD, Arrays.asList(20.0)),
+    DIAMOND_MAP(Material.DIAMOND, Arrays.asList(20.0));
 
     public Material material;
     public List<Double> levels;
@@ -29,7 +30,7 @@ public enum GeneratorType {
     }
 
     public double getLevel(int level) {
-        return levels.get(level - 1);
+        return levels.get(level);
     }
 
     public int getLevelSize() {

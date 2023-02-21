@@ -65,14 +65,14 @@ public class ShopItemsBlock {
         planksMeta.setLore(Arrays.asList("§7Price: §a6 irons", "§7Amount: §a32"));
         planks.setItemMeta(planksMeta);
 
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             inv.setItem(i, glass);
         }
-        for(int i = 9; i < 54; i += 9) {
+        for (int i = 9; i < 54; i += 9) {
             inv.setItem(i, glass);
             inv.setItem(i + 8, glass);
         }
-        for(int i = 45; i < 54; i++) {
+        for (int i = 45; i < 54; i++) {
             inv.setItem(i, glass);
         }
         inv.setItem(45, close);
@@ -88,35 +88,124 @@ public class ShopItemsBlock {
         return inv;
 
 
-
     }
 
 
     public static void execute(InventoryClickEvent event) {
-            if(!Manager.isCurrentlyInGame((Player) event.getWhoClicked())) return;
-            Team team = Manager.getManager((Player) event.getWhoClicked()).getTeam((Player) event.getWhoClicked());
+        if (!Manager.isCurrentlyInGame((Player) event.getWhoClicked())) return;
+        Team team = Manager.getManager((Player) event.getWhoClicked()).getTeam((Player) event.getWhoClicked());
 
-            event.setCancelled(true);
-            if(event.getCurrentItem() == null) return;
-            if(event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
-            if(event.getCurrentItem().getItemMeta().getDisplayName().equals(" ")) return;
-            if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§cClose")) {
-                event.getWhoClicked().closeInventory();
-                return;
-            }
-            if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§5Back")) {
-                event.getWhoClicked().openInventory(ShopItems.getInventory(team));
-                return;
-            }
-            if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Wool")) {
-                if(event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 5)) {
-                    event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
-                    event.getWhoClicked().getInventory().addItem(new ItemStack(Material.WOOL, 32, Utils.getDataColor(team.getColor())));
-                    ((Player) event.getWhoClicked()).updateInventory();
-                }else {
-                    event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
+        event.setCancelled(true);
+        if (event.getCurrentItem() == null) return;
+        if (event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(" ")) return;
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§cClose")) {
+            event.getWhoClicked().closeInventory();
+            return;
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§5Back")) {
+            event.getWhoClicked().openInventory(ShopItems.getInventory(team));
+            return;
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Wool")) {
+            if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 5)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.WOOL, 32, Utils.getDataColor(team.getColor())))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
                 }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.WOOL, 32, Utils.getDataColor(team.getColor())));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
             }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Clay")) {
+            if (event.getWhoClicked().getInventory().contains(Material.DIAMOND, 1)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.STAINED_CLAY, 32, Utils.getDataColor(team.getColor())))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 1));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.STAINED_CLAY, 32, Utils.getDataColor(team.getColor())));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Polished Stone")) {
+            if (event.getWhoClicked().getInventory().contains(Material.GOLD_INGOT, 5)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.STONE, 32, (short) 6))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 5));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.STONE, 32, (short) 6));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Glass")) {
+            if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 5)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.STAINED_GLASS, 32, Utils.getDataColor(team.getColor())))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.STAINED_GLASS, 32, Utils.getDataColor(team.getColor())));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6End Stone")) {
+            if (event.getWhoClicked().getInventory().contains(Material.GOLD_INGOT, 8)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.ENDER_STONE, 32))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 8));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.ENDER_STONE, 32));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Obsidian")) {
+            if (event.getWhoClicked().getInventory().contains(Material.EMERALD, 1)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.OBSIDIAN, 1))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 1));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.OBSIDIAN, 1));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Planks")) {
+            if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 5)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.WOOD, 32, Utils.getDataColor(team.getColor())))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.WOOD, 32, Utils.getDataColor(team.getColor())));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
+            }
+        }
+
 
     }
 }

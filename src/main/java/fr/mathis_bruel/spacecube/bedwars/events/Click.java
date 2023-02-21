@@ -9,7 +9,6 @@ public class Click implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent event) {
-        System.out.println("Click");
         if (event.getItem() != null ) {
             if(event.getItem().getItemMeta().getDisplayName() != null) {
                 String name = event.getItem().getItemMeta().getDisplayName();

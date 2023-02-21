@@ -10,6 +10,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
+
 public class ShopItemsArmor {
 
     public static Inventory getInventory() {
@@ -30,53 +32,65 @@ public class ShopItemsArmor {
         ItemStack chainmailHelmet = new ItemStack(Material.CHAINMAIL_HELMET);
         ItemMeta chainmailHelmetMeta = chainmailHelmet.getItemMeta();
         chainmailHelmetMeta.setDisplayName("§6Chainmail Helmet");
+        chainmailHelmetMeta.setLore(Arrays.asList("§7Price: §a10 irons", "§7Amount: §a1"));
         chainmailHelmet.setItemMeta(chainmailHelmetMeta);
         ItemStack chainmailChestplate = new ItemStack(Material.CHAINMAIL_CHESTPLATE);
         ItemMeta chainmailChestplateMeta = chainmailChestplate.getItemMeta();
         chainmailChestplateMeta.setDisplayName("§6Chainmail Chestplate");
+        chainmailChestplateMeta.setLore(Arrays.asList("§7Price: §a10 gold", "§7Amount: §a1"));
         chainmailChestplate.setItemMeta(chainmailChestplateMeta);
         ItemStack chainmailLeggings = new ItemStack(Material.CHAINMAIL_LEGGINGS);
         ItemMeta chainmailLeggingsMeta = chainmailLeggings.getItemMeta();
         chainmailLeggingsMeta.setDisplayName("§6Chainmail Leggings");
+        chainmailLeggingsMeta.setLore(Arrays.asList("§7Price: §a10 gold", "§7Amount: §a1"));
         chainmailLeggings.setItemMeta(chainmailLeggingsMeta);
         ItemStack chainmailBoots = new ItemStack(Material.CHAINMAIL_BOOTS);
         ItemMeta chainmailBootsMeta = chainmailBoots.getItemMeta();
         chainmailBootsMeta.setDisplayName("§6Chainmail Boots");
+        chainmailBootsMeta.setLore(Arrays.asList("§7Price: §a10 irons", "§7Amount: §a1"));
         chainmailBoots.setItemMeta(chainmailBootsMeta);
         // iron
         ItemStack ironHelmet = new ItemStack(Material.IRON_HELMET);
         ItemMeta ironHelmetMeta = ironHelmet.getItemMeta();
         ironHelmetMeta.setDisplayName("§6Iron Helmet");
+        ironHelmetMeta.setLore(Arrays.asList("§7Price: §a50 gold", "§7Amount: §a1"));
         ironHelmet.setItemMeta(ironHelmetMeta);
         ItemStack ironChestplate = new ItemStack(Material.IRON_CHESTPLATE);
         ItemMeta ironChestplateMeta = ironChestplate.getItemMeta();
         ironChestplateMeta.setDisplayName("§6Iron Chestplate");
+        ironChestplateMeta.setLore(Arrays.asList("§7Price: §a2 emeralds", "§7Amount: §a1"));
         ironChestplate.setItemMeta(ironChestplateMeta);
         ItemStack ironLeggings = new ItemStack(Material.IRON_LEGGINGS);
         ItemMeta ironLeggingsMeta = ironLeggings.getItemMeta();
         ironLeggingsMeta.setDisplayName("§6Iron Leggings");
+        ironLeggingsMeta.setLore(Arrays.asList("§7Price: §a20 diamonds", "§7Amount: §a1"));
         ironLeggings.setItemMeta(ironLeggingsMeta);
         ItemStack ironBoots = new ItemStack(Material.IRON_BOOTS);
         ItemMeta ironBootsMeta = ironBoots.getItemMeta();
         ironBootsMeta.setDisplayName("§6Iron Boots");
+        ironBootsMeta.setLore(Arrays.asList("§7Price: §a50 irons", "§7Amount: §a1"));
         ironBoots.setItemMeta(ironBootsMeta);
 
         // diamond
         ItemStack diamondHelmet = new ItemStack(Material.DIAMOND_HELMET);
         ItemMeta diamondHelmetMeta = diamondHelmet.getItemMeta();
         diamondHelmetMeta.setDisplayName("§6Diamond Helmet");
+        diamondHelmetMeta.setLore(Arrays.asList("§7Price: §a200 gold", "§7Amount: §a1"));
         diamondHelmet.setItemMeta(diamondHelmetMeta);
         ItemStack diamondChestplate = new ItemStack(Material.DIAMOND_CHESTPLATE);
         ItemMeta diamondChestplateMeta = diamondChestplate.getItemMeta();
         diamondChestplateMeta.setDisplayName("§6Diamond Chestplate");
+        diamondChestplateMeta.setLore(Arrays.asList("§7Price: §a5 emeralds", "§7Amount: §a1"));
         diamondChestplate.setItemMeta(diamondChestplateMeta);
         ItemStack diamondLeggings = new ItemStack(Material.DIAMOND_LEGGINGS);
         ItemMeta diamondLeggingsMeta = diamondLeggings.getItemMeta();
         diamondLeggingsMeta.setDisplayName("§6Diamond Leggings");
+        diamondLeggingsMeta.setLore(Arrays.asList("§7Price: §a50 diamonds", "§7Amount: §a1"));
         diamondLeggings.setItemMeta(diamondLeggingsMeta);
         ItemStack diamondBoots = new ItemStack(Material.DIAMOND_BOOTS);
         ItemMeta diamondBootsMeta = diamondBoots.getItemMeta();
         diamondBootsMeta.setDisplayName("§6Diamond Boots");
+        diamondBootsMeta.setLore(Arrays.asList("§7Price: §a200 irons", "§7Amount: §a1"));
         diamondBoots.setItemMeta(diamondBootsMeta);
         for(int i = 0; i < 9; i++) {
             inv.setItem(i, glass);
@@ -108,21 +122,21 @@ public class ShopItemsArmor {
 
 
     public static void execute(InventoryClickEvent event) {
-            if(!Manager.isCurrentlyInGame((Player) event.getWhoClicked())) return;
-            Team team = Manager.getManager((Player) event.getWhoClicked()).getTeam((Player) event.getWhoClicked());
+        if(!Manager.isCurrentlyInGame((Player) event.getWhoClicked())) return;
+        Team team = Manager.getManager((Player) event.getWhoClicked()).getTeam((Player) event.getWhoClicked());
 
-            event.setCancelled(true);
-            if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Blocks")){
-                event.getWhoClicked().openInventory(ShopItemsBlock.getInventory(team));
-            } else if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Armor")){
-                event.getWhoClicked().openInventory(ShopItemsArmor.getInventory());
-            } else if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Tools")){
-                event.getWhoClicked().openInventory(ShopItemsTools.getInventory());
-            } else if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cClose")){
-                event.getWhoClicked().closeInventory();
-            } else if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§5Back")){
-                event.getWhoClicked().openInventory(getInventory());
-            }
+        event.setCancelled(true);
+        if(event.getCurrentItem() == null) return;
+        if(event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
+        if(event.getCurrentItem().getItemMeta().getDisplayName().equals(" ")) return;
+        if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§cClose")) {
+            event.getWhoClicked().closeInventory();
+            return;
+        }
+        if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§5Back")) {
+            event.getWhoClicked().openInventory(ShopItems.getInventory(team));
+            return;
+        }
 
     }
 

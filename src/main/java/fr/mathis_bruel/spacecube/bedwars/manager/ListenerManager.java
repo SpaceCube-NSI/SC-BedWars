@@ -20,6 +20,7 @@ public class ListenerManager {
 
         // Register all listeners here
         this.listeners.add(new BlockPlace());
+        this.listeners.add(new BlockBreak());
         this.listeners.add(new InventoryClick());
         this.listeners.add(new Click());
         this.listeners.add(new Join());

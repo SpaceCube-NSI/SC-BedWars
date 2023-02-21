@@ -17,10 +17,12 @@ public class InventoryClick implements Listener {
         if(event.getInventory().getName().equals(JoinChoice.getInventory().getName())) JoinChoice.execute(event);
         if(Manager.isCurrentlyInGame((Player) event.getWhoClicked())){
             Team team = Manager.getManager((Player) event.getWhoClicked()).getTeam((Player) event.getWhoClicked());
+            if(team == null) return;
             if(event.getInventory().getName().equals(ShopItems.getInventory(team).getName())) ShopItems.execute(event);
             if(event.getInventory().getName().equals(ShopItemsBlock.getInventory(team).getName())) ShopItemsBlock.execute(event);
             if(event.getInventory().getName().equals(ShopItemsArmor.getInventory().getName())) ShopItemsArmor.execute(event);
             if(event.getInventory().getName().equals(ShopItemsTools.getInventory().getName())) ShopItemsTools.execute(event);
+            if(event.getInventory().getName().equals(ShopUpgrades.getInventory(team).getName())) ShopUpgrades.execute(event);
         }
 
 

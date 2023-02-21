@@ -277,5 +277,21 @@ public class Utils {
         }
 
 
+
+
+    }
+    public static boolean canAddItemInInventory(Player player, ItemStack item) {
+        // if player has space in inventory in function of item and quantity
+        if (player.getInventory().firstEmpty() != -1) {
+            return true;
+        }
+        // if player has space in inventory in function of item
+        for (ItemStack itemStack : player.getInventory().getContents()) {
+            if (itemStack != null && itemStack.getType() == item.getType() && itemStack.getDurability() == item.getDurability() && itemStack.getAmount() < itemStack.getMaxStackSize()) {
+                return true;
+            }
+        }
+        return false;
+
     }
 }

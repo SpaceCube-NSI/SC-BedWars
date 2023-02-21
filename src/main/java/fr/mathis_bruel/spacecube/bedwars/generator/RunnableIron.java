@@ -16,7 +16,8 @@ public class RunnableIron extends BukkitRunnable {
     @Override
     public void run() {
 
-        if(timer >= generatorType.getLevel(generatorTeam.getLevelIron())){
+        if(timer >= generatorType.getLevel(generatorTeam.getLevelIron()) && generatorTeam.getLevelIron() != 0){
+            System.out.println(generatorTeam.getLevelIron());
             timer = 0;
             // spawn a iron ingot at the generator location
             Location loc = generatorTeam.getLocation();

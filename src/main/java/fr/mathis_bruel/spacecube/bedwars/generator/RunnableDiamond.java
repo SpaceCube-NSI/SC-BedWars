@@ -16,7 +16,8 @@ public class RunnableDiamond extends BukkitRunnable {
     @Override
     public void run() {
 
-        if(timer >= generatorType.getLevel(generatorTeam.getLevelDiamond())){
+        if(timer >= generatorType.getLevel(generatorTeam.getLevelDiamond()) && generatorTeam.getLevelDiamond() != 0){
+            System.out.println(generatorTeam.getLevelDiamond());
             timer = 0;
             // spawn a iron ingot at the generator location
             Location loc = generatorTeam.getLocation();

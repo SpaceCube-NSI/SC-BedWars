@@ -290,6 +290,9 @@ public class Arena {
                 if(config.getString("teams." + key + ".generators") != null) {
                     for (String key2 : config.getConfigurationSection("teams." + key + ".generators").getKeys(false)) {
                         GeneratorTeam generator = new GeneratorTeam(Utils.parseStringToLoc(config.getString("teams." + key + ".generators." + key2 + ".location")));
+                        generator.setLevelDiamond(0);
+                        generator.setLevelGold(0);
+                        generator.setLevelIron(1);
                         team.addGenerator(generator);
                     }
                 }
@@ -299,7 +302,7 @@ public class Arena {
             }
             if(config.getConfigurationSection("emeraldsGenerators") != null) {
                 for (String key : config.getConfigurationSection("emeraldsGenerators").getKeys(false)) {
-                    Generator generator = new Generator(GeneratorType.EMERALD, 1, Utils.parseStringToLoc(config.getString("emeraldsGenerators." + key + ".location")));
+                    Generator generator = new Generator(GeneratorType.EMERALD_MAP, 1, Utils.parseStringToLoc(config.getString("emeraldsGenerators." + key + ".location")));
                     arena.addEmeraldsGenerator(generator);
                 }
             }else{
@@ -307,7 +310,7 @@ public class Arena {
             }
             if(config.getConfigurationSection("diamondsGenerators") != null) {
                 for (String key : config.getConfigurationSection("diamondsGenerators").getKeys(false)) {
-                    Generator generator = new Generator(GeneratorType.DIAMOND, 1, Utils.parseStringToLoc(config.getString("diamondsGenerators." + key + ".location")));
+                    Generator generator = new Generator(GeneratorType.DIAMOND_MAP, 1, Utils.parseStringToLoc(config.getString("diamondsGenerators." + key + ".location")));
                     arena.addDiamondsGenerator(generator);
                 }
             }else{
