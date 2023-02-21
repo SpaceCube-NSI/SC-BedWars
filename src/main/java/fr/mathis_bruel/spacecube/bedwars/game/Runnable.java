@@ -1,6 +1,10 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
+import fr.mathis_bruel.spacecube.bedwars.generator.GeneratorType;
+import fr.mathis_bruel.spacecube.bedwars.generator.RunnableDiamond;
+import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGold;
+import fr.mathis_bruel.spacecube.bedwars.generator.RunnableIron;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
@@ -57,9 +61,29 @@ public class Runnable extends BukkitRunnable {
                         player.teleport(team.getSpawn());
                         player.getInventory().clear();
                     }
+                    team.getGenerators().forEach(generator -> {
+                        RunnableDiamond runnableDiamond = new RunnableDiamond();
+                        runnableDiamond.generatorTeam = generator;
+                        runnableDiamond.generatorType = GeneratorType.DIAMOND;
+                        runnableDiamond.runTaskTimer(Main.getInstance(), 0, 5);
+
+                        RunnableGold runnableGold = new RunnableGold();
+                        runnableGold.generatorTeam = generator;
+                        runnableGold.generatorType = GeneratorType.GOLD;
+                        runnableGold.runTaskTimer(Main.getInstance(), 0, 5);
+
+                        RunnableIron runnableIron = new RunnableIron();
+                        runnableIron.generatorTeam = generator;
+                        runnableIron.generatorType = GeneratorType.IRON;
+                        runnableIron.runTaskTimer(Main.getInstance(), 0, 5);
+
+
+                    });
                 }
                 manager.getManagerState().setState(State.RUNNING);
+
                 manager.setShops();
+
             } else {
                 manager.setStartingTime(manager.getStartingTime() - 1);
 

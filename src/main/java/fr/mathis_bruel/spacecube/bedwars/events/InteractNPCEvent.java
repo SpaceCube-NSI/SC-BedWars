@@ -7,6 +7,7 @@ import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.gui.ShopEnchanter;
 import fr.mathis_bruel.spacecube.bedwars.gui.ShopItems;
 import fr.mathis_bruel.spacecube.bedwars.gui.ShopTheSpecialist;
+import fr.mathis_bruel.spacecube.bedwars.gui.ShopUpgrades;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,6 +26,7 @@ public class InteractNPCEvent implements Listener {
                 event.getPlayer().openInventory(ShopItems.getInventory(team));
                 break;
             case UPGRADES:
+                event.getPlayer().openInventory(ShopUpgrades.getInventory(team));
                 break;
             case THE_SPECIALIST:
                 event.getPlayer().openInventory(ShopTheSpecialist.getInventory());

@@ -1,7 +1,11 @@
 package fr.mathis_bruel.spacecube.bedwars.gui;
 
+import fr.mathis_bruel.spacecube.bedwars.game.Manager;
+import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -102,5 +106,24 @@ public class ShopItemsArmor {
         return inv;
     }
 
+
+    public static void execute(InventoryClickEvent event) {
+            if(!Manager.isCurrentlyInGame((Player) event.getWhoClicked())) return;
+            Team team = Manager.getManager((Player) event.getWhoClicked()).getTeam((Player) event.getWhoClicked());
+
+            event.setCancelled(true);
+            if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Blocks")){
+                event.getWhoClicked().openInventory(ShopItemsBlock.getInventory(team));
+            } else if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Armor")){
+                event.getWhoClicked().openInventory(ShopItemsArmor.getInventory());
+            } else if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Tools")){
+                event.getWhoClicked().openInventory(ShopItemsTools.getInventory());
+            } else if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cClose")){
+                event.getWhoClicked().closeInventory();
+            } else if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§5Back")){
+                event.getWhoClicked().openInventory(getInventory());
+            }
+
+    }
 
 }

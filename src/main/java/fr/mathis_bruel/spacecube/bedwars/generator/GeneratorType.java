@@ -29,7 +29,7 @@ public enum GeneratorType {
     }
 
     public double getLevel(int level) {
-        return levels.get(level);
+        return levels.get(level - 1);
     }
 
     public int getLevelSize() {
@@ -53,6 +53,7 @@ public enum GeneratorType {
         }
         return null;
     }
+
 
     public static boolean isGenerator(Material material) {
         for (GeneratorType generator : values()) {

@@ -38,7 +38,7 @@ public class Manager {
         this.startingTime = 5;
         Runnable start = new Runnable();
         start.manager = this;
-        start.runTaskTimer(Main.getInstance(), 0, 20);
+        start.runTaskTimerAsynchronously(Main.getInstance(), 0, 20);
     }
 
     public ManagerState getManagerState() {
@@ -137,10 +137,11 @@ public class Manager {
 
             Location location2 = team.getPnjUpgrades();
 
-            TruenoNPC npc2 = TruenoNPCApi.createNPC(Main.getInstance(), location2, skin);
+            TruenoNPCSkin skin2 = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), 131234);
+            TruenoNPC npc2 = TruenoNPCApi.createNPC(Main.getInstance(), location2, skin2);
 
-            Main.addShop(npc.getNpcID(), TypeShop.THE_SPECIALIST);
-            Main.addShop(npc2.getNpcID(), TypeShop.ENCHANTER);
+            Main.addShop(npc.getNpcID(), TypeShop.ITEMS);
+            Main.addShop(npc2.getNpcID(), TypeShop.UPGRADES);
 
         }
     }
