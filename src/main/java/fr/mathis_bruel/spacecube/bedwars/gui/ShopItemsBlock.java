@@ -59,7 +59,7 @@ public class ShopItemsBlock {
         obsidianMeta.setDisplayName("§6Obsidian");
         obsidianMeta.setLore(Arrays.asList("§7Price: §a1 emerald", "§7Amount: §a1"));
         obsidian.setItemMeta(obsidianMeta);
-        ItemStack planks = new ItemStack(Material.WOOD, 32, (short) 1);
+        ItemStack planks = new ItemStack(Material.WOOD, 32);
         ItemMeta planksMeta = planks.getItemMeta();
         planksMeta.setDisplayName("§6Planks");
         planksMeta.setLore(Arrays.asList("§7Price: §a6 irons", "§7Amount: §a32"));
@@ -194,13 +194,13 @@ public class ShopItemsBlock {
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Planks")) {
             if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 5)) {
-                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.WOOD, 32, Utils.getDataColor(team.getColor())))) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.WOOD, 32))) {
                     event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
                     event.getWhoClicked().closeInventory();
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.WOOD, 32, Utils.getDataColor(team.getColor())));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.WOOD, 32));
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");

@@ -15,18 +15,14 @@ import es.eltrueno.npc.utils.StringUtils;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.util.CraftChatMessage;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -209,7 +205,7 @@ public class TruenoNPC_v1_8_r3 implements TruenoNPC {
             skin.addProperty("signature", skindata.getSignature());
             skin.addProperty("updated", actualdate.getTime());
             newskindata.add(skin);
-
+/*
             JsonObject obj = new JsonObject();
             obj.add("skindata", newskindata);
             try {
@@ -222,7 +218,7 @@ public class TruenoNPC_v1_8_r3 implements TruenoNPC {
 
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 

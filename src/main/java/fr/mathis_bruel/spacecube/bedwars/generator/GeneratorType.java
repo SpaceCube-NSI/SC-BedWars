@@ -7,9 +7,9 @@ import java.util.List;
 
 public enum GeneratorType {
     //  generatorType(Matrerial.type, Levels[0,1,2,3,..])
-    IRON(Material.IRON_INGOT, Arrays.asList(0.0,10.0, 5.0, 2.0)),
-    GOLD(Material.GOLD_INGOT, Arrays.asList(0.0,10.0, 5.0, 2.0)),
-    DIAMOND(Material.DIAMOND, Arrays.asList(0.0,10.0, 5.0, 2.0)),
+    IRON(Material.IRON_INGOT, Arrays.asList(0.0,5.0, 2.0, 1.0)),
+    GOLD(Material.GOLD_INGOT, Arrays.asList(0.0,5.0, 2.0, 1.0)),
+    DIAMOND(Material.DIAMOND, Arrays.asList(0.0,5.0, 2.0, 1.0)),
     EMERALD_MAP(Material.EMERALD, Arrays.asList(20.0)),
     DIAMOND_MAP(Material.DIAMOND, Arrays.asList(20.0));
 

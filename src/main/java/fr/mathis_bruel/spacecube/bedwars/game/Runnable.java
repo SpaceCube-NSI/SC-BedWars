@@ -59,24 +59,9 @@ public class Runnable extends BukkitRunnable {
                         player.getInventory().clear();
                     }
                     team.getGenerators().forEach(generator -> {
-                        /*RunnableDiamond runnableDiamond = new RunnableDiamond();
-                        runnableDiamond.generatorTeam = generator;
-                        runnableDiamond.generatorType = GeneratorType.DIAMOND;
-                        runnableDiamond.runTaskTimer(Main.getInstance(), 0, 10);
-
-                        RunnableGold runnableGold = new RunnableGold();
-                        runnableGold.generatorTeam = generator;
-                        runnableGold.generatorType = GeneratorType.GOLD;
-                        runnableGold.runTaskTimer(Main.getInstance(), 0, 10);
-
-                        RunnableIron runnableIron = new RunnableIron();
-                        runnableIron.generatorTeam = generator;
-                        runnableIron.generatorType = GeneratorType.IRON;
-                        runnableIron.runTaskTimer(Main.getInstance(), 0, 10);*/
-
                         RunnableGenerators runnableGenerators = new RunnableGenerators();
                         runnableGenerators.generatorTeam = generator;
-                        runnableGenerators.runTaskTimer(Main.getInstance(), 0, 10);
+                        runnableGenerators.runTaskTimer(Main.getInstance(), 0, 20);
                         generator.setRunnableGenerators(runnableGenerators);
 
 
