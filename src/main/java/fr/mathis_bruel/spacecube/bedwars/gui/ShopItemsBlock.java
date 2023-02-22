@@ -97,6 +97,7 @@ public class ShopItemsBlock {
 
         event.setCancelled(true);
         if (event.getCurrentItem() == null) return;
+        if(event.getCurrentItem().getType() == Material.AIR) return;
         if (event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(" ")) return;
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§cClose")) {

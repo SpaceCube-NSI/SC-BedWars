@@ -1,5 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.teams;
 
+import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGenerators;
 import org.bukkit.Location;
 
 public class GeneratorTeam {
@@ -7,18 +8,21 @@ public class GeneratorTeam {
     private int levelIron;
     private int levelGold;
     private int levelDiamond;
+    private RunnableGenerators runnableGenerators;
 
-    public GeneratorTeam(Location location, int levelIron, int levelGold, int levelDiamond) {
+    public GeneratorTeam(Location location, int levelIron, int levelGold, int levelDiamond, RunnableGenerators runnableGenerators) {
         this.location = location;
         this.levelIron = levelIron;
         this.levelGold = levelGold;
         this.levelDiamond = levelDiamond;
+        this.runnableGenerators = runnableGenerators;
     }
     public GeneratorTeam(Location location){
         this.location = location;
         this.levelIron = 1;
         this.levelGold = 0;
         this.levelDiamond = 0;
+        this.runnableGenerators = null;
     }
 
     public Location getLocation() {
@@ -34,7 +38,13 @@ public class GeneratorTeam {
     }
 
     public void setLevelIron(int levelIron) {
+
         this.levelIron = levelIron;
+        if(runnableGenerators != null) {
+            this.runnableGenerators.timerDiamond = 0;
+            this.runnableGenerators.timerGold = 0;
+            this.runnableGenerators.timerIron = 0;
+        }
     }
 
     public int getLevelGold() {
@@ -43,6 +53,11 @@ public class GeneratorTeam {
 
     public void setLevelGold(int levelGold) {
         this.levelGold = levelGold;
+        if(runnableGenerators != null) {
+            this.runnableGenerators.timerDiamond = 0;
+            this.runnableGenerators.timerGold = 0;
+            this.runnableGenerators.timerIron = 0;
+        }
     }
 
     public int getLevelDiamond() {
@@ -51,6 +66,11 @@ public class GeneratorTeam {
 
     public void setLevelDiamond(int levelDiamond) {
         this.levelDiamond = levelDiamond;
+        if(runnableGenerators != null) {
+            this.runnableGenerators.timerDiamond = 0;
+            this.runnableGenerators.timerGold = 0;
+            this.runnableGenerators.timerIron = 0;
+        }
     }
 
     public void upgradeIron() {
@@ -75,6 +95,14 @@ public class GeneratorTeam {
 
     public void downgradeDiamond() {
         this.levelDiamond--;
+    }
+
+    public RunnableGenerators getRunnableGenerators() {
+        return runnableGenerators;
+    }
+
+    public void setRunnableGenerators(RunnableGenerators runnableGenerators) {
+        this.runnableGenerators = runnableGenerators;
     }
 
 

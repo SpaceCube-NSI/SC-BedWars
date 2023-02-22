@@ -168,6 +168,7 @@ public class ShopUpgrades {
 
         event.setCancelled(true);
         if (event.getCurrentItem() == null) return;
+        if(event.getCurrentItem().getType() == Material.AIR) return;
         if (event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals(" ")) return;
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§cClose")) {
@@ -181,6 +182,10 @@ public class ShopUpgrades {
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Iron lvl 1")) {
             if (team.getGenerator(0).getLevelIron() >= 1) {
                 event.getWhoClicked().sendMessage("§cYou already have this level!");
+                return;
+            }
+            if (team.getGenerator(0).getLevelIron() != 0) {
+                event.getWhoClicked().sendMessage("§cYou don't have the previous level!");
                 return;
             }
 
@@ -203,6 +208,10 @@ public class ShopUpgrades {
                 event.getWhoClicked().sendMessage("§cYou already have this level!");
                 return;
             }
+            if (team.getGenerator(0).getLevelIron() != 1) {
+                event.getWhoClicked().sendMessage("§cYou don't have the previous level!");
+                return;
+            }
 
             if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 5)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
@@ -221,6 +230,10 @@ public class ShopUpgrades {
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Iron lvl 3")) {
             if (team.getGenerator(0).getLevelIron() >= 3) {
                 event.getWhoClicked().sendMessage("§cYou already have this level!");
+                return;
+            }
+            if (team.getGenerator(0).getLevelIron() != 2) {
+                event.getWhoClicked().sendMessage("§cYou don't have the previous level!");
                 return;
             }
 
@@ -243,6 +256,10 @@ public class ShopUpgrades {
                 event.getWhoClicked().sendMessage("§cYou already have this level!");
                 return;
             }
+            if (team.getGenerator(0).getLevelGold() != 0) {
+                event.getWhoClicked().sendMessage("§cYou don't have the previous level!");
+                return;
+            }
 
             if (event.getWhoClicked().getInventory().contains(Material.DIAMOND, 1)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 1));
@@ -260,6 +277,10 @@ public class ShopUpgrades {
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Gold lvl 2")) {
             if (team.getGenerator(0).getLevelGold() >= 2) {
                 event.getWhoClicked().sendMessage("§cYou already have this level!");
+                return;
+            }
+            if (team.getGenerator(0).getLevelGold() != 1) {
+                event.getWhoClicked().sendMessage("§cYou don't have the previous level!");
                 return;
             }
 
@@ -281,6 +302,10 @@ public class ShopUpgrades {
                 event.getWhoClicked().sendMessage("§cYou already have this level!");
                 return;
             }
+            if (team.getGenerator(0).getLevelGold() != 2) {
+                event.getWhoClicked().sendMessage("§cYou don't have the previous level!");
+                return;
+            }
 
             if (event.getWhoClicked().getInventory().contains(Material.GOLD_INGOT, 15)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 15));
@@ -298,6 +323,10 @@ public class ShopUpgrades {
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Diamond lvl 1")) {
             if (team.getGenerator(0).getLevelDiamond() >= 1) {
                 event.getWhoClicked().sendMessage("§cYou already have this level!");
+                return;
+            }
+            if (team.getGenerator(0).getLevelDiamond() != 0) {
+                event.getWhoClicked().sendMessage("§cYou don't have the previous level!");
                 return;
             }
 
@@ -319,6 +348,10 @@ public class ShopUpgrades {
                 event.getWhoClicked().sendMessage("§cYou already have this level!");
                 return;
             }
+            if (team.getGenerator(0).getLevelDiamond() != 1) {
+                event.getWhoClicked().sendMessage("§cYou don't have the previous level!");
+                return;
+            }
 
             if (event.getWhoClicked().getInventory().contains(Material.DIAMOND, 10)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 10));
@@ -338,7 +371,10 @@ public class ShopUpgrades {
                 event.getWhoClicked().sendMessage("§cYou already have this level!");
                 return;
             }
-
+            if (team.getGenerator(0).getLevelDiamond() != 2) {
+                event.getWhoClicked().sendMessage("§cYou don't have the previous level!");
+                return;
+            }
             if (event.getWhoClicked().getInventory().contains(Material.DIAMOND, 15)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 15));
                 event.getWhoClicked().sendMessage("§aYou have upgraded your diamond generator to level 3!");
