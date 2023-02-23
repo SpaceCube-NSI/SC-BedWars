@@ -5,11 +5,13 @@ import fr.mathis_bruel.spacecube.bedwars.commands.BedwarsAdmin;
 import fr.mathis_bruel.spacecube.bedwars.commands.Test;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
+import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
 import fr.mathis_bruel.spacecube.bedwars.manager.ListenerManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,6 +26,8 @@ public final class Main extends JavaPlugin implements Listener {
     public ArrayList<Manager> managers = new ArrayList<>();
     private static final Map<UUID, FastBoard> boards = new HashMap<>();
     private static final HashMap<Integer, TypeShop> shops = new HashMap<>();
+    public static ArrayList<Hologram> holograms = new ArrayList<>();
+    public static ArrayList<Player> playersFreeze = new ArrayList<>();
     @Override
     public void onEnable() {
 
@@ -69,6 +73,8 @@ public final class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        // Plugin shutdown logic
+        holograms.forEach(hologram -> hologram.destroyHolograms());
     }
 
     public static String getPrefix() {
@@ -121,6 +127,34 @@ public final class Main extends JavaPlugin implements Listener {
 
     public static void clearShops() {
         shops.clear();
+    }
+
+    public static void addHologram(Hologram hologram) {
+        holograms.add(hologram);
+    }
+
+    public static void removeHologram(Hologram hologram) {
+        holograms.remove(hologram);
+    }
+
+    public static void clearHolograms() {
+        holograms.clear();
+    }
+
+    public static void addPlayerFreeze(Player player) {
+        playersFreeze.add(player);
+    }
+
+    public static void removePlayerFreeze(Player player) {
+        playersFreeze.remove(player);
+    }
+
+    public static void clearPlayersFreeze() {
+        playersFreeze.clear();
+    }
+
+    public static boolean isPlayerFreeze(Player player) {
+        return playersFreeze.contains(player);
     }
 
 

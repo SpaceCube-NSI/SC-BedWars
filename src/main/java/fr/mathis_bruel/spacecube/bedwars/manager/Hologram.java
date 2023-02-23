@@ -1,9 +1,14 @@
 package fr.mathis_bruel.spacecube.bedwars.manager;
 
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -13,7 +18,7 @@ public class Hologram {
 
     private Location location;
     private List<String> lines;
-    private List<EntityArmorStand> hologramEntities;
+    private List<ArmorStand> hologramEntities;
     private List<Player> viewers;
     private boolean isShown;
 
@@ -64,6 +69,12 @@ public class Hologram {
         }
     }
 
+    public void destroyHolograms(){
+        for (ArmorStand entity : hologramEntities) {
+            entity.remove();
+        }
+    }
+
     public void showHologram() {
         if (!isShown) {
             isShown = true;
@@ -80,26 +91,24 @@ public class Hologram {
 
     public void updateHologram() {
         for (int i = 0; i < lines.size(); i++) {
-            EntityArmorStand entity = hologramEntities.get(i);
+            ArmorStand entity = hologramEntities.get(i);
             String line = lines.get(i);
             entity.setCustomName(line);
-            sendPacket(new PacketPlayOutEntityMetadata(entity.getId(), entity.getDataWatcher(), true));
+            entity.setCustomNameVisible(true);
         }
     }
 
     private void sendHologram() {
-        WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
-        double currentY = location.getY();
+        double currentY = location.getY() + 0.25 * (lines.size() - 1);
         for (String line : lines) {
             Location lineLoc = new Location(location.getWorld(), location.getX(), currentY, location.getZ());
-            EntityArmorStand entity = new EntityArmorStand(world);
-            entity.setLocation(lineLoc.getX(), lineLoc.getY(), lineLoc.getZ(), 0, 0);
-            entity.setSmall(true);
+            ArmorStand entity = (ArmorStand) location.getWorld().spawnEntity(lineLoc, EntityType.ARMOR_STAND);
+            entity.setVisible(false);
             entity.setGravity(false);
+            entity.setCanPickupItems(false);
             entity.setCustomName(line);
             entity.setCustomNameVisible(true);
-            entity.setInvisible(true);
-            world.addEntity(entity);
+            entity.setMarker(true);
             hologramEntities.add(entity);
             currentY -= 0.25;
         }
@@ -107,42 +116,29 @@ public class Hologram {
             sendHologramTo(viewer);
         }
     }
+
     private void sendHologramTo(Player player) {
-        for (EntityArmorStand entity : hologramEntities) {
-            sendPacket(new PacketPlayOutSpawnEntityLiving(entity));
-            sendPacket(new PacketPlayOutEntityMetadata(entity.getId(), entity.getDataWatcher(), true));
-            sendPacket(new PacketPlayOutEntityTeleport(entity));
-            if (!viewers.contains(player)) {
-                sendPacket(new PacketPlayOutEntityDestroy(entity.getId()));
-            }
+        for (ArmorStand entity : hologramEntities) {
+            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving(((CraftArmorStand) entity).getHandle()));
         }
         viewers.add(player);
     }
-    private void sendPacket(Player player, Packet<?> packet) {
-        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-    }
+
     private void sendDestroyPacketTo(Player player) {
-        for (EntityArmorStand entity : hologramEntities) {
-            int entityId = entity.getId();
-            PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(entityId);
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-        }
-    }
-    private void sendDestroyPacket() {
-        int[] entityIds = new int[hologramEntities.size()];
-        for (int i = 0; i < hologramEntities.size(); i++) {
-            entityIds[i] = hologramEntities.get(i).getId();
-        }
-        PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(entityIds);
-        for (Player viewer : viewers) {
-            ((CraftPlayer) viewer).getHandle().playerConnection.sendPacket(packet);
-        }
-        hologramEntities.clear();
-    }
-    private void sendPacket(Packet<?> packet) {
-        for (Player viewer : viewers) {
-            sendPacket(viewer, packet);
+        for (ArmorStand entity : hologramEntities) {
+            Entity bukkitEntity = ((CraftEntity) entity).getHandle().getBukkitEntity();
+            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(bukkitEntity.getEntityId()));
         }
     }
 
+
+
+    private void sendDestroyPacket() {
+        for (Player viewer : viewers) {
+            for (ArmorStand entity : hologramEntities) {
+                entity.remove();
+            }
+            hologramEntities.clear();
+        }
+    }
 }

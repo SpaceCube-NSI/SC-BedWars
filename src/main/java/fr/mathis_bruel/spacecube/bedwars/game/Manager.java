@@ -39,7 +39,7 @@ public class Manager {
         this.startingTime = 5;
         Runnable start = new Runnable();
         start.manager = this;
-        start.runTaskTimerAsynchronously(Main.getInstance(), 0, 20);
+        start.runTaskTimer(Main.getInstance(), 0, 20);
     }
 
     public ManagerState getManagerState() {
@@ -134,28 +134,34 @@ public class Manager {
         for(Team team : arena.getTeams()){
             TruenoNPCSkin skin = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), 131234);
             Location location = team.getPnjItems();
+            Location loc2 = location.clone().add(0, 2, 0);
             TruenoNPC npc = TruenoNPCApi.createNPC(Main.getInstance(), location, skin);
-            location.add(0, 1.5, 0);
             ArrayList<String> lines = new ArrayList<>();
-            lines.add("§6§lSHOP");
-            lines.add("§7Cliquez pour ouvrir");
-            Hologram hologram = new Hologram(location, lines);
+            lines.add("§6§lSHOP ITEMS");
+            lines.add("§7Click to open");
+            Hologram hologram = new Hologram(loc2, lines);
             hologram.showHologram();
 
             Location location2 = team.getPnjUpgrades();
 
             TruenoNPCSkin skin2 = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), 131234);
             TruenoNPC npc2 = TruenoNPCApi.createNPC(Main.getInstance(), location2, skin2);
-            location2.add(0, 1.5, 0);
+            Location loc = location2.clone().add(0, 2, 0);
             ArrayList<String> lines2 = new ArrayList<>();
-            lines2.add("§6§lSHOP");
-            lines2.add("§7Cliquez pour ouvrir");
-            Hologram hologram2 = new Hologram(location2, lines2);
+            lines2.add("§6§lSHOP UPGRADES");
+            lines2.add("§7Click to open");
+            Hologram hologram2 = new Hologram(loc, lines2);
             hologram2.showHologram();
 
             Main.addShop(npc.getNpcID(), TypeShop.ITEMS);
             Main.addShop(npc2.getNpcID(), TypeShop.UPGRADES);
 
+        }
+    }
+
+    public void broadcast(String message){
+        for(Player player : players){
+            player.sendMessage(message);
         }
     }
 

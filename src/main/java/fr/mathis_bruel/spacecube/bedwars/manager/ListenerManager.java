@@ -27,6 +27,8 @@ public class ListenerManager {
         this.listeners.add(new Leave());
         this.listeners.add(new InteractEntity());
         this.listeners.add(new InteractNPCEvent());
+        this.listeners.add(new PlayerMove());
+        this.listeners.add(new EntityDamageByEntity());
 
 
 

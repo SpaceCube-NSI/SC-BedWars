@@ -63,8 +63,6 @@ public class Runnable extends BukkitRunnable {
                         runnableGenerators.generatorTeam = generator;
                         runnableGenerators.runTaskTimer(Main.getInstance(), 0, 20);
                         generator.setRunnableGenerators(runnableGenerators);
-
-
                     });
                 }
                 manager.getManagerState().setState(State.RUNNING);
