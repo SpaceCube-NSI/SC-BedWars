@@ -24,7 +24,6 @@ public final class Main extends JavaPlugin implements Listener {
     public ArrayList<Manager> managers = new ArrayList<>();
     private static final Map<UUID, FastBoard> boards = new HashMap<>();
     private static final HashMap<Integer, TypeShop> shops = new HashMap<>();
-
     @Override
     public void onEnable() {
 
@@ -123,5 +122,7 @@ public final class Main extends JavaPlugin implements Listener {
     public static void clearShops() {
         shops.clear();
     }
+
+
 
 }

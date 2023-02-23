@@ -5,6 +5,7 @@ import es.eltrueno.npc.TruenoNPCApi;
 import es.eltrueno.npc.skin.TruenoNPCSkin;
 import es.eltrueno.npc.skin.TruenoNPCSkinBuilder;
 import fr.mathis_bruel.spacecube.bedwars.Main;
+import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
 import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
@@ -134,11 +135,23 @@ public class Manager {
             TruenoNPCSkin skin = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), 131234);
             Location location = team.getPnjItems();
             TruenoNPC npc = TruenoNPCApi.createNPC(Main.getInstance(), location, skin);
+            location.add(0, 1.5, 0);
+            ArrayList<String> lines = new ArrayList<>();
+            lines.add("§6§lSHOP");
+            lines.add("§7Cliquez pour ouvrir");
+            Hologram hologram = new Hologram(location, lines);
+            hologram.showHologram();
 
             Location location2 = team.getPnjUpgrades();
 
             TruenoNPCSkin skin2 = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), 131234);
             TruenoNPC npc2 = TruenoNPCApi.createNPC(Main.getInstance(), location2, skin2);
+            location2.add(0, 1.5, 0);
+            ArrayList<String> lines2 = new ArrayList<>();
+            lines2.add("§6§lSHOP");
+            lines2.add("§7Cliquez pour ouvrir");
+            Hologram hologram2 = new Hologram(location2, lines2);
+            hologram2.showHologram();
 
             Main.addShop(npc.getNpcID(), TypeShop.ITEMS);
             Main.addShop(npc2.getNpcID(), TypeShop.UPGRADES);

@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -182,6 +183,13 @@ public class Arena {
         this.diamondsGenerators.clear();
     }
 
+    public ArrayList<Player> getPlayers() {
+        ArrayList<Player> players = new ArrayList<>();
+        for(Team team : teams){
+            players.addAll(team.getPlayers());
+        }
+        return players;
+    }
 
 
     public void clearAll() {
