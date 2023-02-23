@@ -12,7 +12,7 @@ public class TruenoNPCSkinBuilder {
         return new TruenoNPCSkin(plugin, SkinType.IDENTIFIER, uuid);
     }
 
-    public static TruenoNPCSkin fromMineskin(Plugin plugin, int mineskinid){
+    public static TruenoNPCSkin fromMineskin(Plugin plugin, String mineskinid){
         return new TruenoNPCSkin(plugin, SkinType.MINESKINID, String.valueOf(mineskinid));
     }
 

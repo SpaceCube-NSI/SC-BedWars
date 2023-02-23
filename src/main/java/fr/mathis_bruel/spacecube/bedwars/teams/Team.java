@@ -1,5 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.teams;
 
+import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,6 +21,8 @@ public class Team {
     private ArrayList<Player> players = new ArrayList<Player>();
     private Inventory enderchest;
     private Boolean isBedAlive = true;
+    private ArrayList<Hologram> shopHolograms = new ArrayList<>();
+    private ArrayList<Hologram> generatorHolograms = new ArrayList<>();
 
     public Team(String name, ChatColor ChatColor, Location spawn, ArrayList<GeneratorTeam> generators, Location pnjItems, Location pnjUpgrades, Block bed) {
         this.name = name;
@@ -185,6 +188,58 @@ public class Team {
 
     public boolean isBedIsBreak(){
         return bed.getType() != org.bukkit.Material.BED_BLOCK;
+    }
+
+    public ArrayList<Hologram> getShopHolograms() {
+        return shopHolograms;
+    }
+
+    public void addShopHologram(Hologram hologram) {
+        shopHolograms.add(hologram);
+    }
+
+    public void removeShopHologram(Hologram hologram) {
+        shopHolograms.remove(hologram);
+    }
+
+    public void clearShopHolograms() {
+        shopHolograms.clear();
+    }
+
+    public boolean isShopHologram(Hologram hologram) {
+        return shopHolograms.contains(hologram);
+    }
+
+    public void updateShopHolograms() {
+        for (Hologram hologram : shopHolograms) {
+            hologram.updateHologram();
+        }
+    }
+
+    public ArrayList<Hologram> getGeneratorHolograms() {
+        return generatorHolograms;
+    }
+
+    public void addGeneratorHologram(Hologram hologram) {
+        generatorHolograms.add(hologram);
+    }
+
+    public void removeGeneratorHologram(Hologram hologram) {
+        generatorHolograms.remove(hologram);
+    }
+
+    public void clearGeneratorHolograms() {
+        generatorHolograms.clear();
+    }
+
+    public boolean isGeneratorHologram(Hologram hologram) {
+        return generatorHolograms.contains(hologram);
+    }
+
+    public void updateGeneratorHolograms() {
+        for (Hologram hologram : generatorHolograms) {
+            hologram.updateHologram();
+        }
     }
 
 

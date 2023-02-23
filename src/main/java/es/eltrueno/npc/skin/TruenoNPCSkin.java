@@ -44,7 +44,7 @@ public class TruenoNPCSkin {
                 }
             });
         }else if(type==SkinType.MINESKINID){
-            SkinManager.getSkinFromMineskinAsync(plugin, Integer.valueOf(this.identifier), new SkinDataReply() {
+            SkinManager.getSkinFromMineskinAsync(plugin, this.identifier, new SkinDataReply() {
                 @Override
                 public void done(SkinData skinData) {
                     if(skinData!=null){

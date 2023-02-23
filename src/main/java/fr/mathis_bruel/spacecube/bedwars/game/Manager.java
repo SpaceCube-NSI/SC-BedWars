@@ -130,11 +130,11 @@ public class Manager {
         return npcs;
     }
 
-    public void setShops(){
+    public void initGame(){
         for(Team team : arena.getTeams()){
-            TruenoNPCSkin skin = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), 131234);
+            TruenoNPCSkin skin = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "f52dc72a8953457f972c0fecd8fd553d");
             Location location = team.getPnjItems();
-            Location loc2 = location.clone().add(0, 2, 0);
+            Location loc2 = location.clone().add(0, 1.8, 0);
             TruenoNPC npc = TruenoNPCApi.createNPC(Main.getInstance(), location, skin);
             ArrayList<String> lines = new ArrayList<>();
             lines.add("§6§lSHOP ITEMS");
@@ -144,9 +144,9 @@ public class Manager {
 
             Location location2 = team.getPnjUpgrades();
 
-            TruenoNPCSkin skin2 = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), 131234);
+            TruenoNPCSkin skin2 = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "f52dc72a8953457f972c0fecd8fd553d");
             TruenoNPC npc2 = TruenoNPCApi.createNPC(Main.getInstance(), location2, skin2);
-            Location loc = location2.clone().add(0, 2, 0);
+            Location loc = location2.clone().add(0, 1.8, 0);
             ArrayList<String> lines2 = new ArrayList<>();
             lines2.add("§6§lSHOP UPGRADES");
             lines2.add("§7Click to open");

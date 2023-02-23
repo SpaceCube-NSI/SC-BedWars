@@ -102,10 +102,10 @@ public class SkinManager {
         });
     }
 
-    public static void getSkinFromMineskinAsync(final Plugin plugin, final int mineskinid, final SkinDataReply skinreply){
+    public static void getSkinFromMineskinAsync(final Plugin plugin, final String mineskinid, final SkinDataReply skinreply){
         Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
             public void run() {
-                JsonObject jsonresponse = getJsonResponse("https://api.mineskin.org/get/id/"+mineskinid);
+                JsonObject jsonresponse = getJsonResponse("https://api.mineskin.org/get/uuid/"+mineskinid);
                 if(jsonresponse!=null && !jsonresponse.has("error")){
                     JsonObject textureProperty = jsonresponse.getAsJsonObject("data").getAsJsonObject("texture");
                     String value = textureProperty.get("value").getAsString();
