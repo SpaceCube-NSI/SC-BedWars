@@ -1,7 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
-import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -21,6 +20,7 @@ public class Death extends BukkitRunnable {
             this.cancel();
             Main.removePlayerFreeze(player);
             player.sendMessage("§aYou are respawned!");
+            player.sendTitle("§aRespawned!", "§6Good luck!");
         } else {
             // message repawn in x seconds
             player.sendMessage("§cYou will respawn in " + time + " seconds");

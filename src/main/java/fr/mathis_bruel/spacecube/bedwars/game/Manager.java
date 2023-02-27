@@ -156,6 +156,15 @@ public class Manager {
             Main.addShop(npc.getNpcID(), TypeShop.ITEMS);
             Main.addShop(npc2.getNpcID(), TypeShop.UPGRADES);
 
+            team.getGenerators().forEach(generator -> {
+                ArrayList<String> lines3 = new ArrayList<>();
+                lines3.add(team.getColor()+"§l"+team.getName()+" Summoner");
+                lines3.add("§f➀ Iron");
+                Hologram hologram3 = new Hologram(generator.getLocation().clone().add(0, 1, 0), lines3);
+                hologram3.showHologram();
+                team.addGeneratorHologram(hologram3);
+            });
+
         }
     }
 

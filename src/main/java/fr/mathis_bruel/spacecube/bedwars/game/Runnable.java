@@ -53,7 +53,6 @@ public class Runnable extends BukkitRunnable {
                 }
                 // teleport players to their team's spawn
                 for (Team team : arena.getTeams()) {
-                    System.out.println(team.getName());
                     if(team.getPlayers().size() != 0) for (Player player : team.getPlayers()) {
                         player.teleport(team.getSpawn());
                         player.getInventory().clear();

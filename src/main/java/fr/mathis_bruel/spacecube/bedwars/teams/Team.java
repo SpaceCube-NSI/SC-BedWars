@@ -238,7 +238,43 @@ public class Team {
 
     public void updateGeneratorHolograms() {
         for (Hologram hologram : generatorHolograms) {
-            hologram.updateHologram();
+            System.out.println("test");
+            String str = "";
+            switch(this.getGenerator(0).getLevelIron()){
+                case 1:
+                    str = "§f➀ Iron";
+                    break;
+                case 2:
+                    str = "§f➁ Iron";
+                    break;
+                case 3:
+                    str = "§f➂ Iron";
+                    break;
+            }
+            switch (this.getGenerator(0).getLevelGold()) {
+                case 1:
+                    str = str + " §e➀ Gold";
+                    break;
+                case 2:
+                    str = str + " §e➁ Gold";
+                    break;
+                case 3:
+                    str = str + " §e➂ Gold";
+                    break;
+            }
+            switch (this.getGenerator(0).getLevelDiamond()) {
+                case 1:
+                    str = str + " §b➀ Diamond";
+                    break;
+                case 2:
+                    str = str + " §b➁ Diamond";
+                    break;
+                case 3:
+                    str = str + " §b➂ Diamond";
+                    break;
+            }
+            hologram.removeLine(1);
+            hologram.insertLine(1, str);
         }
     }
 

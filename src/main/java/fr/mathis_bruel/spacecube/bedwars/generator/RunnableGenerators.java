@@ -20,7 +20,6 @@ public class RunnableGenerators extends BukkitRunnable {
     public void run() {
 
         if(timerIron >= GeneratorType.IRON.getLevel(generatorTeam.getLevelIron()) && generatorTeam.getLevelIron() != 0){
-            System.out.println(generatorTeam.getLevelIron());
             timerIron = 0;
             // spawn a iron ingot at the generator location
             Location loc = generatorTeam.getLocation();
@@ -30,7 +29,6 @@ public class RunnableGenerators extends BukkitRunnable {
         }
 
         if(timerGold >= GeneratorType.GOLD.getLevel(generatorTeam.getLevelGold()) && generatorTeam.getLevelGold() != 0){
-            System.out.println(generatorTeam.getLevelGold());
             timerGold = 0;
             // spawn a iron ingot at the generator location
             Location loc = generatorTeam.getLocation();
@@ -40,7 +38,6 @@ public class RunnableGenerators extends BukkitRunnable {
         }
 
         if(timerDiamond >= GeneratorType.DIAMOND.getLevel(generatorTeam.getLevelDiamond()) && generatorTeam.getLevelDiamond() != 0){
-            System.out.println(generatorTeam.getLevelDiamond());
             timerDiamond = 0;
             // spawn a iron ingot at the generator location
             Location loc = generatorTeam.getLocation();

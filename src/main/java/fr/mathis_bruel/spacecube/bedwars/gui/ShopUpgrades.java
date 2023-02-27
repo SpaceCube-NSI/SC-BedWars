@@ -196,6 +196,7 @@ public class ShopUpgrades {
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelIron(1));
                 event.getWhoClicked().openInventory(getInventory(team));
+                team.updateGeneratorHolograms();
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron!");
@@ -220,6 +221,7 @@ public class ShopUpgrades {
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelIron(2));
                 event.getWhoClicked().openInventory(getInventory(team));
+                team.updateGeneratorHolograms();
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron!");
@@ -244,6 +246,7 @@ public class ShopUpgrades {
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelIron(3));
                 event.getWhoClicked().openInventory(getInventory(team));
+                team.updateGeneratorHolograms();
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron!");
@@ -267,6 +270,7 @@ public class ShopUpgrades {
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelGold(1));
                 event.getWhoClicked().openInventory(getInventory(team));
+                team.updateGeneratorHolograms();
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamond!");
@@ -290,6 +294,7 @@ public class ShopUpgrades {
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelGold(2));
                 event.getWhoClicked().openInventory(getInventory(team));
+                team.updateGeneratorHolograms();
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough gold!");
@@ -313,6 +318,7 @@ public class ShopUpgrades {
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelGold(3));
                 event.getWhoClicked().openInventory(getInventory(team));
+                team.updateGeneratorHolograms();
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough gold!");
@@ -336,6 +342,7 @@ public class ShopUpgrades {
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelDiamond(1));
                 event.getWhoClicked().openInventory(getInventory(team));
+                team.updateGeneratorHolograms();
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
@@ -359,6 +366,7 @@ public class ShopUpgrades {
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelDiamond(2));
                 event.getWhoClicked().openInventory(getInventory(team));
+                team.updateGeneratorHolograms();
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
@@ -381,13 +389,13 @@ public class ShopUpgrades {
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelDiamond(3));
                 event.getWhoClicked().openInventory(getInventory(team));
+                team.updateGeneratorHolograms();
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
                 return;
             }
         }
-
 
 
 
