@@ -159,12 +159,31 @@ public class Arena {
         this.emeraldsGenerators.remove(generator);
     }
 
+    public void remove
+
     public void addDiamondsGenerator(Generator generator) {
         this.diamondsGenerators.add(generator);
     }
 
     public void removeDiamondsGenerator(Generator generator) {
         this.diamondsGenerators.remove(generator);
+    }
+    public Generator getDiamondGenerator(Location location) {
+        // if ~ 1 blocks
+        for (Generator generator : getDiamondsGenerators()) {
+            if (generator.getLocation().distance(location) < 1)
+                return generator;
+        }
+        return null;
+    }
+
+    public Generator getEmeraldGenerator(Location location) {
+        // if ~ 1 blocks
+        for (Generator generator : getEmeraldsGenerators()) {
+            if (generator.getLocation().distance(location) < 1)
+                return generator;
+        }
+        return null;
     }
 
     public void addPlayer() {

@@ -2,6 +2,8 @@ package fr.mathis_bruel.spacecube.bedwars.commands;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
+import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
+import fr.mathis_bruel.spacecube.bedwars.generator.GeneratorType;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
@@ -421,6 +423,75 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     arena.save();
                     sender.sendMessage(prefix + "§aMin players set. §7(§6" + args[3] + "§7)");
                     break;
+                }
+                case "addgenerator": {
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
+                    GeneratorType generatorType = GeneratorType.getGenerator(args[3]);
+                    if (generatorType == null) {
+                        sender.sendMessage(prefix + "§cThis generator type doesn't exist.");
+                        return true;
+                    }
+                    Generator generator = new Generator(generatorType, 0, ((Player) sender).getLocation());
+                    switch (generatorType) {
+                        case DIAMOND_MAP:
+                            arena.addDiamondsGenerator(generator);
+                            break;
+                        case EMERALD_MAP:
+                            arena.addEmeraldsGenerator(generator);
+                            break;
+                        default:
+                            sender.sendMessage(prefix + "§cThis generator type is not available.");
+                            sender.sendMessage(prefix + "§cAvailable generator types: §fDIAMOND_MAP, EMERALD_MAP");
+                            return true;
+                    }
+                    arena.save();
+                    sender.sendMessage(prefix + "§aGenerator added. §7(§6" + generatorType.getDisplayName() + "§7)");
+                    break;
+                }
+                case "removegenerator": {
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
+                    GeneratorType generatorType = GeneratorType.getGenerator(args[3]);
+                    if (generatorType == null) {
+                        sender.sendMessage(prefix + "§cThis generator type doesn't exist.");
+                        return true;
+                    }
+                    switch (generatorType) {
+                        case DIAMOND_MAP:
+                            if(arena.getDiamondGenerator(((Player) sender).getLocation()) == null) {
+                                sender.sendMessage(prefix + "§cThere is no generator here.");
+                                return true;
+                            }
+                            arena.removeDiamondsGenerator(arena.getDiamondGenerator(((Player) sender).getLocation()));
+                            sender.sendMessage(prefix + "§aGenerator removed. §7(§6" + generatorType.getDisplayName() + "§7)");
+                            break;
+                        case EMERALD_MAP:
+                            if(arena.getEmeraldGenerator(((Player) sender).getLocation()) == null) {
+                                sender.sendMessage(prefix + "§cThere is no generator here.");
+                                return true;
+                            }
+                            arena.removeEmeraldsGenerator(arena.getEmeraldGenerator(((Player) sender).getLocation()));
+                            sender.sendMessage(prefix + "§aGenerator removed. §7(§6" + generatorType.getDisplayName() + "§7)");
+                            break;
+                        default:
+                            sender.sendMessage(prefix + "§cThis generator type is not available.");
+                            sender.sendMessage(prefix + "§cAvailable generator types: §fDIAMOND_MAP, EMERALD_MAP");
+                            return true;
+                    }
+                    arena.save();
+                    sender.sendMessage(prefix + "§aGenerator removed. §7(§6" + generatorType.getDisplayName() + "§7)");
+                    break;
+                }
+                case "generators":{
+
+
                 }
                 default:
                     sender.sendMessage(prefix + "§cUnknown command. Type §f/bedwars-a help §cfor help.");
