@@ -32,7 +32,7 @@ public class Team {
         this.pnjUpgrades = pnjUpgrades;
         this.bed = bed;
         this.generators = generators;
-        this.enderchest = Bukkit.createInventory(null, 3 * 9, ChatColor + "Enderchest" + name);
+        this.enderchest = Bukkit.createInventory(null, 6 * 9, ChatColor + "Enderchest" + name);
 
     }
 

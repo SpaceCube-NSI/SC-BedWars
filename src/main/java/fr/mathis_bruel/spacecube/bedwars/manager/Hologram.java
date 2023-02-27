@@ -1,5 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.manager;
 
+import fr.mathis_bruel.spacecube.bedwars.Main;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
 import org.bukkit.Location;
@@ -28,6 +29,7 @@ public class Hologram {
         this.hologramEntities = new ArrayList<>();
         this.viewers = new ArrayList<>();
         this.isShown = false;
+        Main.addHologram(this);
     }
 
     public void addLine(String line) {

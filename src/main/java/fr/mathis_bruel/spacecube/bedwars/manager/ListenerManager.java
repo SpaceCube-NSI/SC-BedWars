@@ -29,6 +29,7 @@ public class ListenerManager {
         this.listeners.add(new InteractNPCEvent());
         this.listeners.add(new PlayerMove());
         this.listeners.add(new EntityDamageByEntity());
+        this.listeners.add(new OpenChest());
 
 
 

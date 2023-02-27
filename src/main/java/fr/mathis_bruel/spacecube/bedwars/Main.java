@@ -74,7 +74,7 @@ public final class Main extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        holograms.forEach(hologram -> hologram.destroyHolograms());
+        holograms.forEach(Hologram::destroyHolograms);
     }
 
     public static String getPrefix() {
