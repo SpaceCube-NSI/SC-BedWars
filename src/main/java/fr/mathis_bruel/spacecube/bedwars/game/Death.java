@@ -1,6 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
-import fr.mathis_bruel.spacecube.bedwars.Main;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,12 +13,13 @@ public class Death extends BukkitRunnable {
         if(time == 5){
             player.setHealth(20);
             player.setFoodLevel(20);
-            Main.addPlayerFreeze(player);
+            //Main.addPlayerFreeze(player);
             player.sendTitle("§6Respawn in", "§2➄");
             time --;
         }else if(time == 0) {
             this.cancel();
-            Main.removePlayerFreeze(player);
+            player.setGameMode(GameMode.SURVIVAL);
+            //Main.removePlayerFreeze(player);
             player.sendMessage("§aYou are respawned!");
             player.sendTitle("§aRespawned!", "§6Good luck!");
             player.teleport(Manager.getManager(player).getTeam(player).getSpawn());

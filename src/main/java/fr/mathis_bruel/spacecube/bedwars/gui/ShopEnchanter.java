@@ -8,6 +8,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
+
 public class ShopEnchanter {
 
     public static Inventory getInventory(){
@@ -29,32 +31,38 @@ public class ShopEnchanter {
         ItemStack fireAspect = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta fireAspectMeta = fireAspect.getItemMeta();
         fireAspectMeta.setDisplayName("§6Fire Aspect 1");
+        fireAspectMeta.setLore(Arrays.asList("§7Price: §a15 emeralds", "§7compatibility: §aSword"));
         fireAspect.addUnsafeEnchantment(Enchantment.FIRE_ASPECT, 1);
 
         fireAspect.setItemMeta(fireAspectMeta);
         ItemStack knockBack = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta knockBackMeta = knockBack.getItemMeta();
         knockBackMeta.setDisplayName("§6Knockback 1");
+        knockBackMeta.setLore(Arrays.asList("§7Price: §a10 emeralds", "§7compatibility: §aSword"));
         knockBack.addUnsafeEnchantment(Enchantment.KNOCKBACK, 1);
         knockBack.setItemMeta(knockBackMeta);
         ItemStack sharpness = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta sharpnessMeta = sharpness.getItemMeta();
         sharpnessMeta.setDisplayName("§6Sharpness 1");
+        sharpnessMeta.setLore(Arrays.asList("§7Price: §a5 emeralds", "§7compatibility: §aSword"));
         sharpness.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 1);
         sharpness.setItemMeta(sharpnessMeta);
         ItemStack flame = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta flameMeta = flame.getItemMeta();
         flameMeta.setDisplayName("§6Flame");
+        flameMeta.setLore(Arrays.asList("§7Price: §a10 emeralds", "§7compatibility: §aBow"));
         flame.addUnsafeEnchantment(Enchantment.ARROW_FIRE, 1);
         flame.setItemMeta(flameMeta);
         ItemStack power = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta powerMeta = power.getItemMeta();
         powerMeta.setDisplayName("§6Power 1");
+        powerMeta.setLore(Arrays.asList("§7Price: §a5 emeralds", "§7compatibility: §aBow"));
         power.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
         power.setItemMeta(powerMeta);
         ItemStack efficiency = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta efficiencyMeta = efficiency.getItemMeta();
         efficiencyMeta.setDisplayName("§6Efficiency 1");
+        efficiencyMeta.setLore(Arrays.asList("§7Price: §a1 emerald", "§7compatibility: §aPickaxe, Axe"));
         efficiency.addUnsafeEnchantment(Enchantment.DIG_SPEED, 1);
         efficiency.setItemMeta(efficiencyMeta);
 

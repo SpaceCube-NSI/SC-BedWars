@@ -1,7 +1,7 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
-import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGenerators;
+import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGeneratorsTeams;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
@@ -58,7 +58,7 @@ public class Runnable extends BukkitRunnable {
                         player.getInventory().clear();
                     }
                     team.getGenerators().forEach(generator -> {
-                        RunnableGenerators runnableGenerators = new RunnableGenerators();
+                        RunnableGeneratorsTeams runnableGenerators = new RunnableGeneratorsTeams();
                         runnableGenerators.generatorTeam = generator;
                         runnableGenerators.runTaskTimer(Main.getInstance(), 0, 20);
                         generator.setRunnableGenerators(runnableGenerators);

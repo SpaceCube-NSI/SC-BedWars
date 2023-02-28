@@ -6,6 +6,7 @@ import es.eltrueno.npc.skin.TruenoNPCSkin;
 import es.eltrueno.npc.skin.TruenoNPCSkinBuilder;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
+import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGenerators;
 import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
 import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
@@ -132,6 +133,10 @@ public class Manager {
     }
 
     public void initGame(){
+        RunnableGenerators runnableGenerators = new RunnableGenerators();
+        runnableGenerators.arena = arena;
+        runnableGenerators.runTaskTimer(Main.getInstance(), 0, 20);
+
         for(Team team : arena.getTeams()){
             TruenoNPCSkin skin = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "f52dc72a8953457f972c0fecd8fd553d");
             Location location = team.getPnjItems();
@@ -161,7 +166,7 @@ public class Manager {
                 ArrayList<String> lines3 = new ArrayList<>();
                 lines3.add(team.getColor()+"§l"+team.getName()+" Summoner");
                 lines3.add("§f➀ Iron");
-                Hologram hologram3 = new Hologram(generator.getLocation().clone().add(0, 1, 0), lines3);
+                Hologram hologram3 = new Hologram(generator.getLocation().clone().add(0, 2, 0), lines3);
                 hologram3.showHologram();
                 team.addGeneratorHologram(hologram3);
             });
@@ -171,10 +176,46 @@ public class Manager {
         for (Generator generator : arena.getDiamondsGenerators()) {
             ArrayList<String> lines = new ArrayList<>();
             lines.add("§bDiamonds Summoner");
-            lines.add("§b➤➤➤➤➤➤➤➤➤➤➤");
-            Hologram hologram = new Hologram(generator.getLocation().clone().add(0, 1, 0), lines);
+            lines.add("§7➤➤➤➤➤➤➤➤➤➤§l+");
+            Hologram hologram = new Hologram(generator.getLocation().clone().add(0, 2, 0), lines);
             hologram.showHologram();
+            generator.setHologram(hologram);
         }
+
+        for (Generator generator : arena.getEmeraldsGenerators()) {
+            ArrayList<String> lines = new ArrayList<>();
+            lines.add("§aEmeralds Summoner");
+            lines.add("§7➤➤➤➤➤➤➤➤➤➤§l+");
+            Hologram hologram = new Hologram(generator.getLocation().clone().add(0, 2, 0), lines);
+            hologram.showHologram();
+            generator.setHologram(hologram);
+        }
+
+        // create npc for arena.getTheSpecialist and arena.getEnchanter
+        TruenoNPCSkin skin = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "f1894a3e64e64fb483ade05ddf00fdff");
+        Location location = arena.getTheSpecialist();
+        Location loc2 = location.clone().add(0, 1.8, 0);
+        TruenoNPC npc = TruenoNPCApi.createNPC(Main.getInstance(), location, skin);
+        ArrayList<String> lines = new ArrayList<>();
+        lines.add("§6§lTHE SPECIALIST");
+        lines.add("§7Click to open");
+        Hologram hologram = new Hologram(loc2, lines);
+        hologram.showHologram();
+        Main.addShop(npc.getNpcID(), TypeShop.THE_SPECIALIST);
+
+        TruenoNPCSkin skin2 = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "473cae4d3c8e4d20857a01f6e52076b7");
+        Location location2 = arena.getEnchanter();
+        Location loc3 = location2.clone().add(0, 1.8, 0);
+        TruenoNPC npc2 = TruenoNPCApi.createNPC(Main.getInstance(), location2, skin2);
+        ArrayList<String> lines2 = new ArrayList<>();
+        lines2.add("§6§lENCHANTER");
+        lines2.add("§7Click to open");
+        Hologram hologram2 = new Hologram(loc3, lines2);
+        hologram2.showHologram();
+        Main.addShop(npc2.getNpcID(), TypeShop.ENCHANTER);
+
+
+
     }
 
     public void broadcast(String message){

@@ -25,6 +25,8 @@ public class Arena {
     private ArrayList<Generator> diamondsGenerators;
     private Location specSpawn;
     private Location lobbySpawn;
+    private Location theSpecialist;
+    private Location enchanter;
     private int maxPlayers;
     private int minPlayers;
 
@@ -41,7 +43,7 @@ public class Arena {
         this.minPlayers = 0;
     }
 
-    public Arena(World world, String name, int playerPerTeam, ArrayList<Team> teams, ArrayList<Generator> emeraldsGenerators, ArrayList<Generator> diamondsGenerators, Location specSpawn, Location lobbySpawn, int maxPlayers, int minPlayers) {
+    public Arena(World world, String name, int playerPerTeam, ArrayList<Team> teams, ArrayList<Generator> emeraldsGenerators, ArrayList<Generator> diamondsGenerators, Location specSpawn, Location lobbySpawn, int maxPlayers, int minPlayers, Location theSpecialist, Location enchanter) {
         this.world = world;
         this.name = name;
         this.playerPerTeam = playerPerTeam;
@@ -52,6 +54,8 @@ public class Arena {
         this.lobbySpawn = lobbySpawn;
         this.maxPlayers = maxPlayers;
         this.minPlayers = minPlayers;
+        this.theSpecialist = theSpecialist;
+        this.enchanter = enchanter;
 
     }
 
@@ -159,7 +163,22 @@ public class Arena {
         this.emeraldsGenerators.remove(generator);
     }
 
-    public void remove
+    public Location getTheSpecialist() {
+        return theSpecialist;
+    }
+
+    public void setTheSpecialist(Location theSpecialist) {
+        this.theSpecialist = theSpecialist;
+    }
+
+    public Location getEnchanter() {
+        return enchanter;
+    }
+
+    public void setEnchanter(Location enchanter) {
+        this.enchanter = enchanter;
+    }
+
 
     public void addDiamondsGenerator(Generator generator) {
         this.diamondsGenerators.add(generator);
@@ -266,11 +285,14 @@ public class Arena {
 
         }
         for (int i = 0; i < this.getEmeraldsGenerators().size(); i++) {
-            config.set("emeraldsGenerators." + i + ".location", this.getEmeraldsGenerators().get(i).getLocation());
+            config.set("emeraldsGenerators." + i + ".location", Utils.parseLocToString(this.getEmeraldsGenerators().get(i).getLocation()));
         }
         for (int i = 0; i < this.getDiamondsGenerators().size(); i++) {
-            config.set("diamondsGenerators." + i + ".location", this.getDiamondsGenerators().get(i).getLocation());
+            config.set("diamondsGenerators." + i + ".location", Utils.parseLocToString(this.getDiamondsGenerators().get(i).getLocation()));
         }
+        if(this.getTheSpecialist() != null) config.set("theSpecialist", Utils.parseLocToString(this.getTheSpecialist()));
+        if(this.getEnchanter() != null) config.set("enchanter", Utils.parseLocToString(this.getEnchanter()));
+
         try {
             config.save(file);
             Main.getInstance().arenas.add(this);
@@ -343,6 +365,9 @@ public class Arena {
             }else{
                 arena.setDiamondsGenerators(new ArrayList<Generator>());
             }
+
+            if(config.getString("theSpecialist") != null) arena.setTheSpecialist(Utils.parseStringToLoc(config.getString("theSpecialist")));
+            if(config.getString("enchanter") != null) arena.setEnchanter(Utils.parseStringToLoc(config.getString("enchanter")));
 
             Main.getInstance().arenas.add(arena);
         }

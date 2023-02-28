@@ -8,6 +8,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,37 +16,22 @@ import java.util.Random;
 
 public class EntityDamageByEntity implements org.bukkit.event.Listener {
 
-   /* @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
-        if(event.getEntity() instanceof Player) {
+   @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        if(event.getEntity() != null) {
             Player player = (Player) event.getEntity();
-            if(player.getHealth() <= 1) {
-                if(Manager.isCurrentlyInGame(player)) {
-                    Team team = Manager.getManager(player).getTeam(player);
-                    if(team != null) {
-                        player.spigot().respawn();
-                        System.out.println("Player " + player.getName() + " is dead!");
-                        player.teleport(team.getSpawn());
-                        Manager.getManager(player).broadcast("§c" + player.getName() + " has been killed by " + event.getDamager().getName());
-                        Death death = new Death();
-                        death.player = player;
-                        death.runTaskTimer(Main.getInstance(), 0, 20);
-                    }
-                }
+            if(Manager.isCurrentlyInGame(player)) {
+                event.setDeathMessage(null);
             }
         }
-    }*/
+    }
 
     @EventHandler
     public void onDeath(EntityDamageEvent event) {
-        System.out.println(1);
         if(event.getEntity() instanceof Player) {
-            System.out.println(2);
             Player player = (Player) event.getEntity();
             if(player.getHealth() <= event.getFinalDamage()) {
-                System.out.println(3);
                 if(Manager.isCurrentlyInGame(player)) {
-                    System.out.println(4);
                     Team team = Manager.getManager(player).getTeam(player);
                     if(team != null) {
                         List<String> m = new ArrayList<>();
@@ -153,8 +139,8 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                             m.add("was dead");
                         }
                         Manager.getManager(player).broadcast(team.getColor()+"§l"+player.getName() + " §r§4" + m.get(new Random().nextInt(m.size())));
+
                         player.spigot().respawn();
-                        System.out.println("Player " + player.getName() + " is dead!");
                         player.teleport(Manager.getManager(player).getArena().getSpecSpawn());
                         player.setGameMode(GameMode.SPECTATOR);
                         Death death = new Death();

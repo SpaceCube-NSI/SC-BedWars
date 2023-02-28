@@ -1,6 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.teams;
 
-import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGenerators;
+import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGeneratorsTeams;
 import org.bukkit.Location;
 
 public class GeneratorTeam {
@@ -8,9 +8,9 @@ public class GeneratorTeam {
     private int levelIron;
     private int levelGold;
     private int levelDiamond;
-    private RunnableGenerators runnableGenerators;
+    private RunnableGeneratorsTeams runnableGenerators;
 
-    public GeneratorTeam(Location location, int levelIron, int levelGold, int levelDiamond, RunnableGenerators runnableGenerators) {
+    public GeneratorTeam(Location location, int levelIron, int levelGold, int levelDiamond, RunnableGeneratorsTeams runnableGenerators) {
         this.location = location;
         this.levelIron = levelIron;
         this.levelGold = levelGold;
@@ -97,11 +97,11 @@ public class GeneratorTeam {
         this.levelDiamond--;
     }
 
-    public RunnableGenerators getRunnableGenerators() {
+    public RunnableGeneratorsTeams getRunnableGenerators() {
         return runnableGenerators;
     }
 
-    public void setRunnableGenerators(RunnableGenerators runnableGenerators) {
+    public void setRunnableGenerators(RunnableGeneratorsTeams runnableGenerators) {
         this.runnableGenerators = runnableGenerators;
     }
 

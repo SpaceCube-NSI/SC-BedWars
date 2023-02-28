@@ -74,6 +74,8 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§c/bedwars-a arena addGenerator <arenaName> <type> §7 - §fAdd a generator to an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena removeGenerator <arenaName> §7 - §fRemove a generator from an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena generators <arenaName> §7 - §fList all the generators of an arena");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena setEnchanter <arenaName> §7 - §fSet the enchanter of an arena");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena setTheSpecialist <arenaName> §7 - §fSet the specialist of an arena");
                     sender.sendMessage("--------------------------------");
                     break;
                 case "hologram":
@@ -380,6 +382,28 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§c/bedwars-a arena team <arenaName> removeGenerator <teamName> §7 - §fRemove a generator from a team");
                     sender.sendMessage("--------------------------------");
                     break;
+                case "setenchanter": {
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
+                    arena.setEnchanter(player.getLocation());
+                    arena.save();
+                    sender.sendMessage(prefix + "§aEnchanter set to your location.");
+                    break;
+                }
+                case "setthespecialist": {
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
+                    arena.setTheSpecialist(player.getLocation());
+                    arena.save();
+                    sender.sendMessage(prefix + "§aThe Specialist set to your location.");
+                    break;
+                }
                 default:
                     sender.sendMessage(prefix + "§cUnknown command. Type §f/bedwars-a help §cfor help.");
                     break;

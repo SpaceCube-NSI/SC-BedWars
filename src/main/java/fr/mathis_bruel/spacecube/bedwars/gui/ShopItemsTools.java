@@ -2,6 +2,7 @@ package fr.mathis_bruel.spacecube.bedwars.gui;
 
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
+import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -125,22 +126,197 @@ public class ShopItemsTools {
 
 
     public static void execute(InventoryClickEvent event) {
-        if(!Manager.isCurrentlyInGame((Player) event.getWhoClicked())) return;
+        if (!Manager.isCurrentlyInGame((Player) event.getWhoClicked())) return;
         Team team = Manager.getManager((Player) event.getWhoClicked()).getTeam((Player) event.getWhoClicked());
 
         event.setCancelled(true);
-        if(event.getCurrentItem() == null) return;
+        if (event.getCurrentItem() == null) return;
         if(event.getCurrentItem().getType() == Material.AIR) return;
-        if(event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
-        if(event.getCurrentItem().getItemMeta().getDisplayName().equals(" ")) return;
-        if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§cClose")) {
+        if (event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(" ")) return;
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§cClose")) {
             event.getWhoClicked().closeInventory();
             return;
         }
-        if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§5Back")) {
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§5Back")) {
             event.getWhoClicked().openInventory(ShopItems.getInventory(team));
             return;
         }
+        // set prices in function of lore
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Stone Sword")) {
+            if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 5)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.STONE_SWORD))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.STONE_SWORD));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Iron Sword")) {
+            if (event.getWhoClicked().getInventory().contains(Material.GOLD_INGOT, 10)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.IRON_SWORD))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 10));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.IRON_SWORD));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Diamond Sword")) {
+            if (event.getWhoClicked().getInventory().contains(Material.EMERALD, 2)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.DIAMOND_SWORD))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 2));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Stone Pickaxe")) {
+            if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 10)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.STONE_PICKAXE))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 10));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.STONE_PICKAXE));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Iron Pickaxe")) {
+            if (event.getWhoClicked().getInventory().contains(Material.GOLD_INGOT, 10)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.IRON_PICKAXE))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 10));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.IRON_PICKAXE));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Diamond Pickaxe")) {
+            if (event.getWhoClicked().getInventory().contains(Material.EMERALD, 2)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.DIAMOND_PICKAXE))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 2));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.DIAMOND_PICKAXE));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Stone Axe")) {
+            if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 5)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.STONE_AXE))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.STONE_AXE));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
+            }
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Iron Axe")) {
+            if (event.getWhoClicked().getInventory().contains(Material.GOLD_INGOT, 5)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.IRON_AXE))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 5));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.IRON_AXE));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
+            }
+        }
+if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Diamond Axe")) {
+            if (event.getWhoClicked().getInventory().contains(Material.DIAMOND, 15)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.DIAMOND_AXE))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 15));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.DIAMOND_AXE));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
+            }
+        }
+        // compass
+        /*if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Compass")) {
+            if (event.getWhoClicked().getInventory().contains(Material.EMERALD, 5)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.COMPASS))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 5));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.COMPASS));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
+            }
+        }*/
+        // bow
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Bow")) {
+            if (event.getWhoClicked().getInventory().contains(Material.DIAMOND, 20)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.BOW))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 20));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.BOW));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
+            }
+        }
+        // arrows
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Arrows")) {
+            if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 20)) {
+                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.ARROW, 10))) {
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 20));
+                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.ARROW, 10));
+                ((Player) event.getWhoClicked()).updateInventory();
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
+            }
+        }
+
+
+
 
     }
 }

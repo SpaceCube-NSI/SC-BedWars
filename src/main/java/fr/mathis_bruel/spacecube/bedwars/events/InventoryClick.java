@@ -23,6 +23,8 @@ public class InventoryClick implements Listener {
             if(event.getInventory().getName().equals(ShopItemsArmor.getInventory().getName())) ShopItemsArmor.execute(event);
             if(event.getInventory().getName().equals(ShopItemsTools.getInventory().getName())) ShopItemsTools.execute(event);
             if(event.getInventory().getName().equals(ShopUpgrades.getInventory(team).getName())) ShopUpgrades.execute(event);
+            if(event.getInventory().getName().equals(ShopTheSpecialist.getInventory().getName())) ShopTheSpecialist.execute(event);
+            //if(event.getInventory().getName().equals(ShopEnchanter.getInventory().getName())) ShopEnchanter.execute(event);
         }
 
 
