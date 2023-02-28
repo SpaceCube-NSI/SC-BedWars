@@ -5,6 +5,7 @@ import es.eltrueno.npc.TruenoNPCApi;
 import es.eltrueno.npc.skin.TruenoNPCSkin;
 import es.eltrueno.npc.skin.TruenoNPCSkinBuilder;
 import fr.mathis_bruel.spacecube.bedwars.Main;
+import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
 import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
 import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
@@ -165,6 +166,14 @@ public class Manager {
                 team.addGeneratorHologram(hologram3);
             });
 
+        }
+
+        for (Generator generator : arena.getDiamondsGenerators()) {
+            ArrayList<String> lines = new ArrayList<>();
+            lines.add("§bDiamonds Summoner");
+            lines.add("§b➤➤➤➤➤➤➤➤➤➤➤");
+            Hologram hologram = new Hologram(generator.getLocation().clone().add(0, 1, 0), lines);
+            hologram.showHologram();
         }
     }
 

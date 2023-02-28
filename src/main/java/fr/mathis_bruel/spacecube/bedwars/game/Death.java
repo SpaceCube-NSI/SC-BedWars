@@ -21,6 +21,7 @@ public class Death extends BukkitRunnable {
             Main.removePlayerFreeze(player);
             player.sendMessage("§aYou are respawned!");
             player.sendTitle("§aRespawned!", "§6Good luck!");
+            player.teleport(Manager.getManager(player).getTeam(player).getSpawn());
         } else {
             // message repawn in x seconds
             player.sendMessage("§cYou will respawn in " + time + " seconds");

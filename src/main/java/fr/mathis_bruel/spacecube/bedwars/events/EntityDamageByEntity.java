@@ -4,9 +4,9 @@ import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Death;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class EntityDamageByEntity implements org.bukkit.event.Listener {
 
-    @EventHandler
+   /* @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         if(event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
@@ -34,7 +34,7 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                 }
             }
         }
-    }
+    }*/
 
     @EventHandler
     public void onDeath(EntityDamageEvent event) {
@@ -155,7 +155,8 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                         Manager.getManager(player).broadcast(team.getColor()+"§l"+player.getName() + " §r§4" + m.get(new Random().nextInt(m.size())));
                         player.spigot().respawn();
                         System.out.println("Player " + player.getName() + " is dead!");
-                        player.teleport(team.getSpawn());
+                        player.teleport(Manager.getManager(player).getArena().getSpecSpawn());
+                        player.setGameMode(GameMode.SPECTATOR);
                         Death death = new Death();
                         death.player = player;
                         death.runTaskTimer(Main.getInstance(), 0, 20);
