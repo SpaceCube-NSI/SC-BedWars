@@ -25,27 +25,6 @@ public class Click implements Listener {
                 }
             }
         }
-        /*if(Manager.isCurrentlyInGame(event.getPlayer())) {
-            Team team = Manager.getManager(event.getPlayer()).getTeam(event.getPlayer());
-            for (NPC npc : Main.getNpcs()) {
-                if (npc.getDistanceSquared(event.getPlayer()) < 2) {
-                    if (npc.getName().equals("§a§l" + "Items")) {
-                        event.getPlayer().openInventory(ShopItems.getInventory(team));
-                        return;
-                    }
-                    if(npc.getName().equals( "§a§l" + "Upgrades")){
-                        event.getPlayer().sendMessage(Main.getPrefix() + "§fIs currently in development");
-                        return;
-                    }
-
-                }
-            }
-        }*/
-
-
-
-
-
     }
 
 }

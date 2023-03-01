@@ -76,7 +76,7 @@ public class Bedwars implements CommandExecutor {
                     sender.sendMessage(prefix + "§cComing soon!");
                     sender.sendMessage("--------------------------------");
                     break;
-                case "leave" :{
+                case "leave": {
                     Player player = (Player) sender;
                     if (Manager.isCurrentlyInGame(player)) {
                         Manager.getManager(player).leave(player);
@@ -86,7 +86,7 @@ public class Bedwars implements CommandExecutor {
                             "§f",
                             "§fNiveau: §f" + 0,
                             "§f",
-                            "§fProgrès: §b" + 0 + "§7/§a"+ 0,
+                            "§fProgrès: §b" + 0 + "§7/§a" + 0,
                             "§8[§7 §a▊▊▊                §8]",
                             "§f",
                             "§fCoins: §e" + 0,
@@ -103,10 +103,37 @@ public class Bedwars implements CommandExecutor {
                     break;
                 }
                 case "join": {
-                    if((sender instanceof Player)){
+                    if ((sender instanceof Player)) {
                         Player player = (Player) sender;
                         player.openInventory(Join.getInventory());
-                    }else sender.sendMessage(prefix + "§cYou must be a player to use this command!");
+                    } else sender.sendMessage(prefix + "§cYou must be a player to use this command!");
+                    break;
+                }
+                default:
+                    sender.sendMessage("--------------------------------");
+                    sender.sendMessage(prefix + "§cNo command found! Type §f/bedwars help §cfor help");
+                    sender.sendMessage("--------------------------------");
+                    break;
+            }
+        }
+        if (args.length == 2) {
+            switch (args[0].toLowerCase()) {
+                case "join": {
+                    if ((sender instanceof Player)) {
+                        Player player = (Player) sender;
+                        if (Manager.isCurrentlyInGame(player)) {
+                            sender.sendMessage(prefix + "§cYou are already in a game!");
+                        } else {
+                            Arena arena = Arena.getArenaByName(args[1]);
+                            if (arena != null) {
+                                Manager manager = Manager.getManager(arena);
+                                if(manager == null) sender.sendMessage(prefix + "§cThis arena is not ready yet!");
+                                else {
+                                    manager.join(player);
+                                }
+                            }else sender.sendMessage(prefix + "§cThis arena does not exist!");
+                        }
+                    } else sender.sendMessage(prefix + "§cYou must be a player to use this command!");
                     break;
                 }
                 default:
