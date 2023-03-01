@@ -192,7 +192,7 @@ public class ShopUpgrades {
             if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 0)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 0));
                 event.getWhoClicked().sendMessage("§aYou have upgraded your iron generator to level 1!");
-                //TODO: Send message to all players in team
+                team.broadcast("§a" + event.getWhoClicked().getName() + " has upgraded the iron generator to level 1!");
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelIron(1));
                 event.getWhoClicked().openInventory(getInventory(team));
@@ -217,7 +217,7 @@ public class ShopUpgrades {
             if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 5)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
                 event.getWhoClicked().sendMessage("§aYou have upgraded your iron generator to level 2!");
-                //TODO: Send message to all players in team
+                team.broadcast("§a" + event.getWhoClicked().getName() + " has upgraded the iron generator to level 2!");
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelIron(2));
                 event.getWhoClicked().openInventory(getInventory(team));
@@ -242,7 +242,7 @@ public class ShopUpgrades {
             if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 10)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 10));
                 event.getWhoClicked().sendMessage("§aYou have upgraded your iron generator to level 3!");
-                //TODO: Send message to all players in team
+                team.broadcast("§a" + event.getWhoClicked().getName() + " has upgraded the iron generator to level 3!");
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelIron(3));
                 event.getWhoClicked().openInventory(getInventory(team));
@@ -267,6 +267,7 @@ public class ShopUpgrades {
             if (event.getWhoClicked().getInventory().contains(Material.DIAMOND, 1)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 1));
                 event.getWhoClicked().sendMessage("§aYou have upgraded your gold generator to level 1!");
+                team.broadcast("§a" + event.getWhoClicked().getName() + " has upgraded the gold generator to level 1!");
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelGold(1));
                 event.getWhoClicked().openInventory(getInventory(team));
@@ -291,6 +292,7 @@ public class ShopUpgrades {
             if (event.getWhoClicked().getInventory().contains(Material.GOLD_INGOT, 5)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 5));
                 event.getWhoClicked().sendMessage("§aYou have upgraded your gold generator to level 2!");
+                team.broadcast("§a" + event.getWhoClicked().getName() + " has upgraded the gold generator to level 2!");
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelGold(2));
                 event.getWhoClicked().openInventory(getInventory(team));
@@ -315,6 +317,7 @@ public class ShopUpgrades {
             if (event.getWhoClicked().getInventory().contains(Material.GOLD_INGOT, 15)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 15));
                 event.getWhoClicked().sendMessage("§aYou have upgraded your gold generator to level 3!");
+                team.broadcast("§a" + event.getWhoClicked().getName() + " has upgraded the gold generator to level 3!");
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelGold(3));
                 event.getWhoClicked().openInventory(getInventory(team));
@@ -339,6 +342,7 @@ public class ShopUpgrades {
             if (event.getWhoClicked().getInventory().contains(Material.EMERALD, 5)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 5));
                 event.getWhoClicked().sendMessage("§aYou have upgraded your diamond generator to level 1!");
+                team.broadcast("§a" + event.getWhoClicked().getName() + " has upgraded the diamond generator to level 1!");
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelDiamond(1));
                 event.getWhoClicked().openInventory(getInventory(team));
@@ -363,6 +367,7 @@ public class ShopUpgrades {
             if (event.getWhoClicked().getInventory().contains(Material.DIAMOND, 10)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 10));
                 event.getWhoClicked().sendMessage("§aYou have upgraded your diamond generator to level 2!");
+                team.broadcast("§a" + event.getWhoClicked().getName() + " has upgraded the diamond generator to level 2!");
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelDiamond(2));
                 event.getWhoClicked().openInventory(getInventory(team));
@@ -386,6 +391,7 @@ public class ShopUpgrades {
             if (event.getWhoClicked().getInventory().contains(Material.DIAMOND, 15)) {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 15));
                 event.getWhoClicked().sendMessage("§aYou have upgraded your diamond generator to level 3!");
+                team.broadcast("§a" + event.getWhoClicked().getName() + " has upgraded the diamond generator to level 3!");
                 event.getWhoClicked().closeInventory();
                 team.getGenerators().forEach(generator -> generator.setLevelDiamond(3));
                 event.getWhoClicked().openInventory(getInventory(team));

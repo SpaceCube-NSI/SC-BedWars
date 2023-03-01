@@ -278,5 +278,11 @@ public class Team {
         }
     }
 
+    public void broadcast(String message){
+        for (Player player : players) {
+            player.sendMessage(message);
+        }
+    }
+
 
 }
