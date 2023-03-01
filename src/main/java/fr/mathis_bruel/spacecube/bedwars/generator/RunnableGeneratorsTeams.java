@@ -2,12 +2,13 @@ package fr.mathis_bruel.spacecube.bedwars.generator;
 
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import xyz.xenondevs.particle.ParticleBuilder;
+import xyz.xenondevs.particle.ParticleEffect;
 
 public class RunnableGeneratorsTeams extends BukkitRunnable {
     public Team team;
@@ -53,27 +54,33 @@ public class RunnableGeneratorsTeams extends BukkitRunnable {
 
         if (sendParticule) {
             if (generatorTeam.getLevelIron() != 0 && generatorTeam.getLevelGold() == 0 && generatorTeam.getLevelDiamond() == 0) {
-                Location loc = generatorTeam.getLocation();
-                loc.getWorld().playEffect(loc, Effect.FLAME, 0);
-            } else if (generatorTeam.getLevelIron() == 0 && generatorTeam.getLevelGold() != 0 && generatorTeam.getLevelDiamond() == 0) {
-                Location loc = generatorTeam.getLocation();
-                loc.getWorld().playEffect(loc, Effect.FLAME, 0);
-            } else if (generatorTeam.getLevelIron() == 0 && generatorTeam.getLevelGold() == 0 && generatorTeam.getLevelDiamond() != 0) {
-                Location loc = generatorTeam.getLocation();
-                loc.getWorld().playEffect(loc, Effect.FLAME, 0);
+                Location loc = generatorTeam.getLocation().clone().add(0, 1.8, 0);
+                new ParticleBuilder(ParticleEffect.SMOKE_LARGE, loc)
+                        .setSpeed(0.1f)
+                        .setAmount(5)
+                        .display();
             } else if (generatorTeam.getLevelIron() != 0 && generatorTeam.getLevelGold() != 0 && generatorTeam.getLevelDiamond() == 0) {
-                Location loc = generatorTeam.getLocation();
-                loc.getWorld().playEffect(loc, Effect.FLAME, 0);
+                Location loc = generatorTeam.getLocation().clone().add(0, 1.8, 0);
+                new ParticleBuilder(ParticleEffect.LAVA, loc)
+                        .setSpeed(0.1f)
+                        .setAmount(5)
+                        .display();
+
             } else if (generatorTeam.getLevelIron() != 0 && generatorTeam.getLevelGold() == 0 && generatorTeam.getLevelDiamond() != 0) {
-                Location loc = generatorTeam.getLocation();
-                loc.getWorld().playEffect(loc, Effect.FLAME, 0);
-            } else if (generatorTeam.getLevelIron() == 0 && generatorTeam.getLevelGold() != 0 && generatorTeam.getLevelDiamond() != 0) {
-                Location loc = generatorTeam.getLocation();
-                loc.getWorld().playEffect(loc, Effect.FLAME, 0);
+                Location loc = generatorTeam.getLocation().clone().add(0, 1.8, 0);
+                new ParticleBuilder(ParticleEffect.LAVA, loc)
+                        .setSpeed(0.1f)
+                        .setAmount(5)
+                        .display();
+
             } else if (generatorTeam.getLevelIron() != 0 && generatorTeam.getLevelGold() != 0 && generatorTeam.getLevelDiamond() != 0) {
-                Location loc = generatorTeam.getLocation();
-                loc.getWorld().playEffect(loc, Effect.FLAME, 0);
+                Location loc = generatorTeam.getLocation().clone().add(0, 1.8, 0);
+                new ParticleBuilder(ParticleEffect.FLAME, loc)
+                        .setSpeed(0.1f)
+                        .setAmount(10)
+                        .display();
             }
+            sendParticule = false;
         }
 
     }

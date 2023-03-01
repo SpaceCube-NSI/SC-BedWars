@@ -27,6 +27,7 @@ dependencies {
     compileOnly 'org.bukkit:craftbukkit:1.8.8-R0.1-SNAPSHOT'*/
     compileOnly fileTree(dir: "libs", include: "*.jar")
     compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.8.0";
+    implementation 'xyz.xenondevs:particle:1.8.3'
 }
 
 def targetJavaVersion = 8
