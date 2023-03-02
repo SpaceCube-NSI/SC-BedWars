@@ -76,6 +76,8 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§c/bedwars-a arena generators <arenaName> §7 - §fList all the generators of an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena setEnchanter <arenaName> §7 - §fSet the enchanter of an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena setTheSpecialist <arenaName> §7 - §fSet the specialist of an arena");
+                    // radius for spawn protection around the team spawn
+                    sender.sendMessage(prefix + "§c/bedwars-a arena setProtectionRadius <arenaName> <radius> §7 - §fSet the protection radius around the team spawn");
                     sender.sendMessage("--------------------------------");
                     break;
                 case "hologram":
@@ -514,8 +516,59 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     break;
                 }
                 case "generators":{
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
+                    GeneratorType generatorType = GeneratorType.getGenerator(args[3]);
+                    if (generatorType == null) {
+                        sender.sendMessage(prefix + "§cThis generator type doesn't exist.");
+                        return true;
+                    }
+                    switch (generatorType) {
+                        case DIAMOND_MAP:
+                            sender.sendMessage(prefix + "§aDiamonds generators:");
+                            // send textcomponents when tp when click
+                            for(Generator generator : arena.getDiamondsGenerators()) {
+                                TextComponent textComponent = new TextComponent(prefix + "§7- §6" + generator.getLocation().getBlockX() + "§7, §6" + generator.getLocation().getBlockY() + "§7, §6" + generator.getLocation().getBlockZ());
+                                textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + generator.getLocation().getBlockX() + " " + generator.getLocation().getBlockY() + " " + generator.getLocation().getBlockZ()));
+                                ((Player) sender).spigot().sendMessage(textComponent);
+                            }
+                            break;
+                        case EMERALD_MAP:
+                            sender.sendMessage(prefix + "§aEmeralds generators:");
+                            for(Generator generator : arena.getEmeraldsGenerators()) {
+                                TextComponent textComponent = new TextComponent(prefix + "§7- §6" + generator.getLocation().getBlockX() + "§7, §6" + generator.getLocation().getBlockY() + "§7, §6" + generator.getLocation().getBlockZ());
+                                textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + generator.getLocation().getBlockX() + " " + generator.getLocation().getBlockY() + " " + generator.getLocation().getBlockZ()));
+                                ((Player) sender).spigot().sendMessage(textComponent);
+                            }
+                            break;
+                        default:
+                            sender.sendMessage(prefix + "§cThis generator type is not available.");
+                            sender.sendMessage(prefix + "§cAvailable generator types: §fDIAMOND_MAP, EMERALD_MAP");
+                            return true;
+                    }
+                    break;
 
-
+                }
+                case "setprotectionradius": {
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
+                    double radius;
+                    try {
+                        radius = Double.parseDouble(args[3]);
+                    }catch (NumberFormatException e) {
+                        sender.sendMessage(prefix + "§cThis is not a number.");
+                        return true;
+                    }
+                    arena.setProtectionRadius(radius);
+                    arena.save();
+                    sender.sendMessage(prefix + "§aProtection radius set to §6" + radius + "§a.");
+                    break;
                 }
                 default:
                     sender.sendMessage(prefix + "§cUnknown command. Type §f/bedwars-a help §cfor help.");

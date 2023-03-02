@@ -29,6 +29,7 @@ public class Arena {
     private Location enchanter;
     private int maxPlayers;
     private int minPlayers;
+    private double protectionRadius;
 
     public Arena(World world, String name){
         this.world = world;
@@ -41,9 +42,10 @@ public class Arena {
         this.lobbySpawn = null;
         this.maxPlayers = 0;
         this.minPlayers = 0;
+        protectionRadius = 0;
     }
 
-    public Arena(World world, String name, int playerPerTeam, ArrayList<Team> teams, ArrayList<Generator> emeraldsGenerators, ArrayList<Generator> diamondsGenerators, Location specSpawn, Location lobbySpawn, int maxPlayers, int minPlayers, Location theSpecialist, Location enchanter) {
+    public Arena(World world, String name, int playerPerTeam, ArrayList<Team> teams, ArrayList<Generator> emeraldsGenerators, ArrayList<Generator> diamondsGenerators, Location specSpawn, Location lobbySpawn, int maxPlayers, int minPlayers, Location theSpecialist, Location enchanter, double protectionRadius) {
         this.world = world;
         this.name = name;
         this.playerPerTeam = playerPerTeam;
@@ -56,6 +58,7 @@ public class Arena {
         this.minPlayers = minPlayers;
         this.theSpecialist = theSpecialist;
         this.enchanter = enchanter;
+        this.protectionRadius = protectionRadius;
 
     }
 
@@ -229,6 +232,16 @@ public class Arena {
         return players;
     }
 
+    public double getProtectionRadius() {
+        return protectionRadius;
+    }
+
+    public void setProtectionRadius(double protectionRadius) {
+        this.protectionRadius = protectionRadius;
+    }
+
+
+
 
     public void clearAll() {
         this.clearTeams();
@@ -243,6 +256,10 @@ public class Arena {
         this.setName(null);
         this.setSpecSpawn(null);
         this.setLobbySpawn(null);
+        this.setTheSpecialist(null);
+        this.setEnchanter(null);
+        this.setProtectionRadius(0);
+
     }
     public void delete(){
         // delete file
@@ -292,6 +309,7 @@ public class Arena {
         }
         if(this.getTheSpecialist() != null) config.set("theSpecialist", Utils.parseLocToString(this.getTheSpecialist()));
         if(this.getEnchanter() != null) config.set("enchanter", Utils.parseLocToString(this.getEnchanter()));
+        config.set("protectionRadius", this.getProtectionRadius());
 
         try {
             config.save(file);
@@ -368,6 +386,7 @@ public class Arena {
 
             if(config.getString("theSpecialist") != null) arena.setTheSpecialist(Utils.parseStringToLoc(config.getString("theSpecialist")));
             if(config.getString("enchanter") != null) arena.setEnchanter(Utils.parseStringToLoc(config.getString("enchanter")));
+            if(config.getDouble("protectionRadius") != 0) arena.setProtectionRadius(config.getDouble("protectionRadius"));
 
             Main.getInstance().arenas.add(arena);
         }

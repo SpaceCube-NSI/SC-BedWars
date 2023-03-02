@@ -300,7 +300,7 @@ if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Diamond Axe
             }
         }
         // arrows
-        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Arrows")) {
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Arrow")) {
             if (event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 20)) {
                 if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.ARROW, 10))) {
                     event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
