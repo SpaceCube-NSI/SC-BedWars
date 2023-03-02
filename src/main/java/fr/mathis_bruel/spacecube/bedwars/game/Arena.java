@@ -30,6 +30,8 @@ public class Arena {
     private int maxPlayers;
     private int minPlayers;
     private double protectionRadius;
+    private Location pos1Map;
+    private Location pos2Map;
 
     public Arena(World world, String name){
         this.world = world;
@@ -43,9 +45,11 @@ public class Arena {
         this.maxPlayers = 0;
         this.minPlayers = 0;
         protectionRadius = 0;
+        pos1Map = null;
+        pos2Map = null;
     }
 
-    public Arena(World world, String name, int playerPerTeam, ArrayList<Team> teams, ArrayList<Generator> emeraldsGenerators, ArrayList<Generator> diamondsGenerators, Location specSpawn, Location lobbySpawn, int maxPlayers, int minPlayers, Location theSpecialist, Location enchanter, double protectionRadius) {
+    public Arena(World world, String name, int playerPerTeam, ArrayList<Team> teams, ArrayList<Generator> emeraldsGenerators, ArrayList<Generator> diamondsGenerators, Location specSpawn, Location lobbySpawn, int maxPlayers, int minPlayers, Location theSpecialist, Location enchanter, double protectionRadius, Location pos1Map, Location pos2Map) {
         this.world = world;
         this.name = name;
         this.playerPerTeam = playerPerTeam;
@@ -59,6 +63,8 @@ public class Arena {
         this.theSpecialist = theSpecialist;
         this.enchanter = enchanter;
         this.protectionRadius = protectionRadius;
+        this.pos1Map = pos1Map;
+        this.pos2Map = pos2Map;
 
     }
 
@@ -240,6 +246,24 @@ public class Arena {
         this.protectionRadius = protectionRadius;
     }
 
+    public Location getPos1Map() {
+        return pos1Map;
+    }
+
+    public void setPos1Map(Location pos1Map) {
+        this.pos1Map = pos1Map;
+    }
+
+    public Location getPos2Map() {
+        return pos2Map;
+    }
+
+    public void setPos2Map(Location pos2Map) {
+        this.pos2Map = pos2Map;
+    }
+
+
+
 
 
 
@@ -247,6 +271,7 @@ public class Arena {
         this.clearTeams();
         this.clearEmeraldsGenerators();
         this.clearDiamondsGenerators();
+
     }
 
     public void reset() {
@@ -259,6 +284,8 @@ public class Arena {
         this.setTheSpecialist(null);
         this.setEnchanter(null);
         this.setProtectionRadius(0);
+        this.setPos1Map(null);
+        this.setPos2Map(null);
 
     }
     public void delete(){
@@ -310,6 +337,8 @@ public class Arena {
         if(this.getTheSpecialist() != null) config.set("theSpecialist", Utils.parseLocToString(this.getTheSpecialist()));
         if(this.getEnchanter() != null) config.set("enchanter", Utils.parseLocToString(this.getEnchanter()));
         config.set("protectionRadius", this.getProtectionRadius());
+        if(this.getPos1Map() != null) config.set("pos1Map", Utils.parseLocToString(this.getPos1Map()));
+        if(this.getPos2Map() != null) config.set("pos2Map", Utils.parseLocToString(this.getPos2Map()));
 
         try {
             config.save(file);
@@ -387,6 +416,8 @@ public class Arena {
             if(config.getString("theSpecialist") != null) arena.setTheSpecialist(Utils.parseStringToLoc(config.getString("theSpecialist")));
             if(config.getString("enchanter") != null) arena.setEnchanter(Utils.parseStringToLoc(config.getString("enchanter")));
             if(config.getDouble("protectionRadius") != 0) arena.setProtectionRadius(config.getDouble("protectionRadius"));
+            if(config.getString("pos1Map") != null) arena.setPos1Map(Utils.parseStringToLoc(config.getString("pos1Map")));
+            if(config.getString("pos2Map") != null) arena.setPos2Map(Utils.parseStringToLoc(config.getString("pos2Map")));
 
             Main.getInstance().arenas.add(arena);
         }

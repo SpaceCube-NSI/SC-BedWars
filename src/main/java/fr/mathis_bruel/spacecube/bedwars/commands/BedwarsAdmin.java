@@ -76,8 +76,10 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§c/bedwars-a arena generators <arenaName> §7 - §fList all the generators of an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena setEnchanter <arenaName> §7 - §fSet the enchanter of an arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena setTheSpecialist <arenaName> §7 - §fSet the specialist of an arena");
-                    // radius for spawn protection around the team spawn
                     sender.sendMessage(prefix + "§c/bedwars-a arena setProtectionRadius <arenaName> <radius> §7 - §fSet the protection radius around the team spawn");
+                    // pos 1 and pos 2 of the arena
+                    sender.sendMessage(prefix + "§c/bedwars-a arena setPos1 <arenaName> §7 - §fSet the first position of the arena");
+                    sender.sendMessage(prefix + "§c/bedwars-a arena setPos2 <arenaName> §7 - §fSet the second position of the arena");
                     sender.sendMessage("--------------------------------");
                     break;
                 case "hologram":
@@ -404,6 +406,28 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     arena.setTheSpecialist(player.getLocation());
                     arena.save();
                     sender.sendMessage(prefix + "§aThe Specialist set to your location.");
+                    break;
+                }
+                case "setpos1":{
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
+                    arena.setPos1Map(player.getLocation());
+                    arena.save();
+                    sender.sendMessage(prefix + "§aPos1 set to your location.");
+                    break;
+                }
+                case "setpos2":{
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
+                    arena.setPos2Map(player.getLocation());
+                    arena.save();
+                    sender.sendMessage(prefix + "§aPos2 set to your location.");
                     break;
                 }
                 default:
