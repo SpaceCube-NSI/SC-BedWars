@@ -11,6 +11,7 @@ public class SpawnProtection extends BukkitRunnable {
     @Override
     public void run() {
         if(!Main.isGodMode(player)) {
+            player.sendMessage("§cYou are no longer protected");
             this.cancel();
             return;
         }
