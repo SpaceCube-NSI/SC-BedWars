@@ -1,14 +1,22 @@
 package fr.mathis_bruel.spacecube.bedwars.utils;
 
 import com.sk89q.worldedit.*;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardWriter;
 import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.internal.LocalWorldAdapter;
+import com.sk89q.worldedit.math.transform.AffineTransform;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.world.registry.WorldData;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
-import org.bukkit.*;
 import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +24,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.BlockIterator;
 
-
+import java.io.*;
 import java.util.ArrayList;
 
 public class Utils {
@@ -284,9 +292,8 @@ public class Utils {
         }
 
 
-
-
     }
+
     public static boolean canAddItemInInventory(Player player, ItemStack item) {
         // if player has space in inventory in function of item and quantity
         if (player.getInventory().firstEmpty() != -1) {
@@ -330,7 +337,7 @@ public class Utils {
         return Vector.toBlockPoint(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ());
     }*/
 
-    public static void saveSchem(String filename, int x1, int y1, int z1, int x2, int y2, int z2, org.bukkit.World world) throws WorldEditException {
+    public static void saveSchem(String filename, int x1, int y1, int z1, int x2, int y2, int z2, org.bukkit.World world) throws WorldEditException, FileNotFoundException {
         /*com.sk89q.worldedit.world.World weWorld = new BukkitWorld(world);
         WorldData worldData = weWorld.getWorldData();
         Vector pos1 = new Vector(x1, y1, z1); //First corner of your cuboid
@@ -352,14 +359,54 @@ public class Utils {
         }*/
         Vector min = new Vector(x1, y1, z1);
         Vector max = new Vector(x2, y2, z2);
-        LocalWorld localWorld = BukkitAdapter.adapt(world);
-        CuboidRegion region = new CuboidRegion(world, min, max);
+        com.sk89q.worldedit.world.World weWorld = new BukkitWorld(world);
+        LocalWorld localWorld = LocalWorldAdapter.adapt(weWorld);
+        CuboidRegion region = new CuboidRegion(localWorld, min, max);
         BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
+        clipboard.setOrigin(min);
 
         EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(region.getWorld(), -1);
 
         ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(editSession, region, clipboard, region.getMinimumPoint());
         forwardExtentCopy.setCopyEntities(true);
         Operations.complete(forwardExtentCopy);
+        File dataDirectory = new File(Main.getInstance().getDataFolder(), "maps");
+        if (!dataDirectory.exists()) {
+            dataDirectory.mkdirs();
+        }
+        File file = new File(dataDirectory, filename + ".schematic"); // The schematic file
+        try (ClipboardWriter writer = ClipboardFormat.SCHEMATIC.getWriter(new FileOutputStream(file))) {
+            writer.write(clipboard, editSession.getWorld().getWorldData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void restoreMap(String name, World world, int x, int y, int z) throws IOException, WorldEditException {
+        // load and paste schematic
+        File dataDirectory = new File(Main.getInstance().getDataFolder(), "maps");
+        File file = new File(dataDirectory, name + ".schematic"); // The schematic file
+        Vector to = new Vector(x, y, z); // Where you want to paste
+
+        com.sk89q.worldedit.world.World weWorld = new BukkitWorld(world);
+        WorldData worldData = weWorld.getWorldData();
+        Clipboard clipboard = ClipboardFormat.SCHEMATIC.getReader(new FileInputStream(file)).read(worldData);
+        Region region = clipboard.getRegion();
+
+        EditSession extent = WorldEdit.getInstance().getEditSessionFactory().getEditSession(weWorld, -1);
+        AffineTransform transform = new AffineTransform();
+
+//{ // Uncomment this if you want to rotate the schematic
+//    transform = transform.rotateY(90); // E.g. Rotate 90
+//    extent = new BlockTransformExtent(clipboard, transform, worldData.getBlockRegistry());
+//}
+
+        ForwardExtentCopy copy = new ForwardExtentCopy(clipboard, clipboard.getRegion(), clipboard.getOrigin(), extent, to);
+        if (!transform.isIdentity()) copy.setTransform(transform);
+        /*if (ignoreAirBlocks) {
+            copy.setSourceMask(new ExistingBlockMask(clipboard));
+        }*/
+        Operations.completeLegacy(copy);
+        extent.flushQueue();
     }
 }

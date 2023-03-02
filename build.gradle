@@ -15,19 +15,14 @@ repositories {
         name = 'citizens-repo'
         url = 'https://maven.citizensnpcs.co/repo'
     }
-    maven {
-        url = " https://maven.enginehub.org/repo/"
+    repositories {
+        maven { url "https://repo.dmulloy2.net/repository/public/" }
     }
 }
 
 dependencies {
-    /*compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT' // The Spigot API with no shadowing. Requires the OSS repo.
-    compileOnly 'org.bukkit:bukkit:1.8.8-R0.1-SNAPSHOT' // The Bukkit API with no shadowing.
-    compileOnly 'org.spigotmc:spigot:1.8.8.-R0.1-SNAPSHOT' // The full Spigot server with no shadowing. Requires mavenLocal.
-    compileOnly 'org.bukkit:craftbukkit:1.8.8-R0.1-SNAPSHOT'*/
     compileOnly fileTree(dir: "libs", include: "*.jar")
-    compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.8.0";
-    implementation 'com.sk89q.worldedit:worldedit-bukkit:6.1.9-SNAPSHOT'
+    implementation 'xyz.xenondevs:particle:1.8.3'
 }
 
 def targetJavaVersion = 8
