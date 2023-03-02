@@ -16,6 +16,7 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,12 +27,14 @@ import java.util.Arrays;
 
 public class Manager {
 
-    private Arena arena;
-    private ArrayList<Player> players;
+    private final Arena arena;
+    private final ArrayList<Player> players;
     private ArrayList<Player> specators;
-    private ManagerState managerState;
+    private final ManagerState managerState;
     private int startingTime;
-    private ArrayList<EntityPlayer> npcs = new ArrayList<>();
+    private final ArrayList<EntityPlayer> npcs = new ArrayList<>();
+    private final ArrayList<Block> blocksNotBreakable = new ArrayList<>();
+    private final ArrayList<Location> locationsNotPlaceable = new ArrayList<>();
 
     public Manager(Arena arena) {
         this.arena = arena;
@@ -57,35 +60,35 @@ public class Manager {
         return players;
     }
 
-    public void addPlayer(Player player){
+    public void addPlayer(Player player) {
         players.add(player);
     }
 
-    public void removePlayer(Player player){
+    public void removePlayer(Player player) {
         players.remove(player);
     }
 
-    public void clearPlayers(){
+    public void clearPlayers() {
         players.clear();
     }
 
-    public ArrayList<Player> getSpecators(){
+    public ArrayList<Player> getSpecators() {
         return specators;
     }
 
-    public void addSpecator(Player player){
+    public void addSpecator(Player player) {
         this.specators.add(player);
     }
 
-    public void removeSpecator(Player player){
+    public void removeSpecator(Player player) {
         this.specators.remove(player);
     }
 
-    public void setSpecators(ArrayList<Player> players){
+    public void setSpecators(ArrayList<Player> players) {
         this.specators = players;
     }
 
-    public void clearSpecators(){
+    public void clearSpecators() {
         this.specators.clear();
     }
 
@@ -109,20 +112,18 @@ public class Manager {
         this.startingTime = 30;
     }
 
-    public boolean isSpecator(Player player){
-        if(this.specators.contains(player)) return true;
-        else return false;
+    public boolean isSpecator(Player player) {
+        return this.specators.contains(player);
     }
 
-    public boolean isPlayer(Player player){
-        if(this.players.contains(player)) return true;
-        else return false;
+    public boolean isPlayer(Player player) {
+        return this.players.contains(player);
     }
 
-    public Team getTeam(Player player){
-        if(isPlayer(player)){
-            for(Team team : arena.getTeams()){
-                if(team.getPlayers().contains(player)) return team;
+    public Team getTeam(Player player) {
+        if (isPlayer(player)) {
+            for (Team team : arena.getTeams()) {
+                if (team.getPlayers().contains(player)) return team;
             }
         }
         return null;
@@ -132,12 +133,12 @@ public class Manager {
         return npcs;
     }
 
-    public void initGame(){
+    public void initGame() {
         RunnableGenerators runnableGenerators = new RunnableGenerators();
         runnableGenerators.arena = arena;
         runnableGenerators.runTaskTimer(Main.getInstance(), 0, 20);
 
-        for(Team team : arena.getTeams()){
+        for (Team team : arena.getTeams()) {
             TruenoNPCSkin skin = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "f52dc72a8953457f972c0fecd8fd553d");
             Location location = team.getPnjItems();
             Location loc2 = location.clone().add(0, 1.8, 0);
@@ -164,7 +165,7 @@ public class Manager {
 
             team.getGenerators().forEach(generator -> {
                 ArrayList<String> lines3 = new ArrayList<>();
-                lines3.add(team.getColor()+"§l"+team.getName()+" Summoner");
+                lines3.add(team.getColor() + "§l" + team.getName() + " Summoner");
                 lines3.add("§f➀ Iron");
                 Hologram hologram3 = new Hologram(generator.getLocation().clone().add(0, 2, 0), lines3);
                 hologram3.showHologram();
@@ -214,23 +215,50 @@ public class Manager {
         hologram2.showHologram();
         Main.addShop(npc2.getNpcID(), TypeShop.ENCHANTER);
 
+        // get all blocks in the arena and add them to the list
+        int minX = Math.min(arena.getPos1Map().getBlockX(), arena.getPos2Map().getBlockX());
+        int maxX = Math.max(arena.getPos1Map().getBlockX(), arena.getPos2Map().getBlockX());
+        int minY = Math.min(arena.getPos1Map().getBlockY(), arena.getPos2Map().getBlockY());
+        int maxY = Math.max(arena.getPos1Map().getBlockY(), arena.getPos2Map().getBlockY());
+        int minZ = Math.min(arena.getPos1Map().getBlockZ(), arena.getPos2Map().getBlockZ());
+        int maxZ = Math.max(arena.getPos1Map().getBlockZ(), arena.getPos2Map().getBlockZ());
+
+//Parcourez tous les blocs de la région et ajoutez-les à la liste
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    Block block = arena.getPos1Map().getWorld().getBlockAt(x, y, z);
+                    if(!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
+                        this.blocksNotBreakable.add(block);
+                    }
+                }
+            }
+        }
+
+        // get all blocks (in y = 0) around team spawn in function of arena.getProtectionRadius()
+        for (Team team : arena.getTeams()) {
+            for (int x = (int) (team.getSpawn().getBlockX() - arena.getProtectionRadius()); x <= team.getSpawn().getBlockX() + arena.getProtectionRadius(); x++) {
+                for (int z = (int) (team.getSpawn().getBlockZ() - arena.getProtectionRadius()); z <= team.getSpawn().getBlockZ() + arena.getProtectionRadius(); z++) {
+                    Location loc = new Location(arena.getWorld(), x, 0, z);
+                    this.locationsNotPlaceable.add(loc);
+                }
+            }
+        }
 
 
     }
 
-    public void broadcast(String message){
-        for(Player player : players){
+    public void broadcast(String message) {
+        for (Player player : players) {
             player.sendMessage(message);
         }
     }
 
 
-
-
-    public String join(Player player){
-        if(isPlayer(player) || isSpecator(player)) return "§cYou are already in this game !";
-        if(Manager.isCurrentlyInGame(player)) return "§cYou are already in a game !";
-        if(managerState.getCurrentState() == State.WAITING){
+    public String join(Player player) {
+        if (isPlayer(player) || isSpecator(player)) return "§cYou are already in this game !";
+        if (Manager.isCurrentlyInGame(player)) return "§cYou are already in a game !";
+        if (managerState.getCurrentState() == State.WAITING) {
             addPlayer(player);
             player.teleport(arena.getLobbySpawn());
             player.getInventory().clear();
@@ -247,11 +275,10 @@ public class Manager {
             headPlayer.setItemMeta(headPlayerMeta);
             player.getInventory().setItem(4, headPlayer);
             this.players.forEach(p -> {
-               p.sendMessage("§a" + player.getName() + " §7joined the game ! §7(§3" + this.players.size() + "§7/§4" + arena.getMaxPlayers() + "§7)");
+                p.sendMessage("§a" + player.getName() + " §7joined the game ! §7(§3" + this.players.size() + "§7/§4" + arena.getMaxPlayers() + "§7)");
             });
             return "You joined the game!";
-        }
-        else if(managerState.getCurrentState() == State.RUNNING){
+        } else if (managerState.getCurrentState() == State.RUNNING) {
             this.getPlayers().forEach(p -> {
                 p.hidePlayer(player);
             });
@@ -278,8 +305,7 @@ public class Manager {
             player.getInventory().setItem(0, tp);
             return "You joined the game as a spectator";
 
-        }
-        else{
+        } else {
             return "§4Error, you don't joined this game.";
         }
 
@@ -323,44 +349,60 @@ public class Manager {
         }
     }
 
-
-
-
-
-    public static void init(){
-        Main.getInstance().arenas.forEach(arena -> {
-            Main.getInstance().managers.add(new Manager(arena));
-        });
+    public ArrayList<Block> getBlocksNotBreakable() {
+        return blocksNotBreakable;
     }
 
-    public static Manager getManager(Arena arena){
-        for (Manager manager : Main.getInstance().managers) {
-            if(manager.getArena() == arena){
-                return manager;
-            }
-        }
-        return null;
+    public ArrayList<Location> getLocationsNotPlaceable() {
+        return locationsNotPlaceable;
     }
 
-    public static boolean isCurrentlyInGame(Player player){
-        for (Manager manager : Main.getInstance().managers) {
-            if(manager.isPlayer(player) || manager.isSpecator(player)){
+    public boolean isBlockNotBreakable(Block block) {
+        return blocksNotBreakable.contains(block);
+    }
+
+    public boolean isLocationNotPlaceable(Location location) {
+        for (Location loc : locationsNotPlaceable) {
+            if (loc.getBlockX() == location.getBlockX() && loc.getBlockZ() == location.getBlockZ()) {
                 return true;
             }
         }
         return false;
     }
 
-    public static Manager getManager(Player player){
+
+    public static void init() {
+        Main.getInstance().arenas.forEach(arena -> {
+            Main.getInstance().managers.add(new Manager(arena));
+        });
+    }
+
+    public static Manager getManager(Arena arena) {
         for (Manager manager : Main.getInstance().managers) {
-            if(manager.isPlayer(player) || manager.isSpecator(player)){
+            if (manager.getArena() == arena) {
                 return manager;
             }
         }
         return null;
     }
 
+    public static boolean isCurrentlyInGame(Player player) {
+        for (Manager manager : Main.getInstance().managers) {
+            if (manager.isPlayer(player) || manager.isSpecator(player)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public static Manager getManager(Player player) {
+        for (Manager manager : Main.getInstance().managers) {
+            if (manager.isPlayer(player) || manager.isSpecator(player)) {
+                return manager;
+            }
+        }
+        return null;
+    }
 
 
 }

@@ -308,55 +308,9 @@ public class Utils {
         return false;
 
     }
-    /*public static void saveSchematic(World world, Vector pos1, Vector pos2) throws IOException, WorldEditException {
-        CuboidRegion region = new CuboidRegion(toBlockVector(pos1), toBlockVector(pos2));
-        com.sk89q.worldedit.world.World weWorld = BukkitAdapter.adapt(world);
-        EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession( world, -1);
-        // create temp.schematic if not exist
-        File temp = new File("plugins/SC-BedWars/Save-maps/temp.schematic");
-        if (!temp.exists()) {
-            temp.createNewFile();
-        }
-        Clipboard clipboard = ClipboardFormat.SCHEMATIC.getReader(new FileInputStream("plugins/SC-BedWars/Save-maps/temp.schematic")).read(editSession.getWorld().getWorldData());
-
-        File file = new File("plugins/SC-BedWars/Save-maps/", "schematic_" + System.currentTimeMillis() + ".schematic");
-        file.getParentFile().mkdirs();
-
-        ClipboardFormat format = ClipboardFormat.SCHEMATIC;
-        SchematicWriter writer = (SchematicWriter) format.getWriter(new FileOutputStream(file));
-        writer.write(clipboard, editSession.getWorld().getWorldData());
-        writer.close();
-    }
-
-
-    private BaseBlock air() {
-        return new BaseBlock(BlockID.AIR);
-    }
-
-    private static Vector toBlockVector(Vector vector) {
-        return Vector.toBlockPoint(vector.getBlockX(), vector.getBlockY(), vector.getBlockZ());
-    }*/
 
     public static void saveSchem(String filename, int x1, int y1, int z1, int x2, int y2, int z2, org.bukkit.World world) throws WorldEditException, FileNotFoundException {
-        /*com.sk89q.worldedit.world.World weWorld = new BukkitWorld(world);
-        WorldData worldData = weWorld.getWorldData();
-        Vector pos1 = new Vector(x1, y1, z1); //First corner of your cuboid
-        Vector pos2 = new Vector(x2, y2, z2); //Second corner fo your cuboid
-        CuboidRegion cReg = new CuboidRegion(weWorld, pos1, pos2);
-        File dataDirectory = new File (Main.getInstance().getDataFolder(), "maps");
-        File file = new File(dataDirectory, filename + ".schematic"); // The schematic file
-        try {
-            BlockArrayClipboard clipboard = new BlockArrayClipboard(cReg);
-            Extent source = WorldEdit.getInstance().getEditSessionFactory().getEditSession(weWorld, -1);
-            Extent destination = clipboard;
-            ForwardExtentCopy copy = new ForwardExtentCopy(source, cReg, clipboard.getOrigin(), destination, pos1);
-            copy.setSourceMask(new ExistingBlockMask(source));
-            Operations.completeLegacy(copy);
-            ClipboardFormat.SCHEMATIC.getWriter(new FileOutputStream(file)).write(clipboard, worldData);
-        } catch (IOException | MaxChangedBlocksException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }*/
+
         Vector min = new Vector(x1, y1, z1);
         Vector max = new Vector(x2, y2, z2);
         com.sk89q.worldedit.world.World weWorld = new BukkitWorld(world);
@@ -367,8 +321,9 @@ public class Utils {
 
         EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(region.getWorld(), -1);
 
+
         ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(editSession, region, clipboard, region.getMinimumPoint());
-        forwardExtentCopy.setCopyEntities(true);
+        forwardExtentCopy.setCopyEntities(false);
         Operations.complete(forwardExtentCopy);
         File dataDirectory = new File(Main.getInstance().getDataFolder(), "maps");
         if (!dataDirectory.exists()) {
