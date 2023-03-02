@@ -28,6 +28,8 @@ public final class Main extends JavaPlugin implements Listener {
     private static final HashMap<Integer, TypeShop> shops = new HashMap<>();
     public static ArrayList<Hologram> holograms = new ArrayList<>();
     public static ArrayList<Player> playersFreeze = new ArrayList<>();
+    public static ArrayList<Player> godMode = new ArrayList<>();
+
     @Override
     public void onEnable() {
 
@@ -156,6 +158,23 @@ public final class Main extends JavaPlugin implements Listener {
     public static boolean isPlayerFreeze(Player player) {
         return playersFreeze.contains(player);
     }
+
+    public static void addGodMode(Player player) {
+        godMode.add(player);
+    }
+
+    public static void removeGodMode(Player player) {
+        godMode.remove(player);
+    }
+
+    public static void clearGodMode() {
+        godMode.clear();
+    }
+
+    public static boolean isGodMode(Player player) {
+        return godMode.contains(player);
+    }
+
 
 
 

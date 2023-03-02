@@ -16,24 +16,24 @@ import java.util.Random;
 
 public class EntityDamageByEntity implements org.bukkit.event.Listener {
 
-   @EventHandler
+    @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        if(event.getEntity() != null) {
-            Player player = (Player) event.getEntity();
-            if(Manager.isCurrentlyInGame(player)) {
+        if (event.getEntity() != null) {
+            Player player = event.getEntity();
+            if (Manager.isCurrentlyInGame(player)) {
                 event.setDeathMessage(null);
             }
         }
     }
 
     @EventHandler
-    public void onDeath(EntityDamageEvent event) {
-        if(event.getEntity() instanceof Player) {
+    public void onDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            if(player.getHealth() <= event.getFinalDamage()) {
-                if(Manager.isCurrentlyInGame(player)) {
+            if (player.getHealth() <= event.getFinalDamage()) {
+                if (Manager.isCurrentlyInGame(player)) {
                     Team team = Manager.getManager(player).getTeam(player);
-                    if(team != null) {
+                    if (team != null) {
                         List<String> m = new ArrayList<>();
                         switch (event.getCause()) {
                             case BLOCK_EXPLOSION:
@@ -138,7 +138,7 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                         if (m.size() == 0) {
                             m.add("was dead");
                         }
-                        Manager.getManager(player).broadcast(team.getColor()+"§l"+player.getName() + " §r§4" + m.get(new Random().nextInt(m.size())));
+                        Manager.getManager(player).broadcast(team.getColor() + "§l" + player.getName() + " §r§4" + m.get(new Random().nextInt(m.size())));
 
                         player.spigot().respawn();
                         player.teleport(Manager.getManager(player).getArena().getSpecSpawn());
@@ -146,6 +146,49 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                         Death death = new Death();
                         death.player = player;
                         death.runTaskTimer(Main.getInstance(), 0, 20);
+                    }
+                }
+            }
+            // if player attacks a teammate
+            if (Manager.isCurrentlyInGame(player)) {
+                if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+                    if (event.getEntity() instanceof Player) {
+                        Player enemy = (Player) event.getEntity();
+                        if (Manager.isCurrentlyInGame(enemy)) {
+                            if (Manager.getManager(player).getTeam(player) == Manager.getManager(enemy).getTeam(enemy)) {
+                                player.sendMessage("§cYou can't attack your teammates!");
+                                event.setCancelled(true);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // if spawn protection
+            if (Manager.isCurrentlyInGame(player)) {
+                if (Main.isGodMode(player)) {
+                    if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+                        if (event.getEntity() instanceof Player) {
+                            Player enemy = (Player) event.getEntity();
+                            if (Manager.isCurrentlyInGame(enemy)) {
+                                enemy.sendMessage("§c" + player.getName() + " §7is in spawn protection.");
+                                event.setCancelled(true);
+
+                            }
+                        }
+                    }
+                }
+            }
+            // if enemy is in spawn protection
+            if (Manager.isCurrentlyInGame(player)) {
+                if (Main.isGodMode(player)) {
+                    if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+                        if (event.getEntity() instanceof Player) {
+                            Player enemy = (Player) event.getEntity();
+                            if (Manager.isCurrentlyInGame(enemy)) {
+                                Main.removeGodMode(enemy);
+                            }
+                        }
                     }
                 }
             }

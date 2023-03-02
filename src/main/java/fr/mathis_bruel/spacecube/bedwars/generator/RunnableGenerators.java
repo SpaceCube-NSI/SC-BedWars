@@ -11,10 +11,13 @@ public class RunnableGenerators extends BukkitRunnable {
     public Arena arena;
     int timerDiamondMap = 0;
     int timerEmeraldMap = 0;
+    boolean sendParticule = false;
+
     @Override
     public void run() {
 
         if (timerDiamondMap >= GeneratorType.DIAMOND_MAP.getLevel(0)) {
+            sendParticule = true;
             timerDiamondMap = 0;
             for (Generator generator : arena.getDiamondsGenerators()){
                 Location loc = generator.getLocation().clone().add(0, 2, 0);
@@ -30,6 +33,7 @@ public class RunnableGenerators extends BukkitRunnable {
 
         if (timerEmeraldMap >= GeneratorType.EMERALD_MAP.getLevel(0)) {
             timerEmeraldMap = 0;
+            sendParticule = true;
             for (Generator generator : arena.getEmeraldsGenerators()){
                 Location loc = generator.getLocation().clone().add(0, 2, 0);
                 loc.getWorld().dropItem(loc, new ItemStack(Material.EMERALD)).setVelocity(new Vector(0, 0, 0));
@@ -40,6 +44,11 @@ public class RunnableGenerators extends BukkitRunnable {
                 generator.updateHologram(timerEmeraldMap);
             }
             timerEmeraldMap++;
+        }
+
+        if(sendParticule){
+
+
         }
     }
 }
