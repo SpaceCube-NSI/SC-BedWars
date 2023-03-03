@@ -1,5 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
+import com.sk89q.worldedit.WorldEditException;
 import es.eltrueno.npc.TruenoNPC;
 import es.eltrueno.npc.TruenoNPCApi;
 import es.eltrueno.npc.skin.TruenoNPCSkin;
@@ -23,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -235,10 +237,18 @@ public class Manager {
         playerBeds.clear();
     }
 
-    public void initGame() {
+    public void initGame() throws FileNotFoundException, WorldEditException {
         RunnableGenerators runnableGenerators = new RunnableGenerators();
         runnableGenerators.arena = arena;
         runnableGenerators.runTaskTimer(Main.getInstance(), 0, 20);
+        int x1 = arena.getPos1Map().getBlockX();
+        int y1 = arena.getPos1Map().getBlockY();
+        int z1 = arena.getPos1Map().getBlockZ();
+        int x2 = arena.getPos2Map().getBlockX();
+        int y2 = arena.getPos2Map().getBlockY();
+        int z2 = arena.getPos2Map().getBlockZ();
+
+        Utils.saveSchem(arena.getName(), x1, y1, z1, x2, y2, z2, arena.getWorld());
 
         for (Team team : arena.getTeams()) {
             TruenoNPCSkin skin = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "f52dc72a8953457f972c0fecd8fd553d");
@@ -336,43 +346,90 @@ public class Manager {
             }
         }
 
-        // get all blocks (in y = 0) around team spawn in function of arena.getProtectionRadius()
+        // get all blocks around team spawn in function of arena.getProtectionRadius()
         for (Team team : arena.getTeams()) {
-            for (int x = (int) (team.getSpawn().getBlockX() - arena.getProtectionRadius()); x <= team.getSpawn().getBlockX() + arena.getProtectionRadius(); x++) {
-                for (int z = (int) (team.getSpawn().getBlockZ() - arena.getProtectionRadius()); z <= team.getSpawn().getBlockZ() + arena.getProtectionRadius(); z++) {
-                    Location loc = new Location(arena.getWorld(), x, 0, z);
-                    this.locationsNotPlaceable.add(loc);
+            Location location3 = team.getSpawn();
+            int minX2 = (int) Math.min(location3.getBlockX() - arena.getProtectionRadius(), location3.getBlockX() + arena.getProtectionRadius());
+            int maxX2 = (int) Math.max(location3.getBlockX() - arena.getProtectionRadius(), location3.getBlockX() + arena.getProtectionRadius());
+            int minY2 = (int) Math.min(location3.getBlockY() - arena.getProtectionRadius(), location3.getBlockY() + arena.getProtectionRadius());
+            int maxY2 = (int) Math.max(location3.getBlockY() - arena.getProtectionRadius(), location3.getBlockY() + arena.getProtectionRadius());
+            int minZ2 = (int) Math.min(location3.getBlockZ() - arena.getProtectionRadius(), location3.getBlockZ() + arena.getProtectionRadius());
+            int maxZ2 = (int) Math.max(location3.getBlockZ() - arena.getProtectionRadius(), location3.getBlockZ() + arena.getProtectionRadius());
+
+            for (int x = minX2; x <= maxX2; x++) {
+                for (int y = minY2; y <= maxY2; y++) {
+                    for (int z = minZ2; z <= maxZ2; z++) {
+                        Block block = location3.getWorld().getBlockAt(x, y, z);
+                        if(!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
+                            this.blocksNotBreakable.add(block);
+                        }
+                    }
                 }
             }
-            // get all blocks in radius of 2 around all generators team
+            // around generator team
             for (GeneratorTeam generator : team.getGenerators()) {
-                for (int x = (int) (generator.getLocation().getBlockX() - 2); x <= generator.getLocation().getBlockX() + 2; x++) {
-                    for (int z = (int) (generator.getLocation().getBlockZ() - 2); z <= generator.getLocation().getBlockZ() + 2; z++) {
-                        Location loc = new Location(arena.getWorld(), x, 0, z);
-                        this.locationsNotPlaceable.add(loc);
+                Location location4 = generator.getLocation();
+                int minX3 = (int) Math.min(location4.getBlockX() - 2, location4.getBlockX() + 2);
+                int maxX3 = (int) Math.max(location4.getBlockX() - 2, location4.getBlockX() + 2);
+                int minY3 = (int) Math.min(location4.getBlockY() - 2, location4.getBlockY() + 2);
+                int maxY3 = (int) Math.max(location4.getBlockY() - 2, location4.getBlockY() + 2);
+                int minZ3 = (int) Math.min(location4.getBlockZ() - 2, location4.getBlockZ() + 2);
+                int maxZ3 = (int) Math.max(location4.getBlockZ() - 2, location4.getBlockZ() + 2);
+
+                for (int x = minX3; x <= maxX3; x++) {
+                    for (int y = minY3; y <= maxY3; y++) {
+                        for (int z = minZ3; z <= maxZ3; z++) {
+                            Block block = location4.getWorld().getBlockAt(x, y, z);
+                            if(!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
+                                this.blocksNotBreakable.add(block);
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        for (Generator generator : arena.getDiamondsGenerators()) {
+            Location location3 = generator.getLocation();
+            int minX2 = (int) Math.min(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int maxX2 = (int) Math.max(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int minY2 = (int) Math.min(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int maxY2 = (int) Math.max(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int minZ2 = (int) Math.min(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+            int maxZ2 = (int) Math.max(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+
+            for (int x = minX2; x <= maxX2; x++) {
+                for (int y = minY2; y <= maxY2; y++) {
+                    for (int z = minZ2; z <= maxZ2; z++) {
+                        Block block = location3.getWorld().getBlockAt(x, y, z);
+                        if(!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
+                            this.blocksNotBreakable.add(block);
+                        }
                     }
                 }
             }
         }
 
-        // get all blocks in radius of 2 around all generators
-        for (Generator generator : arena.getDiamondsGenerators()) {
-            for (int x = (int) (generator.getLocation().getBlockX() - 2); x <= generator.getLocation().getBlockX() + 2; x++) {
-                for (int z = (int) (generator.getLocation().getBlockZ() - 2); z <= generator.getLocation().getBlockZ() + 2; z++) {
-                    Location loc = new Location(arena.getWorld(), x, 0, z);
-                    this.locationsNotPlaceable.add(loc);
-                }
-            }
-        }
-for (Generator generator : arena.getEmeraldsGenerators()) {
-            for (int x = (int) (generator.getLocation().getBlockX() - 2); x <= generator.getLocation().getBlockX() + 2; x++) {
-                for (int z = (int) (generator.getLocation().getBlockZ() - 2); z <= generator.getLocation().getBlockZ() + 2; z++) {
-                    Location loc = new Location(arena.getWorld(), x, 0, z);
-                    this.locationsNotPlaceable.add(loc);
-                }
-            }
-        }
+        for (Generator generator : arena.getEmeraldsGenerators()) {
+            Location location3 = generator.getLocation();
+            int minX2 = (int) Math.min(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int maxX2 = (int) Math.max(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int minY2 = (int) Math.min(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int maxY2 = (int) Math.max(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int minZ2 = (int) Math.min(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+            int maxZ2 = (int) Math.max(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
 
+            for (int x = minX2; x <= maxX2; x++) {
+                for (int y = minY2; y <= maxY2; y++) {
+                    for (int z = minZ2; z <= maxZ2; z++) {
+                        Block block = location3.getWorld().getBlockAt(x, y, z);
+                        if(!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
+                            this.blocksNotBreakable.add(block);
+                        }
+                    }
+                }
+            }
+        }
         this.getPlayers().forEach(player -> {
             this.setPlayerKills(player, 0);
             this.setPlayerDeaths(player, 0);
@@ -496,12 +553,7 @@ for (Generator generator : arena.getEmeraldsGenerators()) {
     }
 
     public boolean isLocationNotPlaceable(Location location) {
-        for (Location loc : locationsNotPlaceable) {
-            if (loc.getBlockX() == location.getBlockX() && loc.getBlockZ() == location.getBlockZ()) {
-                return true;
-            }
-        }
-        return false;
+        return locationsNotPlaceable.contains(location);
     }
 
 

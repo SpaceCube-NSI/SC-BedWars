@@ -1,5 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
+import com.sk89q.worldedit.WorldEditException;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGeneratorsTeams;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
@@ -8,6 +9,7 @@ import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -66,7 +68,13 @@ public class Runnable extends BukkitRunnable {
                 }
                 manager.getManagerState().setState(State.RUNNING);
 
-                manager.initGame();
+                try {
+                    manager.initGame();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (WorldEditException e) {
+                    e.printStackTrace();
+                }
 
             } else {
                 manager.setStartingTime(manager.getStartingTime() - 1);
