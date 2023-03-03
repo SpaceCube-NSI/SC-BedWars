@@ -50,7 +50,10 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                                 m.add("glug glug glug...");
                                 break;
                             case ENTITY_ATTACK:
-                                String s = ((Player) event.getEntity()).getKiller().getName();
+                                Player killer = ((Player) event.getEntity()).getKiller();
+                                if(!Manager.isCurrentlyInGame(killer)) return;
+                                String s = killer.getName();
+                                Manager.getManager(killer).addPlayerKill(killer);
                                 m.add("was killed by " + s + "§r.");
                                 m.add("was slain by " + s + "§r.");
                                 m.add("was murdered by " + s + "§r.");
@@ -139,7 +142,7 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                             m.add("was dead");
                         }
                         Manager.getManager(player).broadcast(team.getColor() + "§l" + player.getName() + " §r§4" + m.get(new Random().nextInt(m.size())));
-
+                        Manager.getManager(player).addPlayerDeath(player);
                         player.spigot().respawn();
                         player.teleport(Manager.getManager(player).getArena().getSpecSpawn());
                         player.setGameMode(GameMode.SPECTATOR);

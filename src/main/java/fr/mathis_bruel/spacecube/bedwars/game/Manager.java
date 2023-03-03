@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Manager {
 
@@ -36,6 +37,10 @@ public class Manager {
     private final ArrayList<EntityPlayer> npcs = new ArrayList<>();
     private final ArrayList<Block> blocksNotBreakable = new ArrayList<>();
     private final ArrayList<Location> locationsNotPlaceable = new ArrayList<>();
+    private final HashMap<Player, Integer> playerKills = new HashMap<>();
+    private final HashMap<Player, Integer> playerDeaths = new HashMap<>();
+    private final HashMap<Player, Integer> playerBeds = new HashMap<>();
+
 
     public Manager(Arena arena) {
         this.arena = arena;
@@ -132,6 +137,102 @@ public class Manager {
 
     public ArrayList<EntityPlayer> getNpcs() {
         return npcs;
+    }
+
+    public void addNpc(EntityPlayer npc) {
+        npcs.add(npc);
+    }
+
+    public void removeNpc(EntityPlayer npc) {
+        npcs.remove(npc);
+    }
+
+    public void clearNpcs() {
+        npcs.clear();
+    }
+
+    public HashMap<Player, Integer> getPlayerKills() {
+        return playerKills;
+    }
+
+    public void setPlayerKills(Player player, int kills) {
+        playerKills.put(player, kills);
+    }
+
+    public void addPlayerKill(Player player) {
+        if(playerKills.containsKey(player)) {
+            playerKills.put(player, playerKills.get(player) + 1);
+        } else {
+            playerKills.put(player, 1);
+        }
+    }
+
+    public void removePlayerKill(Player player) {
+        if(playerKills.containsKey(player)) {
+            playerKills.put(player, playerKills.get(player) - 1);
+        } else {
+            playerKills.put(player, 0);
+        }
+    }
+
+    public void clearPlayerKills() {
+        playerKills.clear();
+    }
+
+    public HashMap<Player, Integer> getPlayerDeaths() {
+        return playerDeaths;
+    }
+
+    public void setPlayerDeaths(Player player, int deaths) {
+        playerDeaths.put(player, deaths);
+    }
+
+    public void addPlayerDeath(Player player) {
+        if(playerDeaths.containsKey(player)) {
+            playerDeaths.put(player, playerDeaths.get(player) + 1);
+        } else {
+            playerDeaths.put(player, 1);
+        }
+    }
+
+    public void removePlayerDeath(Player player) {
+        if(playerDeaths.containsKey(player)) {
+            playerDeaths.put(player, playerDeaths.get(player) - 1);
+        } else {
+            playerDeaths.put(player, 0);
+        }
+    }
+
+    public void clearPlayerDeaths() {
+        playerDeaths.clear();
+    }
+
+    public HashMap<Player, Integer> getPlayerBeds() {
+        return playerBeds;
+    }
+
+    public void setPlayerBeds(Player player, int beds) {
+        playerBeds.put(player, beds);
+    }
+
+    public void addPlayerBed(Player player) {
+        if(playerBeds.containsKey(player)) {
+            playerBeds.put(player, playerBeds.get(player) + 1);
+        } else {
+            playerBeds.put(player, 1);
+        }
+    }
+
+    public void removePlayerBed(Player player) {
+        if(playerBeds.containsKey(player)) {
+            playerBeds.put(player, playerBeds.get(player) - 1);
+        } else {
+            playerBeds.put(player, 0);
+        }
+    }
+
+    public void clearPlayerBeds() {
+        playerBeds.clear();
     }
 
     public void initGame() {
@@ -271,6 +372,12 @@ for (Generator generator : arena.getEmeraldsGenerators()) {
                 }
             }
         }
+
+        this.getPlayers().forEach(player -> {
+            this.setPlayerKills(player, 0);
+            this.setPlayerDeaths(player, 0);
+            this.setPlayerBeds(player, 0);
+        });
 
 
     }

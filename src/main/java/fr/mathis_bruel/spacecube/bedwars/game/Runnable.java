@@ -134,9 +134,9 @@ public class Runnable extends BukkitRunnable {
                         "§7Bed: " + (team.isBedAlive() ? "§aAlive" : "§cDead"),
                         "",
                         "§4§lYour Stats",
-                        "§7Kills: §f" + 0,
-                        "§7Deaths: §f" + 0,
-                        "§7Beds: §f" + 0,
+                        "§7Kills: §f" + manager.getPlayerKills().get(player),
+                        "§7Deaths: §f" + manager.getPlayerDeaths().get(player),
+                        "§7Beds: §f" + manager.getPlayerBeds().get(player),
                         "§7§n                ",
                         "",
                         "§6§lwww.spacecube.games"
