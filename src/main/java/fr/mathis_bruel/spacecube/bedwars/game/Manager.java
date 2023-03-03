@@ -9,6 +9,7 @@ import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
 import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGenerators;
 import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
 import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
+import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -223,7 +224,6 @@ public class Manager {
         int minZ = Math.min(arena.getPos1Map().getBlockZ(), arena.getPos2Map().getBlockZ());
         int maxZ = Math.max(arena.getPos1Map().getBlockZ(), arena.getPos2Map().getBlockZ());
 
-//Parcourez tous les blocs de la région et ajoutez-les à la liste
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 for (int z = minZ; z <= maxZ; z++) {
@@ -239,6 +239,33 @@ public class Manager {
         for (Team team : arena.getTeams()) {
             for (int x = (int) (team.getSpawn().getBlockX() - arena.getProtectionRadius()); x <= team.getSpawn().getBlockX() + arena.getProtectionRadius(); x++) {
                 for (int z = (int) (team.getSpawn().getBlockZ() - arena.getProtectionRadius()); z <= team.getSpawn().getBlockZ() + arena.getProtectionRadius(); z++) {
+                    Location loc = new Location(arena.getWorld(), x, 0, z);
+                    this.locationsNotPlaceable.add(loc);
+                }
+            }
+            // get all blocks in radius of 2 around all generators team
+            for (GeneratorTeam generator : team.getGenerators()) {
+                for (int x = (int) (generator.getLocation().getBlockX() - 2); x <= generator.getLocation().getBlockX() + 2; x++) {
+                    for (int z = (int) (generator.getLocation().getBlockZ() - 2); z <= generator.getLocation().getBlockZ() + 2; z++) {
+                        Location loc = new Location(arena.getWorld(), x, 0, z);
+                        this.locationsNotPlaceable.add(loc);
+                    }
+                }
+            }
+        }
+
+        // get all blocks in radius of 2 around all generators
+        for (Generator generator : arena.getDiamondsGenerators()) {
+            for (int x = (int) (generator.getLocation().getBlockX() - 2); x <= generator.getLocation().getBlockX() + 2; x++) {
+                for (int z = (int) (generator.getLocation().getBlockZ() - 2); z <= generator.getLocation().getBlockZ() + 2; z++) {
+                    Location loc = new Location(arena.getWorld(), x, 0, z);
+                    this.locationsNotPlaceable.add(loc);
+                }
+            }
+        }
+for (Generator generator : arena.getEmeraldsGenerators()) {
+            for (int x = (int) (generator.getLocation().getBlockX() - 2); x <= generator.getLocation().getBlockX() + 2; x++) {
+                for (int z = (int) (generator.getLocation().getBlockZ() - 2); z <= generator.getLocation().getBlockZ() + 2; z++) {
                     Location loc = new Location(arena.getWorld(), x, 0, z);
                     this.locationsNotPlaceable.add(loc);
                 }
