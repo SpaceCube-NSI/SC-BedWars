@@ -440,6 +440,16 @@ public class Arena {
         return null;
     }
 
+    // by world
+    public static Arena getArenaByWorld(World world) {
+        for (Arena arena : Main.getInstance().arenas) {
+            if (arena.getWorld().equals(world)) {
+                return arena;
+            }
+        }
+        return null;
+    }
+
 
 
 }
