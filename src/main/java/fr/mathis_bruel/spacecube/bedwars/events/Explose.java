@@ -15,16 +15,14 @@ public class Explose implements org.bukkit.event.Listener {
     public void onExplose(org.bukkit.event.entity.EntityExplodeEvent event) {
 
         if (event.getEntity().getType() == EntityType.PRIMED_TNT) {
+            List<Block> destroyed = event.blockList();
+            System.out.println(destroyed);
             Arena arena = Arena.getArenaByWorld(event.getEntity().getWorld());
             Manager manager = Manager.getManager(arena);
             if(manager.getManagerState().getCurrentState() != State.RUNNING) return;
 
-            List<Block> destroyed = event.blockList();
-            destroyed.forEach(block -> {
-                if(manager.isBlockNotBreakable(block)) {
-                    destroyed.remove(block);
-                }
-            });
+            destroyed.removeIf(block -> manager.isBlockNotBreakable(block));
+            // TODO: OPTIMIZE THIS
 
         }
 
