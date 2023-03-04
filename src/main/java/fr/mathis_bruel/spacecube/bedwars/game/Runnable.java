@@ -6,7 +6,12 @@ import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGeneratorsTeams;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.FileNotFoundException;
@@ -83,6 +88,35 @@ public class Runnable extends BukkitRunnable {
         }
         if (manager.getManagerState().getCurrentState() == State.RUNNING) {
 
+            if(manager.isFinish()) {
+                manager.getManagerState().setState(State.ENDED);
+                for (Player player : manager.getPlayers()){
+                    player.setHealth(20);
+                    player.setFoodLevel(20);
+                }
+                manager.broadcast("§7-----------------------------");
+                manager.broadcast("§6§lBedWars");
+                manager.broadcast("§7-----------------------------");
+                manager.broadcast("§7The game is over!");
+                manager.broadcast("§7The winners are:");
+                for (Player player : manager.getWinners()){
+                    manager.broadcast("§f- " + player.getName());
+                }
+                manager.broadcast("§7-----------------------------");
+                manager.broadcast("§6§lwww.spacecube.games");
+                manager.broadcast("§7-----------------------------");
+            }
+
+        }
+
+        if(manager.getManagerState().getCurrentState() == State.ENDED){
+            for (Player player : manager.getWinners()){
+                Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
+                FireworkMeta fireworkMeta = firework.getFireworkMeta();
+                fireworkMeta.addEffect(FireworkEffect.builder().withColor(Color.RED).withColor(Color.GREEN).withColor(Color.BLUE).with(FireworkEffect.Type.BALL_LARGE).build());
+                fireworkMeta.setPower(1);
+                firework.setFireworkMeta(fireworkMeta);
+            }
         }
 
 
@@ -138,8 +172,8 @@ public class Runnable extends BukkitRunnable {
                         "§l"+teamsLeft.toString(),
                         "",
                         "§f§lYour Team",
-                        "§7Color: " + team.getColor() + team.getName(),
-                        "§7Bed: " + (team.isBedAlive() ? "§aAlive" : "§cDead"),
+                        "§7Color: " + (team != null ? team.getColor() + team.getName() : "§cEliminated"),
+                        "§7Bed: " + (team != null ? (team.isBedAlive() ? "§aAlive" : "§cDead") : "§cEliminated"),
                         "",
                         "§4§lYour Stats",
                         "§7Kills: §f" + manager.getPlayerKills().get(player),

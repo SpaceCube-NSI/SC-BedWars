@@ -12,8 +12,6 @@ public class Death extends BukkitRunnable {
     @Override
     public void run() {
         if(time == 5){
-            player.setHealth(20);
-            player.setFoodLevel(20);
             //Main.addPlayerFreeze(player);
             player.sendTitle("§6Respawn in", "§2➄");
             time --;

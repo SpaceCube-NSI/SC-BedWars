@@ -141,14 +141,28 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                         if (m.size() == 0) {
                             m.add("was dead");
                         }
-                        Manager.getManager(player).broadcast(team.getColor() + "§l" + player.getName() + " §r§4" + m.get(new Random().nextInt(m.size())));
                         Manager.getManager(player).addPlayerDeath(player);
                         player.spigot().respawn();
+                        player.setHealth(20);
+                        player.setFoodLevel(20);
                         player.teleport(Manager.getManager(player).getArena().getSpecSpawn());
                         player.setGameMode(GameMode.SPECTATOR);
-                        Death death = new Death();
-                        death.player = player;
-                        death.runTaskTimer(Main.getInstance(), 0, 20);
+                        String s = "";
+                        System.out.println(team.getName() + " " + team.isBedAlive());
+                        if(team.isBedAlive()) {
+                            Death death = new Death();
+                            death.player = player;
+                            death.runTaskTimer(Main.getInstance(), 0, 20);
+                        }else{
+                            Manager.getManager(player).broadcast("§7------------------");
+                            Manager.getManager(player).broadcast("§c§l" + team.getColor() + "§l" + team.getName() + " §r§chas been eliminated!");
+                            Manager.getManager(player).broadcast("§7------------------");
+                            s = " §7| §bFinal Elimination";
+                            player.sendTitle("§c§lELIMINATED", "§r§7You were eliminated from the game!");
+                            team.removePlayer(player);
+                            System.out.println(team.getName() + " " + team.getPlayers().size());
+                        }
+                        Manager.getManager(player).broadcast(team.getColor() + "§l" + player.getName() + " §r§4" + m.get(new Random().nextInt(m.size()))+  s);
                     }
                 }
             }

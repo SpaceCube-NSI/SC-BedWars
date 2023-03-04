@@ -3,6 +3,10 @@ package fr.mathis_bruel.spacecube.bedwars.events;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
+import fr.mathis_bruel.spacecube.bedwars.teams.Team;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -28,6 +32,27 @@ public class BlockBreak implements Listener {
                 return;
             //System.out.println(manager.getBlocksNotBreakable());
             if(manager.isBlockNotBreakable(event.getBlock())) {
+                if(event.getBlock().getType() == Material.BED_BLOCK){
+                    Team teamDestroyBed = manager.getTeam(event.getBlock());
+                    if(teamDestroyBed == null)
+                        return;
+                    if(manager.getTeam(event.getPlayer()) == teamDestroyBed){
+                        event.setCancelled(true);
+                        event.getPlayer().sendMessage("§cYou can't break your own bed!");
+                        return;
+                    }else{
+                        teamDestroyBed.setBedAlive(false);
+                        manager.broadcast("§7------------------------");
+                        manager.broadcast("§cThe bed of the team " + teamDestroyBed.getColor() + teamDestroyBed.getName() + "§c has been destroyed!");
+                        manager.broadcast("§cBy " + manager.getTeam(event.getPlayer()).getColor() + event.getPlayer().getName() + "§c!");
+                        manager.broadcast("§7------------------------");
+                        // play dragon sound
+                        for(Player player : arena.getPlayers()){
+                            player.playSound(player.getLocation(), Sound.ENDERDRAGON_GROWL, 1, 1);
+                        }
+                        return;
+                    }
+                }
                 event.setCancelled(true);
                 event.getPlayer().sendMessage("§cYou can't break this block!");
             }

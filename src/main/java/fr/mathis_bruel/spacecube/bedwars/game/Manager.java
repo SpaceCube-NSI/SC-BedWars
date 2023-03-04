@@ -137,6 +137,13 @@ public class Manager {
         return null;
     }
 
+    public Team getTeam(Block bed){
+        for(Team team : arena.getTeams()){
+            if(team.getBed().equals(bed)) return team;
+        }
+        return null;
+    }
+
     public ArrayList<EntityPlayer> getNpcs() {
         return npcs;
     }
