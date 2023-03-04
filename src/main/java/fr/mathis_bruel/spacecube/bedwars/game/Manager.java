@@ -540,6 +540,37 @@ public class Manager {
         }
     }
 
+    public Boolean isFinish(){
+        if(this.players.size() <= 1) {
+            return true;
+        }
+        int teamAlive = 0;
+        for (Team team : this.arena.getTeams()){
+            if(!team.isBedAlive()){
+                if(team.getPlayers().size() > 0){
+                    teamAlive++;
+                }
+            }else {
+                teamAlive++;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Player> getWinners(){
+        ArrayList<Player> winners = new ArrayList<>();
+        for (Team team : this.arena.getTeams()){
+            if(team.isBedAlive()){
+                winners.addAll(team.getPlayers());
+            }else{
+                if(team.getPlayers().size() > 0){
+                    winners.addAll(team.getPlayers());
+                }
+            }
+        }
+        return winners;
+    }
+
     public ArrayList<Block> getBlocksNotBreakable() {
         return blocksNotBreakable;
     }
