@@ -22,10 +22,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
     public static Location parseStringToLoc(String string) {
@@ -364,4 +366,25 @@ public class Utils {
         Operations.completeLegacy(copy);
         extent.flushQueue();
     }
+    public static List<Block> getBlocksTo(Location startLoc, Location endLoc) {
+        org.bukkit.util.Vector tnt = startLoc.toVector().clone();
+        org.bukkit.util.Vector block = endLoc.toVector().clone();
+        org.bukkit.util.Vector diff = tnt.subtract(block).normalize();
+        List<Block> b = new ArrayList<>();
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                BlockIterator BI = new BlockIterator(endLoc.getWorld(), block, diff, 0.0d, (int) startLoc.distance(endLoc));
+                while (BI.hasNext()){
+                    Block blocks = BI.next();
+                    if(blocks.getType() != Material.AIR) {
+                        b.add(blocks);
+                    }
+                }
+            }
+        }.runTask(Main.getInstance());
+
+        return b;
+    }
+
 }
