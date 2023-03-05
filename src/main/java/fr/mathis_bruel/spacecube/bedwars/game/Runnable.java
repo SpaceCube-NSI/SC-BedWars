@@ -1,6 +1,7 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
 import com.sk89q.worldedit.WorldEditException;
+import es.eltrueno.npc.TruenoNPC;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGeneratorsTeams;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
@@ -8,19 +9,23 @@ import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
+import org.bukkit.GameMode;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Runnable extends BukkitRunnable {
     public Manager manager;
-
+    private int timeEnd = 10;
     @Override
     public void run() {
         Arena arena = manager.getArena();
@@ -67,6 +72,7 @@ public class Runnable extends BukkitRunnable {
                     team.getGenerators().forEach(generator -> {
                         RunnableGeneratorsTeams runnableGenerators = new RunnableGeneratorsTeams();
                         runnableGenerators.generatorTeam = generator;
+                        runnableGenerators.arena = arena;
                         runnableGenerators.runTaskTimer(Main.getInstance(), 0, 20);
                         generator.setRunnableGenerators(runnableGenerators);
                     });
@@ -110,6 +116,7 @@ public class Runnable extends BukkitRunnable {
         }
 
         if(manager.getManagerState().getCurrentState() == State.ENDED){
+            timeEnd--;
             for (Player player : manager.getWinners()){
                 Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
                 FireworkMeta fireworkMeta = firework.getFireworkMeta();
@@ -117,6 +124,116 @@ public class Runnable extends BukkitRunnable {
                 fireworkMeta.setPower(1);
                 firework.setFireworkMeta(fireworkMeta);
             }
+            if(timeEnd == 0) manager.getManagerState().setState(State.ENDING);
+        }
+
+        if(manager.getManagerState().getCurrentState() == State.ENDING){
+            // TODO: save stats in database
+            for (Player player : manager.getPlayers()){
+                player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
+                player.getInventory().clear();
+                player.setHealth(20);
+                player.setFoodLevel(20);
+                player.setGameMode(GameMode.SURVIVAL);
+                FastBoard board = new FastBoard(player);
+                board.updateTitle("§6§lBedWars");
+                board.updateLines(Arrays.asList(
+                        "§f",
+                        "§fNiveau: §f" + 0,
+                        "§f",
+                        "§fProgrès: §b" + 0 + "§7/§a"+ 0,
+                        "§8[§7 §a▊▊▊                §8]",
+                        "§f",
+                        "§fCoins: §e" + 0,
+                        "§f",
+                        "§fKills: §a" + 0,
+                        "§fDeaths: §a" + 0,
+                        "§fWins: §a" + 0,
+                        "§fStreak: §a" + 0,
+                        "§f",
+                        "§6§lwww.spacecube.games"
+
+                ));
+                Main.addBoard(player.getUniqueId(), board);
+                player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
+                player.getInventory().clear();
+                ItemStack headPlayer = Utils.getHead(player);
+                ItemMeta headPlayerMeta = headPlayer.getItemMeta();
+                headPlayerMeta.setDisplayName("§6Your stats");
+                headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
+                headPlayer.setItemMeta(headPlayerMeta);
+                player.getInventory().setItem(4, headPlayer);
+            }
+            for (Player player : manager.getSpecators()){
+                player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
+                player.getInventory().clear();
+                player.setHealth(20);
+                player.setFoodLevel(20);
+                player.setGameMode(GameMode.SURVIVAL);
+                FastBoard board = new FastBoard(player);
+                board.updateTitle("§6§lBedWars");
+                board.updateLines(Arrays.asList(
+                        "§f",
+                        "§fNiveau: §f" + 0,
+                        "§f",
+                        "§fProgrès: §b" + 0 + "§7/§a"+ 0,
+                        "§8[§7 §a▊▊▊                §8]",
+                        "§f",
+                        "§fCoins: §e" + 0,
+                        "§f",
+                        "§fKills: §a" + 0,
+                        "§fDeaths: §a" + 0,
+                        "§fWins: §a" + 0,
+                        "§fStreak: §a" + 0,
+                        "§f",
+                        "§6§lwww.spacecube.games"
+
+                ));
+                Main.addBoard(player.getUniqueId(), board);
+                player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
+                player.getInventory().clear();
+                ItemStack headPlayer = Utils.getHead(player);
+                ItemMeta headPlayerMeta = headPlayer.getItemMeta();
+                headPlayerMeta.setDisplayName("§6Your stats");
+                headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
+                headPlayer.setItemMeta(headPlayerMeta);
+                player.getInventory().setItem(4, headPlayer);
+            }
+            try {
+                Utils.restoreMap(arena.getName(), arena.getWorld(), arena.getPos1Map().getBlockX(), arena.getPos1Map().getBlockY(), arena.getPos1Map().getBlockZ());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (WorldEditException e) {
+                e.printStackTrace();
+            }
+            manager.getPlayers().clear();
+            manager.getSpecators().clear();
+            manager.getWinners().clear();
+            arena.getDiamondsGenerators().forEach(generator -> {
+                generator.getHologram().destroyHolograms();
+            });
+            arena.getEmeraldsGenerators().forEach(generator -> {
+                generator.getHologram().destroyHolograms();
+            });
+            arena.getTeams().forEach(team -> {
+                team.setBedAlive(true);
+                team.getPlayers().clear();
+                team.getGeneratorHolograms().forEach(generatorHologram -> {
+                    generatorHologram.destroyHolograms();
+                });
+                team.getShopHolograms().forEach(shopHologram -> {
+                    shopHologram.destroyHolograms();
+                });
+                team.getGenerators().forEach(generator -> {
+                    generator.setLevelIron(1);
+                    generator.setLevelGold(0);
+                    generator.setLevelDiamond(0);
+                });
+            });
+            arena.getNpcs().forEach(TruenoNPC::delete);
+
+            timeEnd = 10;
+            manager.getManagerState().setState(State.WAITING);
         }
 
 

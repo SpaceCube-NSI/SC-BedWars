@@ -3,6 +3,7 @@ package fr.mathis_bruel.spacecube.bedwars.events;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,6 +17,7 @@ public class Join implements Listener {
     @EventHandler
     public void joinPlayer(PlayerJoinEvent event){
         Player player = event.getPlayer();
+        player.setGameMode(GameMode.SURVIVAL);
         FastBoard board = new FastBoard(event.getPlayer());
         board.updateTitle("§6§lBedWars");
         board.updateLines(Arrays.asList(

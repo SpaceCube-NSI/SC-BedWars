@@ -1,8 +1,10 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
+import es.eltrueno.npc.TruenoNPC;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
 import fr.mathis_bruel.spacecube.bedwars.generator.GeneratorType;
+import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
@@ -15,6 +17,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Arena {
     private World world;
@@ -32,8 +35,10 @@ public class Arena {
     private double protectionRadius;
     private Location pos1Map;
     private Location pos2Map;
+    private final HashMap<Integer, TypeShop> shops = new HashMap<>();
+    private ArrayList<TruenoNPC> npcs = new ArrayList<>();
 
-    public Arena(World world, String name){
+    public Arena(World world, String name) {
         this.world = world;
         this.name = name;
         this.playerPerTeam = 1;
@@ -96,9 +101,9 @@ public class Arena {
         return teams;
     }
 
-    public Team getTeamByName(String name){
-        for(Team team : teams){
-            if(team.getName().equalsIgnoreCase(name))
+    public Team getTeamByName(String name) {
+        for (Team team : teams) {
+            if (team.getName().equalsIgnoreCase(name))
                 return team;
         }
         return null;
@@ -196,6 +201,7 @@ public class Arena {
     public void removeDiamondsGenerator(Generator generator) {
         this.diamondsGenerators.remove(generator);
     }
+
     public Generator getDiamondGenerator(Location location) {
         // if ~ 1 blocks
         for (Generator generator : getDiamondsGenerators()) {
@@ -232,7 +238,7 @@ public class Arena {
 
     public ArrayList<Player> getPlayers() {
         ArrayList<Player> players = new ArrayList<>();
-        for(Team team : teams){
+        for (Team team : teams) {
             players.addAll(team.getPlayers());
         }
         return players;
@@ -263,9 +269,45 @@ public class Arena {
     }
 
 
+    public HashMap<Integer, TypeShop> getShops() {
+        return shops;
+    }
 
+    public TypeShop getShop(int id) {
+        return shops.get(id);
+    }
 
+    public void addShop(int id, TypeShop shop) {
+        shops.put(id, shop);
+    }
 
+    public void removeShop(int id) {
+        shops.remove(id);
+    }
+
+    public void clearShops() {
+        shops.clear();
+    }
+
+    public void setNpcs(ArrayList<TruenoNPC> npcs) {
+        this.npcs = npcs;
+    }
+
+    public ArrayList<TruenoNPC> getNpcs() {
+        return npcs;
+    }
+
+    public void addNpc(TruenoNPC npc) {
+        npcs.add(npc);
+    }
+
+    public void removeNpc(TruenoNPC npc) {
+        npcs.remove(npc);
+    }
+
+    public void clearNpcs() {
+        npcs.clear();
+    }
 
     public void clearAll() {
         this.clearTeams();
@@ -288,10 +330,11 @@ public class Arena {
         this.setPos2Map(null);
 
     }
-    public void delete(){
+
+    public void delete() {
         // delete file
         File file = new File(Main.getInstance().getDataFolder() + "/arenas/" + this.getName() + ".yml");
-        if(file.delete())
+        if (file.delete())
             Bukkit.getLogger().info("File " + this.getName() + ".yml deleted");
         else {
             Bukkit.getLogger().warning("The file " + this.getName() + ".yml can't be deleted");
@@ -307,24 +350,27 @@ public class Arena {
         config.set("playerPerTeam", this.getPlayerPerTeam());
         config.set("maxPlayers", this.getMaxPlayers());
         config.set("minPlayers", this.getMinPlayers());
-        if(this.getSpecSpawn() != null) config.set("specSpawn", Utils.parseLocToString(this.getSpecSpawn()));
-        if(this.getLobbySpawn() != null) config.set("lobbySpawn", Utils.parseLocToString(this.getLobbySpawn()));
-        for(int i = 0; i < this.getTeams().size(); i++) {
+        if (this.getSpecSpawn() != null) config.set("specSpawn", Utils.parseLocToString(this.getSpecSpawn()));
+        if (this.getLobbySpawn() != null) config.set("lobbySpawn", Utils.parseLocToString(this.getLobbySpawn()));
+        for (int i = 0; i < this.getTeams().size(); i++) {
             // save all information of team
             Team team = this.getTeams().get(i);
             config.set("teams." + i + ".name", team.getName());
             config.set("teams." + i + ".color", team.getColor().name());
-            if(team.getSpawn() != null) config.set("teams." + i + ".spawn", Utils.parseLocToString(team.getSpawn()));
-            if(team.getBed() != null) config.set("teams." + i + ".bed", Utils.parseLocToString(team.getBed().getLocation()));
-            if(team.getPlayers() != null) config.set("teams." + i + ".players", team.getPlayers());
-            for(int j = 0; j < team.getGenerators().size(); j++) {
+            if (team.getSpawn() != null) config.set("teams." + i + ".spawn", Utils.parseLocToString(team.getSpawn()));
+            if (team.getBed() != null)
+                config.set("teams." + i + ".bed", Utils.parseLocToString(team.getBed().getLocation()));
+            if (team.getPlayers() != null) config.set("teams." + i + ".players", team.getPlayers());
+            for (int j = 0; j < team.getGenerators().size(); j++) {
                 // save all information of generator
                 GeneratorTeam generator = team.getGenerator(j);
                 config.set("teams." + i + ".generators." + j + ".location", Utils.parseLocToString(generator.getLocation()));
             }
             // save pnj
-            if(team.getPnjItems() != null) config.set("teams." + i + ".pnjItems", Utils.parseLocToString(team.getPnjItems()));
-            if(team.getPnjUpgrades() != null) config.set("teams." + i + ".pnjUpgrades", Utils.parseLocToString(team.getPnjUpgrades()));
+            if (team.getPnjItems() != null)
+                config.set("teams." + i + ".pnjItems", Utils.parseLocToString(team.getPnjItems()));
+            if (team.getPnjUpgrades() != null)
+                config.set("teams." + i + ".pnjUpgrades", Utils.parseLocToString(team.getPnjUpgrades()));
 
 
         }
@@ -334,11 +380,12 @@ public class Arena {
         for (int i = 0; i < this.getDiamondsGenerators().size(); i++) {
             config.set("diamondsGenerators." + i + ".location", Utils.parseLocToString(this.getDiamondsGenerators().get(i).getLocation()));
         }
-        if(this.getTheSpecialist() != null) config.set("theSpecialist", Utils.parseLocToString(this.getTheSpecialist()));
-        if(this.getEnchanter() != null) config.set("enchanter", Utils.parseLocToString(this.getEnchanter()));
+        if (this.getTheSpecialist() != null)
+            config.set("theSpecialist", Utils.parseLocToString(this.getTheSpecialist()));
+        if (this.getEnchanter() != null) config.set("enchanter", Utils.parseLocToString(this.getEnchanter()));
         config.set("protectionRadius", this.getProtectionRadius());
-        if(this.getPos1Map() != null) config.set("pos1Map", Utils.parseLocToString(this.getPos1Map()));
-        if(this.getPos2Map() != null) config.set("pos2Map", Utils.parseLocToString(this.getPos2Map()));
+        if (this.getPos1Map() != null) config.set("pos1Map", Utils.parseLocToString(this.getPos1Map()));
+        if (this.getPos2Map() != null) config.set("pos2Map", Utils.parseLocToString(this.getPos2Map()));
 
         try {
             config.save(file);
@@ -349,21 +396,7 @@ public class Arena {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public static void init(){
+    public static void init() {
         // load all arenas and add in list in Main class
         File folder = new File("plugins/SC_BedWars/arenas/");
         File[] files = folder.listFiles();
@@ -371,53 +404,64 @@ public class Arena {
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             Arena arena = new Arena(Bukkit.getWorld(config.getString("world")), config.getString("name"));
             arena.setPlayerPerTeam(config.getInt("playerPerTeam"));
-            if(config.getString("specSpawn") != null) arena.setSpecSpawn(Utils.parseStringToLoc(config.getString("specSpawn")));
-            if(config.getString("lobbySpawn") != null) arena.setLobbySpawn(Utils.parseStringToLoc(config.getString("lobbySpawn")));
-            if(config.getInt("maxPlayers") != 0) arena.setMaxPlayers(config.getInt("maxPlayers"));
-            if(config.getInt("minPlayers") != 0) arena.setMinPlayers(config.getInt("minPlayers"));
+            if (config.getString("specSpawn") != null)
+                arena.setSpecSpawn(Utils.parseStringToLoc(config.getString("specSpawn")));
+            if (config.getString("lobbySpawn") != null)
+                arena.setLobbySpawn(Utils.parseStringToLoc(config.getString("lobbySpawn")));
+            if (config.getInt("maxPlayers") != 0) arena.setMaxPlayers(config.getInt("maxPlayers"));
+            if (config.getInt("minPlayers") != 0) arena.setMinPlayers(config.getInt("minPlayers"));
 
-            if (config.getConfigurationSection("teams") != null) for (String key : config.getConfigurationSection("teams").getKeys(false)) {
-                Team team = new Team(config.getString("teams." + key + ".name"), Utils.getColor(config.getString("teams." + key + ".color")));
-                if(config.getString("teams." + key + ".spawn") != null)team.setSpawn(Utils.parseStringToLoc(config.getString("teams." + key + ".spawn")));
-                if(config.getString("teams." + key + ".bed") != null) {
-                    Location bedLoc = Utils.parseStringToLoc(config.getString("teams." + key + ".bed"));
-                    team.setBed(bedLoc.getBlock());
-                }
-                if(config.getString("teams." + key + ".generators") != null) {
-                    for (String key2 : config.getConfigurationSection("teams." + key + ".generators").getKeys(false)) {
-                        GeneratorTeam generator = new GeneratorTeam(Utils.parseStringToLoc(config.getString("teams." + key + ".generators." + key2 + ".location")));
-                        generator.setLevelDiamond(0);
-                        generator.setLevelGold(0);
-                        generator.setLevelIron(1);
-                        team.addGenerator(generator);
+            if (config.getConfigurationSection("teams") != null)
+                for (String key : config.getConfigurationSection("teams").getKeys(false)) {
+                    Team team = new Team(config.getString("teams." + key + ".name"), Utils.getColor(config.getString("teams." + key + ".color")));
+                    if (config.getString("teams." + key + ".spawn") != null)
+                        team.setSpawn(Utils.parseStringToLoc(config.getString("teams." + key + ".spawn")));
+                    if (config.getString("teams." + key + ".bed") != null) {
+                        Location bedLoc = Utils.parseStringToLoc(config.getString("teams." + key + ".bed"));
+                        team.setBed(bedLoc.getBlock());
                     }
+                    if (config.getString("teams." + key + ".generators") != null) {
+                        for (String key2 : config.getConfigurationSection("teams." + key + ".generators").getKeys(false)) {
+                            GeneratorTeam generator = new GeneratorTeam(Utils.parseStringToLoc(config.getString("teams." + key + ".generators." + key2 + ".location")));
+                            generator.setLevelDiamond(0);
+                            generator.setLevelGold(0);
+                            generator.setLevelIron(1);
+                            team.addGenerator(generator);
+                        }
+                    }
+                    if (config.getString("teams." + key + ".pnjItems") != null)
+                        team.setPnjItems(Utils.parseStringToLoc(config.getString("teams." + key + ".pnjItems")));
+                    if (config.getString("teams." + key + ".pnjUpgrades") != null)
+                        team.setPnjUpgrades(Utils.parseStringToLoc(config.getString("teams." + key + ".pnjUpgrades")));
+                    arena.addTeam(team);
                 }
-                if(config.getString("teams." + key + ".pnjItems") != null)team.setPnjItems(Utils.parseStringToLoc(config.getString("teams." + key + ".pnjItems")));
-                if(config.getString("teams." + key + ".pnjUpgrades") != null)team.setPnjUpgrades(Utils.parseStringToLoc(config.getString("teams." + key + ".pnjUpgrades")));
-                arena.addTeam(team);
-            }
-            if(config.getConfigurationSection("emeraldsGenerators") != null) {
+            if (config.getConfigurationSection("emeraldsGenerators") != null) {
                 for (String key : config.getConfigurationSection("emeraldsGenerators").getKeys(false)) {
                     Generator generator = new Generator(GeneratorType.EMERALD_MAP, 1, Utils.parseStringToLoc(config.getString("emeraldsGenerators." + key + ".location")));
                     arena.addEmeraldsGenerator(generator);
                 }
-            }else{
+            } else {
                 arena.setEmeraldsGenerators(new ArrayList<Generator>());
             }
-            if(config.getConfigurationSection("diamondsGenerators") != null) {
+            if (config.getConfigurationSection("diamondsGenerators") != null) {
                 for (String key : config.getConfigurationSection("diamondsGenerators").getKeys(false)) {
                     Generator generator = new Generator(GeneratorType.DIAMOND_MAP, 1, Utils.parseStringToLoc(config.getString("diamondsGenerators." + key + ".location")));
                     arena.addDiamondsGenerator(generator);
                 }
-            }else{
+            } else {
                 arena.setDiamondsGenerators(new ArrayList<Generator>());
             }
 
-            if(config.getString("theSpecialist") != null) arena.setTheSpecialist(Utils.parseStringToLoc(config.getString("theSpecialist")));
-            if(config.getString("enchanter") != null) arena.setEnchanter(Utils.parseStringToLoc(config.getString("enchanter")));
-            if(config.getDouble("protectionRadius") != 0) arena.setProtectionRadius(config.getDouble("protectionRadius"));
-            if(config.getString("pos1Map") != null) arena.setPos1Map(Utils.parseStringToLoc(config.getString("pos1Map")));
-            if(config.getString("pos2Map") != null) arena.setPos2Map(Utils.parseStringToLoc(config.getString("pos2Map")));
+            if (config.getString("theSpecialist") != null)
+                arena.setTheSpecialist(Utils.parseStringToLoc(config.getString("theSpecialist")));
+            if (config.getString("enchanter") != null)
+                arena.setEnchanter(Utils.parseStringToLoc(config.getString("enchanter")));
+            if (config.getDouble("protectionRadius") != 0)
+                arena.setProtectionRadius(config.getDouble("protectionRadius"));
+            if (config.getString("pos1Map") != null)
+                arena.setPos1Map(Utils.parseStringToLoc(config.getString("pos1Map")));
+            if (config.getString("pos2Map") != null)
+                arena.setPos2Map(Utils.parseStringToLoc(config.getString("pos2Map")));
 
             Main.getInstance().arenas.add(arena);
         }
@@ -434,7 +478,7 @@ public class Arena {
 
     public static Arena getArenaByID(int id) {
         Arena arena = Main.getInstance().arenas.get(id);
-        if(arena != null){
+        if (arena != null) {
             return arena;
         }
         return null;
@@ -449,7 +493,6 @@ public class Arena {
         }
         return null;
     }
-
 
 
 }

@@ -7,6 +7,7 @@ import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
@@ -22,6 +23,25 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
             Player player = event.getEntity();
             if (Manager.isCurrentlyInGame(player)) {
                 event.setDeathMessage(null);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDamageByEntity(EntityDamageByEntityEvent event){
+        if(event.getEntity() instanceof Player){
+            Player player = (Player) event.getEntity();
+            if(Manager.isCurrentlyInGame(player)){
+                if(event.getDamager() instanceof Player){
+                    Player damager = (Player) event.getDamager();
+                    if(Manager.isCurrentlyInGame(damager)){
+                        // if is in the same team
+                        if(Manager.getManager(player).getTeam(player) == Manager.getManager(damager).getTeam(damager)){
+                            event.setCancelled(true);
+                            damager.sendMessage("§cYou can't hurt your own team!");
+                        }
+                    }
+                }
             }
         }
     }
@@ -147,35 +167,23 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                         player.setFoodLevel(20);
                         player.teleport(Manager.getManager(player).getArena().getSpecSpawn());
                         player.setGameMode(GameMode.SPECTATOR);
-                        String s = "";
                         System.out.println(team.getName() + " " + team.isBedAlive());
                         if(team.isBedAlive()) {
+                            Manager.getManager(player).broadcast(team.getColor() + player.getName() + " §r§7" + m.get(new Random().nextInt(m.size())));
                             Death death = new Death();
                             death.player = player;
                             death.runTaskTimer(Main.getInstance(), 0, 20);
                         }else{
+                            Manager.getManager(player).broadcast(team.getColor() + player.getName() + " §r§7" + m.get(new Random().nextInt(m.size()))+ " §7| §r§l§bFINAL ELIMINATION!");
                             Manager.getManager(player).broadcast("§7------------------");
                             Manager.getManager(player).broadcast("§c§l" + team.getColor() + "§l" + team.getName() + " §r§chas been eliminated!");
                             Manager.getManager(player).broadcast("§7------------------");
-                            s = " §7| §bFinal Elimination";
                             player.sendTitle("§c§lELIMINATED", "§r§7You were eliminated from the game!");
                             team.removePlayer(player);
+                            Manager.getManager(player).removePlayer(player);
+                            // TODO: add spectator player
+                            //Manager.getManager(player).addSpecator(player);
                             System.out.println(team.getName() + " " + team.getPlayers().size());
-                        }
-                        Manager.getManager(player).broadcast(team.getColor() + "§l" + player.getName() + " §r§4" + m.get(new Random().nextInt(m.size()))+  s);
-                    }
-                }
-            }
-            // if player attacks a teammate
-            if (Manager.isCurrentlyInGame(player)) {
-                if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-                    if (event.getEntity() instanceof Player) {
-                        Player enemy = (Player) event.getEntity();
-                        if (Manager.isCurrentlyInGame(enemy)) {
-                            if (Manager.getManager(player).getTeam(player) == Manager.getManager(enemy).getTeam(enemy)) {
-                                player.sendMessage("§cYou can't attack your teammates!");
-                                event.setCancelled(true);
-                            }
                         }
                     }
                 }

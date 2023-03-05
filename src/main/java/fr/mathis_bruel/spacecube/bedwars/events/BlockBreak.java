@@ -41,6 +41,9 @@ public class BlockBreak implements Listener {
                         event.getPlayer().sendMessage("§cYou can't break your own bed!");
                         return;
                     }else{
+                        // not drop item
+                        event.setCancelled(true);
+                        event.getBlock().setType(Material.AIR);
                         teamDestroyBed.setBedAlive(false);
                         manager.broadcast("§7------------------------");
                         manager.broadcast("§cThe bed of the team " + teamDestroyBed.getColor() + teamDestroyBed.getName() + "§c has been destroyed!");

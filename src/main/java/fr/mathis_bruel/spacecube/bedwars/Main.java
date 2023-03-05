@@ -7,7 +7,6 @@ import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
 import fr.mathis_bruel.spacecube.bedwars.manager.ListenerManager;
-import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.Bukkit;
@@ -25,7 +24,6 @@ public final class Main extends JavaPlugin implements Listener {
     public static HeadDatabaseAPI hdb;
     public ArrayList<Manager> managers = new ArrayList<>();
     private static final Map<UUID, FastBoard> boards = new HashMap<>();
-    private static final HashMap<Integer, TypeShop> shops = new HashMap<>();
     public static ArrayList<Hologram> holograms = new ArrayList<>();
     public static ArrayList<Player> playersFreeze = new ArrayList<>();
     public static ArrayList<Player> godMode = new ArrayList<>();
@@ -111,25 +109,6 @@ public final class Main extends JavaPlugin implements Listener {
         boards.clear();
     }
 
-    public static HashMap<Integer, TypeShop> getShops() {
-        return shops;
-    }
-
-    public static TypeShop getShop(int id) {
-        return shops.get(id);
-    }
-
-    public static void addShop(int id, TypeShop shop) {
-        shops.put(id, shop);
-    }
-
-    public static void removeShop(int id) {
-        shops.remove(id);
-    }
-
-    public static void clearShops() {
-        shops.clear();
-    }
 
     public static void addHologram(Hologram hologram) {
         holograms.add(hologram);
@@ -141,6 +120,10 @@ public final class Main extends JavaPlugin implements Listener {
 
     public static void clearHolograms() {
         holograms.clear();
+    }
+
+    public static ArrayList<Hologram> getHolograms() {
+        return holograms;
     }
 
     public static void addPlayerFreeze(Player player) {

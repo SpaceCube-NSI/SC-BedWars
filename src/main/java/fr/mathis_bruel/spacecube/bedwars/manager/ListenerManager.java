@@ -31,6 +31,7 @@ public class ListenerManager {
         this.listeners.add(new EntityDamageByEntity());
         this.listeners.add(new OpenChest());
         this.listeners.add(new Explose());
+        this.listeners.add(new ItemSpawn());
 
 
 

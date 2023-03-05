@@ -1,6 +1,8 @@
 package fr.mathis_bruel.spacecube.bedwars.generator;
 
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
+import fr.mathis_bruel.spacecube.bedwars.game.Manager;
+import fr.mathis_bruel.spacecube.bedwars.game.State;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +17,11 @@ public class RunnableGenerators extends BukkitRunnable {
 
     @Override
     public void run() {
+
+        if(Manager.getManager(arena).getManagerState().getCurrentState() == State.ENDED) {
+            cancel();
+            return;
+        }
 
         if (timerDiamondMap >= GeneratorType.DIAMOND_MAP.getLevel(0)) {
             sendParticule = true;

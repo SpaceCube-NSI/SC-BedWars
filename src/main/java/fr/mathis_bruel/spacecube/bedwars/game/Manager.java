@@ -138,8 +138,10 @@ public class Manager {
     }
 
     public Team getTeam(Block bed){
+        // ~ 1 block de différence
         for(Team team : arena.getTeams()){
-            if(team.getBed().equals(bed)) return team;
+            if(team.getBed().getLocation().distance(bed.getLocation()) < 1.5)
+                return team;
         }
         return null;
     }
@@ -279,8 +281,10 @@ public class Manager {
             Hologram hologram2 = new Hologram(loc, lines2);
             hologram2.showHologram();
 
-            Main.addShop(npc.getNpcID(), TypeShop.ITEMS);
-            Main.addShop(npc2.getNpcID(), TypeShop.UPGRADES);
+            arena.addShop(npc.getNpcID(), TypeShop.ITEMS);
+            arena.addShop(npc2.getNpcID(), TypeShop.UPGRADES);
+            arena.addNpc(npc);
+            arena.addNpc(npc2);
 
             team.getGenerators().forEach(generator -> {
                 ArrayList<String> lines3 = new ArrayList<>();
@@ -321,7 +325,8 @@ public class Manager {
         lines.add("§7Click to open");
         Hologram hologram = new Hologram(loc2, lines);
         hologram.showHologram();
-        Main.addShop(npc.getNpcID(), TypeShop.THE_SPECIALIST);
+        arena.addShop(npc.getNpcID(), TypeShop.THE_SPECIALIST);
+        arena.addNpc(npc);
 
         TruenoNPCSkin skin2 = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "473cae4d3c8e4d20857a01f6e52076b7");
         Location location2 = arena.getEnchanter();
@@ -332,7 +337,8 @@ public class Manager {
         lines2.add("§7Click to open");
         Hologram hologram2 = new Hologram(loc3, lines2);
         hologram2.showHologram();
-        Main.addShop(npc2.getNpcID(), TypeShop.ENCHANTER);
+        arena.addShop(npc2.getNpcID(), TypeShop.ENCHANTER);
+        arena.addNpc(npc2);
 
         // get all blocks in the arena and add them to the list
         int minX = Math.min(arena.getPos1Map().getBlockX(), arena.getPos2Map().getBlockX());
@@ -546,6 +552,7 @@ public class Manager {
             player.sendMessage("§cYou are not in this game!");
         }
     }
+
 
     public Boolean isFinish(){
         if(this.players.size() <= 1) {

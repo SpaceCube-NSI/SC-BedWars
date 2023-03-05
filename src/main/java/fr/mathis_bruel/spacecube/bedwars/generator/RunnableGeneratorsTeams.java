@@ -1,5 +1,8 @@
 package fr.mathis_bruel.spacecube.bedwars.generator;
 
+import fr.mathis_bruel.spacecube.bedwars.game.Arena;
+import fr.mathis_bruel.spacecube.bedwars.game.Manager;
+import fr.mathis_bruel.spacecube.bedwars.game.State;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.Location;
@@ -13,6 +16,7 @@ import xyz.xenondevs.particle.ParticleEffect;
 public class RunnableGeneratorsTeams extends BukkitRunnable {
     public Team team;
     public GeneratorTeam generatorTeam;
+    public Arena arena;
 
     public int timerIron = 0;
     public int timerGold = 0;
@@ -21,6 +25,11 @@ public class RunnableGeneratorsTeams extends BukkitRunnable {
 
     @Override
     public void run() {
+
+        if(Manager.getManager(arena).getManagerState().getCurrentState() == State.ENDED) {
+            cancel();
+            return;
+        }
 
         if (timerIron >= GeneratorType.IRON.getLevel(generatorTeam.getLevelIron()) && generatorTeam.getLevelIron() != 0) {
             timerIron = 0;

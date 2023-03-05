@@ -455,7 +455,7 @@ public class TruenoNPC_v1_8_r3 implements TruenoNPC {
             TruenoNPCDespawnEvent event = new TruenoNPCDespawnEvent(p, (TruenoNPC) this);
             Bukkit.getPluginManager().callEvent(event);
         }catch(Exception ex){
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
     }
 
