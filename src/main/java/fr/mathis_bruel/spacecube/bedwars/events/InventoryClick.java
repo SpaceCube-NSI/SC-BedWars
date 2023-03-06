@@ -13,6 +13,7 @@ public class InventoryClick implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event){
+        if(event.getInventory().getName().equals(ShopEnchanter.getInventory().getName())) ShopEnchanter.execute(event);
         if(event.getInventory().getName().equals( Join.getInventory().getName())) Join.execute(event);
         if(event.getInventory().getName().equals(JoinChoice.getInventory().getName())) JoinChoice.execute(event);
         if(Manager.isCurrentlyInGame((Player) event.getWhoClicked())){
@@ -25,7 +26,6 @@ public class InventoryClick implements Listener {
             if(event.getInventory().getName().equals(ShopUpgrades.getInventory(team).getName())) ShopUpgrades.execute(event);
             if(event.getInventory().getName().equals(ShopTheSpecialist.getInventory().getName())) ShopTheSpecialist.execute(event);
             if(event.getInventory().getName().equals(ShopItemsSummoner.getInventory(team).getName())) ShopItemsSummoner.execute(event);
-            //if(event.getInventory().getName().equals(ShopEnchanter.getInventory().getName())) ShopEnchanter.execute(event);
         }
 
 

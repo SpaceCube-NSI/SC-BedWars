@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import xyz.xenondevs.particle.ParticleBuilder;
+import xyz.xenondevs.particle.ParticleEffect;
 
 public class RunnableGenerators extends BukkitRunnable {
     public Arena arena;
@@ -54,6 +56,22 @@ public class RunnableGenerators extends BukkitRunnable {
         }
 
         if(sendParticule){
+            for (Generator generator : arena.getEmeraldsGenerators()){
+                Location loc = generator.getLocation().clone().add(0, 1.8, 0);
+                new ParticleBuilder(ParticleEffect.FLAME, loc)
+                        .setSpeed(0.1f)
+                        .setAmount(10)
+                        .display();
+            }
+
+            for (Generator generator : arena.getDiamondsGenerators()){
+                Location loc = generator.getLocation().clone().add(0, 1.8, 0);
+                new ParticleBuilder(ParticleEffect.FLAME, loc)
+                        .setSpeed(0.1f)
+                        .setAmount(10)
+                        .display();
+            }
+            sendParticule = false;
 
 
         }

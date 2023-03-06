@@ -18,6 +18,12 @@ public class Join implements Listener {
     public void joinPlayer(PlayerJoinEvent event){
         Player player = event.getPlayer();
         player.setGameMode(GameMode.SURVIVAL);
+        player.setHealth(20);
+        player.setFoodLevel(20);
+        player.setExp(0);
+        player.setLevel(0);
+        player.setAllowFlight(false);
+        player.setFlying(false);
         FastBoard board = new FastBoard(event.getPlayer());
         board.updateTitle("§6§lBedWars");
         board.updateLines(Arrays.asList(

@@ -13,8 +13,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class ShopItems {
 
-    public static Inventory getInventory(Team team){
-        Inventory inv = Bukkit.createInventory(null, 9*3, "§6Shop");
+    public static Inventory getInventory(Team team) {
+        Inventory inv = Bukkit.createInventory(null, 9 * 3, "§6Shop");
         ItemStack blocks = new ItemStack(Material.STAINED_CLAY, 1, Utils.getDataColor(team.getColor()));
         ItemMeta blocksMeta = blocks.getItemMeta();
         blocksMeta.setDisplayName("§6Blocks");
@@ -62,21 +62,30 @@ public class ShopItems {
     }
 
     public static void execute(InventoryClickEvent event) {
-            if(!Manager.isCurrentlyInGame((Player) event.getWhoClicked())) return;
-            Team team = Manager.getManager((Player) event.getWhoClicked()).getTeam((Player) event.getWhoClicked());
+        if (!Manager.isCurrentlyInGame((Player) event.getWhoClicked())) return;
+        Team team = Manager.getManager((Player) event.getWhoClicked()).getTeam((Player) event.getWhoClicked());
 
-            event.setCancelled(true);
-            if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Blocks")){
-                event.getWhoClicked().openInventory(ShopItemsBlock.getInventory(team));
-            } else if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Armor")){
-                event.getWhoClicked().openInventory(ShopItemsArmor.getInventory());
-            } else if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Tools")){
-                event.getWhoClicked().openInventory(ShopItemsTools.getInventory());
-            } else if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cClose")){
-                event.getWhoClicked().closeInventory();
-            } else if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§5Back")){
-                event.getWhoClicked().openInventory(getInventory(team));
-            }
+        event.setCancelled(true);
+        if (event.getCurrentItem() == null) return;
+        if (event.getCurrentItem().getType() == Material.AIR) return;
+        if (event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals(" ")) return;
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§cClose")) {
+            event.getWhoClicked().closeInventory();
+            return;
+        }
+        if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Blocks")) {
+            event.getWhoClicked().openInventory(ShopItemsBlock.getInventory(team));
+        } else if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Armor")) {
+            event.getWhoClicked().openInventory(ShopItemsArmor.getInventory());
+        } else if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§6Tools")) {
+            event.getWhoClicked().openInventory(ShopItemsTools.getInventory());
+        } else if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cClose")) {
+            event.getWhoClicked().closeInventory();
+        } else if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§5Back")) {
+            event.getWhoClicked().openInventory(getInventory(team));
+        }
+
 
     }
 

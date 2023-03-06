@@ -3,7 +3,9 @@ package fr.mathis_bruel.spacecube.bedwars.events;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Death;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
+import fr.mathis_bruel.spacecube.bedwars.game.State;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
+import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,7 +54,8 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
             Player player = (Player) event.getEntity();
             if (player.getHealth() <= event.getFinalDamage()) {
                 if (Manager.isCurrentlyInGame(player)) {
-                    Team team = Manager.getManager(player).getTeam(player);
+                    Manager manager = Manager.getManager(player);
+                    Team team = manager.getTeam(player);
                     if (team != null) {
                         List<String> m = new ArrayList<>();
                         switch (event.getCause()) {
@@ -161,28 +164,28 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                         if (m.size() == 0) {
                             m.add("was dead");
                         }
-                        Manager.getManager(player).addPlayerDeath(player);
+                        manager.addPlayerDeath(player);
                         player.spigot().respawn();
                         player.setHealth(20);
                         player.setFoodLevel(20);
-                        player.teleport(Manager.getManager(player).getArena().getSpecSpawn());
+                        player.teleport(manager.getArena().getSpecSpawn());
                         player.setGameMode(GameMode.SPECTATOR);
                         System.out.println(team.getName() + " " + team.isBedAlive());
                         if(team.isBedAlive()) {
-                            Manager.getManager(player).broadcast(team.getColor() + player.getName() + " §r§7" + m.get(new Random().nextInt(m.size())));
+                            manager.broadcast(team.getColor() + player.getName() + " §r§7" + m.get(new Random().nextInt(m.size())));
                             Death death = new Death();
                             death.player = player;
                             death.runTaskTimer(Main.getInstance(), 0, 20);
                         }else{
-                            Manager.getManager(player).broadcast(team.getColor() + player.getName() + " §r§7" + m.get(new Random().nextInt(m.size()))+ " §7| §r§l§bFINAL ELIMINATION!");
-                            Manager.getManager(player).broadcast("§7------------------");
-                            Manager.getManager(player).broadcast("§c§l" + team.getColor() + "§l" + team.getName() + " §r§chas been eliminated!");
-                            Manager.getManager(player).broadcast("§7------------------");
+                            manager.broadcast(team.getColor() + player.getName() + " §r§7" + m.get(new Random().nextInt(m.size()))+ " §7| §r§l§bFINAL ELIMINATION!");
+                            manager.broadcast("§7------------------");
+                            manager.broadcast("§c§l" + team.getColor() + "§l" + team.getName() + " §r§chas been eliminated!");
+                            manager.broadcast("§7------------------");
                             player.sendTitle("§c§lELIMINATED", "§r§7You were eliminated from the game!");
                             team.removePlayer(player);
-                            Manager.getManager(player).removePlayer(player);
+                            manager.removePlayer(player);
                             // TODO: add spectator player
-                            //Manager.getManager(player).addSpecator(player);
+                            manager.addSpecator(player);
                             System.out.println(team.getName() + " " + team.getPlayers().size());
                         }
                     }
@@ -215,6 +218,23 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                             }
                         }
                     }
+                }
+            }
+
+            // if is not in game and in lobby world
+            if (!Manager.isCurrentlyInGame(player)) {
+                if (Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")).getWorld() == player.getWorld()) {
+                    event.setCancelled(true);
+                }
+            }
+
+            // if is in game and not State.RUNNING
+            if (Manager.isCurrentlyInGame(player)) {
+                if (Manager.getManager(player).getManagerState().getCurrentState() != State.RUNNING) {
+                    if(event.getCause() == EntityDamageEvent.DamageCause.VOID) {
+                        player.teleport(Manager.getManager(player).getArena().getLobbySpawn());
+                    }
+                    event.setCancelled(true);
                 }
             }
         }

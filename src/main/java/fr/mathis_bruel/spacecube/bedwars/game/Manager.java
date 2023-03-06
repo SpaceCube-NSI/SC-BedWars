@@ -281,7 +281,7 @@ public class Manager {
             Hologram hologram2 = new Hologram(loc, lines2);
             hologram2.showHologram();
 
-            arena.addShop(npc.getNpcID(), TypeShop.ITEMS);
+            arena.addShop(npc.getNpcID(), TypeShop.ENCHANTER);
             arena.addShop(npc2.getNpcID(), TypeShop.UPGRADES);
             arena.addNpc(npc);
             arena.addNpc(npc2);

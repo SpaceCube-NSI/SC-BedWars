@@ -32,7 +32,8 @@ public class ListenerManager {
         this.listeners.add(new OpenChest());
         this.listeners.add(new Explose());
         this.listeners.add(new ItemSpawn());
-
+        this.listeners.add(new FoodLevelChange());
+        this.listeners.add(new InventoryClose());
 
 
 

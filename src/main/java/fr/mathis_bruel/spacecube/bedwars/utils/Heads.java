@@ -4,7 +4,12 @@ import fr.mathis_bruel.spacecube.bedwars.Main;
 import org.bukkit.inventory.ItemStack;
 
 public enum Heads {
-    next(10195),
+    next_green(10195),
+    next_orange(9655),
+    next_red(9331),
+    up_red(9328),
+    up_green(10192)
+
     ;
 
 
