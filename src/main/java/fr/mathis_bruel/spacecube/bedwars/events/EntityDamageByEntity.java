@@ -184,7 +184,6 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                             player.sendTitle("§c§lELIMINATED", "§r§7You were eliminated from the game!");
                             team.removePlayer(player);
                             manager.removePlayer(player);
-                            // TODO: add spectator player
                             manager.addSpecator(player);
                             System.out.println(team.getName() + " " + team.getPlayers().size());
                         }

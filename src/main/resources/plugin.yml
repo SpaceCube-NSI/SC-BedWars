@@ -4,6 +4,12 @@ main: fr.mathis_bruel.spacecube.bedwars.Main
 authors: [ Mathis_Bruel ]
 description: BedWars
 website: https://www.spacecube.games/
+depend:
+  - FastAsyncWorldEdit
+  - WorldEdit
+  - SpaceCubeApi
+  - HeadDatabase
+load: POSTWORLD
 commands:
   test:
     aliases: test

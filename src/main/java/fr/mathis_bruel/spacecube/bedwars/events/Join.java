@@ -1,5 +1,7 @@
 package fr.mathis_bruel.spacecube.bedwars.events;
 
+import fr.Mathis_Bruel.spacecube.spacecubeapi.api.games.Games;
+import fr.Mathis_Bruel.spacecube.spacecubeapi.api.games.Stats;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
@@ -26,6 +28,8 @@ public class Join implements Listener {
         player.setFlying(false);
         FastBoard board = new FastBoard(event.getPlayer());
         board.updateTitle("§6§lBedWars");
+        Stats state = new Stats(Games.BedWars, player.getUniqueId());
+        state.init();
         board.updateLines(Arrays.asList(
                 "§f",
                 "§fNiveau: §f" + 0,
@@ -35,9 +39,9 @@ public class Join implements Listener {
                 "§f",
                 "§fCoins: §e" + 0,
                 "§f",
-                "§fKills: §a" + 0,
-                "§fDeaths: §a" + 0,
-                "§fWins: §a" + 0,
+                "§fKills: §a" + state.getKills(),
+                "§fDeaths: §a" + state.getDeath(),
+                "§fWins: §a" + state.getWins(),
                 "§fStreak: §a" + 0,
                 "§f",
                 "§6§lwww.spacecube.games"

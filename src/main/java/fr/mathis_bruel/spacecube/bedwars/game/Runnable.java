@@ -2,6 +2,8 @@ package fr.mathis_bruel.spacecube.bedwars.game;
 
 import com.sk89q.worldedit.WorldEditException;
 import es.eltrueno.npc.TruenoNPC;
+import fr.Mathis_Bruel.spacecube.spacecubeapi.api.games.Games;
+import fr.Mathis_Bruel.spacecube.spacecubeapi.api.games.Stats;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGeneratorsTeams;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
@@ -128,7 +130,32 @@ public class Runnable extends BukkitRunnable {
         }
 
         if(manager.getManagerState().getCurrentState() == State.ENDING){
-            // TODO: save stats in database
+            manager.getPlayerKills().forEach((player, integer) -> {
+                Stats stats = new Stats(Games.BedWars, player.getUniqueId());
+                stats.init();
+                stats.addKills(integer);
+                stats.updateStats();
+            });
+            manager.getPlayerDeaths().forEach((player, integer) -> {
+                Stats stats = new Stats(Games.BedWars, player.getUniqueId());
+                stats.init();
+                stats.addDeath(integer);
+                stats.updateStats();
+            });
+            manager.getPlayerBeds().forEach((player, integer) -> {
+                Stats stats = new Stats(Games.BedWars, player.getUniqueId());
+                stats.init();
+                stats.addDivers("Beds", integer);
+                stats.updateStats();
+            });
+
+            manager.getWinners().forEach(player -> {
+                Stats stats = new Stats(Games.BedWars, player.getUniqueId());
+                stats.init();
+                stats.addWins(1);
+                stats.updateStats();
+            });
+
             for (Player player : manager.getPlayers()){
                 player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
                 player.getInventory().clear();

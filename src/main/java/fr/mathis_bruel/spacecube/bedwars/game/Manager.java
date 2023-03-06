@@ -49,7 +49,7 @@ public class Manager {
         this.players = new ArrayList<>();
         this.specators = new ArrayList<>();
         this.managerState = new ManagerState(arena);
-        this.startingTime = 5;
+        this.startingTime = 30;
         Runnable start = new Runnable();
         start.manager = this;
         start.runTaskTimer(Main.getInstance(), 0, 20);
@@ -281,7 +281,7 @@ public class Manager {
             Hologram hologram2 = new Hologram(loc, lines2);
             hologram2.showHologram();
 
-            arena.addShop(npc.getNpcID(), TypeShop.ENCHANTER);
+            arena.addShop(npc.getNpcID(), TypeShop.ITEMS);
             arena.addShop(npc2.getNpcID(), TypeShop.UPGRADES);
             arena.addNpc(npc);
             arena.addNpc(npc2);

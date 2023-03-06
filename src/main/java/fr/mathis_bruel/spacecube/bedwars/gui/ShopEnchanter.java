@@ -122,19 +122,16 @@ public class ShopEnchanter {
 
 
     public static void execute(InventoryClickEvent event) {
-
+        // TODO: Item despawn in slot 16
+        // TODO: Not possible to enchant item with more than 1 enchantment
         //if (!Manager.isCurrentlyInGame((Player) event.getWhoClicked())) return;
         //Team team = Manager.getManager((Player) event.getWhoClicked()).getTeam((Player) event.getWhoClicked());
         if (event.isShiftClick()) {
-            System.out.println(2);
             new BukkitRunnable() {
-
                 @Override
                 public void run() {
                     if (event.getInventory().getItem(10) != null) {
-                        System.out.println(3);
                         if (event.getInventory().getItem(10).getType() != Material.AIR) {
-                            System.out.println(4);
                             ItemStack head = Heads.next_orange.getHead();
                             ItemMeta meta = head.getItemMeta();
                             meta.setDisplayName("§aEnchant");
@@ -144,15 +141,45 @@ public class ShopEnchanter {
                             event.getInventory().setItem(12, head);
                             event.getInventory().setItem(13, head);
                             event.getInventory().setItem(14, head);
-                        }else{
-                            event.getInventory().setContents(getInventory().getContents());
+                        } else {
+                            if (event.getSlot() == 10 || event.getSlot() == 16)
+                                event.getInventory().setContents(getInventory().getContents());
                         }
-                    }else{
-                        event.getInventory().setContents(getInventory().getContents());
-
+                    } else {
+                        if (event.getSlot() == 10 || event.getSlot() == 16)
+                            event.getInventory().setContents(getInventory().getContents());
                     }
                 }
-            }.runTaskLater(Main.getInstance(), 2);
+            }.runTaskLater(Main.getInstance(), 1);
+        } else {
+            new BukkitRunnable() {
+
+                @Override
+                public void run() {
+                    if (event.getSlot() == 10 || event.getSlot() == 16) {
+                        if (event.getInventory().getItem(10) != null) {
+                            if (event.getInventory().getItem(10).getType() != Material.AIR) {
+                                ItemStack head = Heads.next_orange.getHead();
+                                ItemMeta meta = head.getItemMeta();
+                                meta.setDisplayName("§aEnchant");
+                                meta.setLore(Arrays.asList("§5Select an enchantment to enchant your item with", "§5and click here to enchant it !"));
+                                head.setItemMeta(meta);
+                                head = new CustomNBT(head).setBoolean("clickable", true).build();
+                                event.getInventory().setItem(12, head);
+                                event.getInventory().setItem(13, head);
+                                event.getInventory().setItem(14, head);
+                            } else {
+                                if (event.getSlot() == 10 || event.getSlot() == 16)
+                                    event.getInventory().setContents(getInventory().getContents());
+                            }
+                        } else {
+                            if (event.getSlot() == 10 || event.getSlot() == 16)
+                                event.getInventory().setContents(getInventory().getContents());
+                        }
+                    }
+
+                }
+            }.runTaskLater(Main.getInstance(), 1);
         }
         if (event.getSlot() == 10) {
             if (event.getInventory().getItem(16) != null && event.getInventory().getItem(16).getType() != Material.AIR) {
@@ -160,7 +187,7 @@ public class ShopEnchanter {
                 event.setCancelled(true);
                 return;
             }
-            if (event.getInventory().getItem(37).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(38).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(39).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(40).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(41).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(42).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(43).getType() == Material.STAINED_GLASS_PANE) {
+            /*if (event.getInventory().getItem(37).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(38).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(39).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(40).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(41).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(42).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(43).getType() == Material.STAINED_GLASS_PANE) {
                 ItemStack head = Heads.next_orange.getHead();
                 ItemMeta meta = head.getItemMeta();
                 meta.setDisplayName("§aEnchant");
@@ -170,7 +197,7 @@ public class ShopEnchanter {
                 event.getInventory().setItem(12, head);
                 event.getInventory().setItem(13, head);
                 event.getInventory().setItem(14, head);
-            }
+            }*/
         }
         if (event.getCurrentItem() == null) return;
         if (event.getCurrentItem().getType() == Material.AIR) return;
@@ -214,7 +241,7 @@ public class ShopEnchanter {
                         event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, price));
                         item.addUnsafeEnchantment(current.getEnchantments().keySet().iterator().next(), current.getEnchantments().values().iterator().next());
                         event.getWhoClicked().sendMessage("§aYou have successfully enchanted your item!");*/
-                    ItemStack head2 = Heads.next_green.getHead();
+                    ItemStack head2 = Heads.up_green.getHead();
                     ItemMeta meta2 = head2.getItemMeta();
                     meta2.setDisplayName("§aEnchant compatible");
                     meta2.setLore(Arrays.asList("§5You can enchant your item with this enchantment !", "§5Click in the 3 arrows to enchant it !"));
@@ -232,7 +259,7 @@ public class ShopEnchanter {
                     event.getInventory().setItem(14, head);
                 } else {
                     event.getWhoClicked().sendMessage("§cYou can't enchant this item with this enchantment!");
-                    ItemStack head2 = Heads.next_red.getHead();
+                    ItemStack head2 = Heads.up_red.getHead();
                     ItemMeta meta2 = head2.getItemMeta();
                     meta2.setDisplayName("§cEnchant not compatible");
                     meta2.setLore(Arrays.asList("§cYou can't enchant your item with this enchantment !", "§cThis enchantment is not compatible with your item !"));
@@ -252,7 +279,7 @@ public class ShopEnchanter {
             }
             if (item.getType() == Material.DIAMOND_PICKAXE || item.getType() == Material.IRON_PICKAXE || item.getType() == Material.STONE_PICKAXE || item.getType() == Material.GOLD_PICKAXE || item.getType() == Material.WOOD_PICKAXE || item.getType() == Material.DIAMOND_AXE || item.getType() == Material.IRON_AXE || item.getType() == Material.STONE_AXE || item.getType() == Material.GOLD_AXE || item.getType() == Material.WOOD_AXE) {
                 if (current.getItemMeta().getLore().get(1).equals("§7compatibility: §aPickaxe, Axe")) {
-                    ItemStack head2 = Heads.next_green.getHead();
+                    ItemStack head2 = Heads.up_green.getHead();
                     ItemMeta meta2 = head2.getItemMeta();
                     meta2.setDisplayName("§aEnchant compatible");
                     meta2.setLore(Arrays.asList("§5You can enchant your item with this enchantment !", "§5Click in the 3 arrows to enchant it !"));
@@ -270,7 +297,7 @@ public class ShopEnchanter {
                     event.getInventory().setItem(14, head);
                 } else {
                     event.getWhoClicked().sendMessage("§cYou can't enchant this item with this enchantment!");
-                    ItemStack head2 = Heads.next_red.getHead();
+                    ItemStack head2 = Heads.up_red.getHead();
                     ItemMeta meta2 = head2.getItemMeta();
                     meta2.setDisplayName("§cEnchant not compatible");
                     meta2.setLore(Arrays.asList("§cYou can't enchant your item with this enchantment !", "§cThis enchantment is not compatible with your item !"));
@@ -291,7 +318,7 @@ public class ShopEnchanter {
             // bow
             if (item.getType() == Material.BOW) {
                 if (current.getItemMeta().getLore().get(1).equals("§7compatibility: §aBow")) {
-                    ItemStack head2 = Heads.next_green.getHead();
+                    ItemStack head2 = Heads.up_green.getHead();
                     ItemMeta meta2 = head2.getItemMeta();
                     meta2.setDisplayName("§aEnchant compatible");
                     meta2.setLore(Arrays.asList("§5You can enchant your item with this enchantment !", "§5Click in the 3 arrows to enchant it !"));
@@ -309,7 +336,7 @@ public class ShopEnchanter {
                     event.getInventory().setItem(14, head);
                 } else {
                     event.getWhoClicked().sendMessage("§cYou can't enchant this item with this enchantment!");
-                    ItemStack head2 = Heads.next_red.getHead();
+                    ItemStack head2 = Heads.up_red.getHead();
                     ItemMeta meta2 = head2.getItemMeta();
                     meta2.setDisplayName("§cEnchant not compatible");
                     meta2.setLore(Arrays.asList("§cYou can't enchant your item with this enchantment !", "§cThis enchantment is not compatible with your item !"));
