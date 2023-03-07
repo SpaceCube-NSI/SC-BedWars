@@ -5,7 +5,9 @@ import fr.mathis_bruel.spacecube.bedwars.utils.CustomNBT;
 import fr.mathis_bruel.spacecube.bedwars.utils.Heads;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -401,6 +403,7 @@ public class ShopEnchanter {
                         event.getInventory().setContents(ShopEnchanter.getInventory().getContents());
                         event.getInventory().setItem(16, item);
                         event.getWhoClicked().sendMessage("§aYou have successfully enchanted your item!");
+                        ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.LEVEL_UP, 1, 1);
                     } else {
                         event.getWhoClicked().sendMessage("§cYou don't have enough emeralds to enchant your item!");
                     }

@@ -1,6 +1,5 @@
 package fr.mathis_bruel.spacecube.bedwars.commands;
 
-import fr.mathis_bruel.spacecube.bedwars.gui.ShopEnchanter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,8 +10,8 @@ public class Test implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        
-        ((Player) sender).openInventory(ShopEnchanter.getInventory());
+
+        ((Player) sender).playSound(((Player) sender).getLocation(), "minecraft:entity.enderdragon.flap", 1, 1);
 
         return true;
     }

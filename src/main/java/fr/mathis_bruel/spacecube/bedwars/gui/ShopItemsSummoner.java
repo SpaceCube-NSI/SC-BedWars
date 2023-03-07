@@ -4,6 +4,7 @@ import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -191,6 +192,7 @@ public class ShopItemsSummoner {
                 team.getGenerators().forEach(generator -> generator.setLevelIron(1));
                 event.getWhoClicked().openInventory(getInventory(team));
                 team.updateGeneratorHolograms();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron!");
@@ -216,6 +218,7 @@ public class ShopItemsSummoner {
                 team.getGenerators().forEach(generator -> generator.setLevelIron(2));
                 event.getWhoClicked().openInventory(getInventory(team));
                 team.updateGeneratorHolograms();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron!");
@@ -241,6 +244,7 @@ public class ShopItemsSummoner {
                 team.getGenerators().forEach(generator -> generator.setLevelIron(3));
                 event.getWhoClicked().openInventory(getInventory(team));
                 team.updateGeneratorHolograms();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron!");
@@ -266,6 +270,7 @@ public class ShopItemsSummoner {
                 team.getGenerators().forEach(generator -> generator.setLevelGold(1));
                 event.getWhoClicked().openInventory(getInventory(team));
                 team.updateGeneratorHolograms();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamond!");
@@ -291,6 +296,7 @@ public class ShopItemsSummoner {
                 team.getGenerators().forEach(generator -> generator.setLevelGold(2));
                 event.getWhoClicked().openInventory(getInventory(team));
                 team.updateGeneratorHolograms();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough gold!");
@@ -316,6 +322,7 @@ public class ShopItemsSummoner {
                 team.getGenerators().forEach(generator -> generator.setLevelGold(3));
                 event.getWhoClicked().openInventory(getInventory(team));
                 team.updateGeneratorHolograms();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough gold!");
@@ -341,6 +348,7 @@ public class ShopItemsSummoner {
                 team.getGenerators().forEach(generator -> generator.setLevelDiamond(1));
                 event.getWhoClicked().openInventory(getInventory(team));
                 team.updateGeneratorHolograms();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
@@ -366,6 +374,7 @@ public class ShopItemsSummoner {
                 team.getGenerators().forEach(generator -> generator.setLevelDiamond(2));
                 event.getWhoClicked().openInventory(getInventory(team));
                 team.updateGeneratorHolograms();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
@@ -390,6 +399,7 @@ public class ShopItemsSummoner {
                 team.getGenerators().forEach(generator -> generator.setLevelDiamond(3));
                 event.getWhoClicked().openInventory(getInventory(team));
                 team.updateGeneratorHolograms();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 return;
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");

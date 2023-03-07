@@ -44,7 +44,7 @@ public class Team {
         this.pnjUpgrades = null;
         this.bed = null;
         this.generators = new ArrayList<>();
-        this.enderchest = Bukkit.createInventory(null, 3 * 9, ChatColor + "Enderchest " + name);
+        this.enderchest = Bukkit.createInventory(null, 6 * 9, ChatColor + "Enderchest " + name);
     }
 
     public String getName() {

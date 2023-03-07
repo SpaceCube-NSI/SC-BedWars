@@ -5,6 +5,7 @@ import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.gui.Join;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -129,6 +130,7 @@ public class Bedwars implements CommandExecutor {
                                 Manager manager = Manager.getManager(arena);
                                 if(manager == null) sender.sendMessage(prefix + "§cThis arena is not ready yet!");
                                 else {
+                                    player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                                     manager.join(player);
                                 }
                             }else sender.sendMessage(prefix + "§cThis arena does not exist!");

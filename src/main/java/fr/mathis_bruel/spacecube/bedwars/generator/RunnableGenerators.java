@@ -5,6 +5,7 @@ import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.game.State;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -62,6 +63,7 @@ public class RunnableGenerators extends BukkitRunnable {
                         .setSpeed(0.1f)
                         .setAmount(10)
                         .display();
+                loc.getWorld().playSound(loc, Sound.LEVEL_UP, 1, 1);
             }
 
             for (Generator generator : arena.getDiamondsGenerators()){
@@ -70,6 +72,7 @@ public class RunnableGenerators extends BukkitRunnable {
                         .setSpeed(0.1f)
                         .setAmount(10)
                         .display();
+                loc.getWorld().playSound(loc, Sound.GHAST_MOAN, 1, 1);
             }
             sendParticule = false;
 

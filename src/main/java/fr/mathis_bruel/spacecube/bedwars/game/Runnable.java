@@ -12,6 +12,7 @@ import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -69,7 +70,9 @@ public class Runnable extends BukkitRunnable {
                 for (Team team : arena.getTeams()) {
                     if(team.getPlayers().size() != 0) for (Player player : team.getPlayers()) {
                         player.teleport(team.getSpawn());
+                        player.playSound(player.getLocation(), Sound.SLIME_ATTACK, 1, 1);
                         player.getInventory().clear();
+                        player.getInventory().setArmorContents(null);
                     }
                     team.getGenerators().forEach(generator -> {
                         RunnableGeneratorsTeams runnableGenerators = new RunnableGeneratorsTeams();
@@ -196,6 +199,7 @@ public class Runnable extends BukkitRunnable {
             for (Player player : manager.getSpecators()){
                 player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
                 player.getInventory().clear();
+                player.getInventory().setArmorContents(null);
                 player.setHealth(20);
                 player.setFoodLevel(20);
                 player.setGameMode(GameMode.SURVIVAL);

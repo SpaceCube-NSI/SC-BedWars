@@ -5,6 +5,7 @@ import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -117,6 +118,7 @@ public class ShopItemsBlock {
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.WOOL, 32, Utils.getDataColor(team.getColor())));
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
@@ -131,6 +133,7 @@ public class ShopItemsBlock {
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 1));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.STAINED_CLAY, 32, Utils.getDataColor(team.getColor())));
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
@@ -146,6 +149,7 @@ public class ShopItemsBlock {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 5));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.STONE, 32, (short) 6));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
             }
@@ -160,6 +164,7 @@ public class ShopItemsBlock {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.STAINED_GLASS, 32, Utils.getDataColor(team.getColor())));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
             }
@@ -174,6 +179,7 @@ public class ShopItemsBlock {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 8));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.ENDER_STONE, 32));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
             }
@@ -188,6 +194,7 @@ public class ShopItemsBlock {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 1));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.OBSIDIAN, 1));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
             }
@@ -202,6 +209,7 @@ public class ShopItemsBlock {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.WOOD, 32));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
             }

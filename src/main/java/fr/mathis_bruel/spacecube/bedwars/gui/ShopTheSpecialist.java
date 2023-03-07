@@ -5,6 +5,7 @@ import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -138,6 +139,7 @@ public class ShopTheSpecialist {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 64));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.PUMPKIN, 1));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
             }
@@ -152,6 +154,7 @@ public class ShopTheSpecialist {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 1));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.MONSTER_EGG, 1, (short) 95));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
             }
@@ -166,6 +169,7 @@ public class ShopTheSpecialist {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 15));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.ENDER_PEARL, 1));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
             }
@@ -180,6 +184,7 @@ public class ShopTheSpecialist {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 1));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.TNT, 1));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
             }
@@ -194,6 +199,7 @@ public class ShopTheSpecialist {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 30));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.POTION, 1, (short) 16421));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
             }
@@ -209,6 +215,7 @@ public class ShopTheSpecialist {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 40));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.POTION, 1, (short) 16428));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
             }
@@ -224,6 +231,7 @@ public class ShopTheSpecialist {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 35));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.POTION, 1, (short) 16418));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
             }
@@ -239,6 +247,7 @@ public class ShopTheSpecialist {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 15));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 1));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
             }

@@ -5,6 +5,7 @@ import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -153,6 +154,7 @@ public class ShopItemsTools {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.STONE_SWORD));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
             }
@@ -167,6 +169,7 @@ public class ShopItemsTools {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 10));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.IRON_SWORD));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
             }
@@ -181,6 +184,7 @@ public class ShopItemsTools {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 2));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
             }
@@ -195,6 +199,7 @@ public class ShopItemsTools {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 10));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.STONE_PICKAXE));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
             }
@@ -209,6 +214,7 @@ public class ShopItemsTools {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 10));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.IRON_PICKAXE));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
             }
@@ -223,6 +229,7 @@ public class ShopItemsTools {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 2));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.DIAMOND_PICKAXE));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough emeralds!");
             }
@@ -237,6 +244,7 @@ public class ShopItemsTools {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 5));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.STONE_AXE));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
             }
@@ -251,6 +259,7 @@ public class ShopItemsTools {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 5));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.IRON_AXE));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
             }
@@ -265,6 +274,7 @@ if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Diamond Axe
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 15));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.DIAMOND_AXE));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
             }
@@ -295,6 +305,7 @@ if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Diamond Axe
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 20));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.BOW));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
             }
@@ -310,6 +321,7 @@ if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Diamond Axe
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 20));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.ARROW, 10));
                 ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
             }
