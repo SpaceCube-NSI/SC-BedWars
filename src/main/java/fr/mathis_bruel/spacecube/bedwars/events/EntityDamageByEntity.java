@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,8 +169,15 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                         player.spigot().respawn();
                         player.setHealth(20);
                         player.setFoodLevel(20);
+                        for (ItemStack item : player.getInventory().getContents()) {
+                            if (item != null) {
+                                player.getWorld().dropItemNaturally(player.getLocation(), item);
+                            }
+                        }
                         player.teleport(manager.getArena().getSpecSpawn());
                         player.setGameMode(GameMode.SPECTATOR);
+
+                        player.getInventory().clear();
                         System.out.println(team.getName() + " " + team.isBedAlive());
                         if(team.isBedAlive()) {
                             manager.broadcast(team.getColor() + player.getName() + " §r§7" + m.get(new Random().nextInt(m.size())));

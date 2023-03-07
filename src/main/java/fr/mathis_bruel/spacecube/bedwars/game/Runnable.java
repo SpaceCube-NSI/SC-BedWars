@@ -75,6 +75,7 @@ public class Runnable extends BukkitRunnable {
                         RunnableGeneratorsTeams runnableGenerators = new RunnableGeneratorsTeams();
                         runnableGenerators.generatorTeam = generator;
                         runnableGenerators.arena = arena;
+                        runnableGenerators.team = team;
                         runnableGenerators.runTaskTimer(Main.getInstance(), 0, 20);
                         generator.setRunnableGenerators(runnableGenerators);
                     });
@@ -159,6 +160,7 @@ public class Runnable extends BukkitRunnable {
             for (Player player : manager.getPlayers()){
                 player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
                 player.getInventory().clear();
+                player.getInventory().setArmorContents(null);
                 player.setHealth(20);
                 player.setFoodLevel(20);
                 player.setGameMode(GameMode.SURVIVAL);

@@ -3,6 +3,7 @@ package fr.mathis_bruel.spacecube.bedwars.events;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
+import fr.mathis_bruel.spacecube.bedwars.game.State;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -30,7 +31,7 @@ public class BlockBreak implements Listener {
             Arena arena = manager.getArena();
             if(arena == null)
                 return;
-            //System.out.println(manager.getBlocksNotBreakable());
+            if(manager.getManagerState().getCurrentState() != State.RUNNING) event.setCancelled(true);
             if(manager.isBlockNotBreakable(event.getBlock())) {
                 if(event.getBlock().getType() == Material.BED_BLOCK){
                     Team teamDestroyBed = manager.getTeam(event.getBlock());

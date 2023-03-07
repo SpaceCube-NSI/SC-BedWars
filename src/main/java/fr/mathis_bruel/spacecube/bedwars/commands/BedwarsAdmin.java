@@ -325,22 +325,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§aSpawn set.");
                     break;
                 }
-                case "setplayersperteam": {
-                    Arena arena = Arena.getArenaByName(args[2]);
-                    if (arena == null) {
-                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
-                        return true;
-                    }
-                    // is number
-                    if (!Utils.isNumber(args[3])) {
-                        sender.sendMessage(prefix + "§cThis is not a number.");
-                        return true;
-                    }
-                    arena.setPlayerPerTeam(Integer.parseInt(args[3]));
-                    arena.save();
-                    sender.sendMessage(prefix + "§aPlayers per team set.");
-                    break;
-                }
+
                 case "setMaxPlayers":
                     sender.sendMessage(prefix + "§cBedwarsAdmin arena setMaxPlayers command:");
                     sender.sendMessage(prefix + "§c/bedwars-a arena setMaxPlayers <arenaName> <maxPlayers> §7 - §fSet the max players of an arena");
@@ -472,6 +457,22 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     arena.setMinPlayers(Integer.parseInt(args[3]));
                     arena.save();
                     sender.sendMessage(prefix + "§aMin players set. §7(§6" + args[3] + "§7)");
+                    break;
+                }
+                case "setplayersperteam": {
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        return true;
+                    }
+                    // is number
+                    if (!Utils.isNumber(args[3])) {
+                        sender.sendMessage(prefix + "§cThis is not a number.");
+                        return true;
+                    }
+                    arena.setPlayerPerTeam(Integer.parseInt(args[3]));
+                    arena.save();
+                    sender.sendMessage(prefix + "§aPlayers per team set.");
                     break;
                 }
                 case "addgenerator": {

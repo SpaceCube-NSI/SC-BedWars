@@ -31,6 +31,11 @@ public class RunnableGeneratorsTeams extends BukkitRunnable {
             return;
         }
 
+        if(team.getPlayers() != null && team.getPlayers().size() == 0) {
+            cancel();
+            return;
+        }
+
         if (timerIron >= GeneratorType.IRON.getLevel(generatorTeam.getLevelIron()) && generatorTeam.getLevelIron() != 0) {
             timerIron = 0;
             // spawn a iron ingot at the generator location
