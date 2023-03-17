@@ -175,13 +175,13 @@ public class ShopItemsTools {
             }
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Diamond Sword")) {
-            if (event.getWhoClicked().getInventory().contains(Material.EMERALD, 2)) {
+            if (event.getWhoClicked().getInventory().contains(Material.EMERALD, 5)) {
                 if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.DIAMOND_SWORD))) {
                     event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
                     event.getWhoClicked().closeInventory();
                     return;
                 }
-                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 2));
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 5));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.DIAMOND_SWORD));
                 ((Player) event.getWhoClicked()).updateInventory();
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);

@@ -148,7 +148,14 @@ public class ShopItemsArmor {
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 10));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.CHAINMAIL_HELMET));
+                // si le joueur a une armure moins puissante que la chainmail, on lui équipe la chainmail et on lui donne l'ancienne armure dans son inventaire
+                if (event.getWhoClicked().getInventory().getHelmet() == null || event.getWhoClicked().getInventory().getHelmet().getType() == Material.AIR) {
+                    event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+                } else {
+                    event.getWhoClicked().getInventory().addItem(event.getWhoClicked().getInventory().getHelmet());
+                    event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
+                }
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), "mob.horse.armor", 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
             } else {
@@ -163,7 +170,14 @@ public class ShopItemsArmor {
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 10));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                // si le joueur a une armure moins puissante que la chainmail, on lui équipe la chainmail et on lui donne l'ancienne armure dans son inventaire
+                if (event.getWhoClicked().getInventory().getChestplate() == null || event.getWhoClicked().getInventory().getChestplate().getType() == Material.AIR) {
+                    event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                } else {
+                    event.getWhoClicked().getInventory().addItem(event.getWhoClicked().getInventory().getChestplate());
+                    event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+                }
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), "mob.horse.armor", 1, 1);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
@@ -178,7 +192,14 @@ public class ShopItemsArmor {
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 10));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+                // si le joueur a une armure moins puissante que la chainmail, on lui équipe la chainmail et on lui donne l'ancienne armure dans son inventaire
+                if (event.getWhoClicked().getInventory().getLeggings() == null || event.getWhoClicked().getInventory().getLeggings().getType() == Material.AIR) {
+                    event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+                } else {
+                    event.getWhoClicked().getInventory().addItem(event.getWhoClicked().getInventory().getLeggings());
+                    event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+                }
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), "mob.horse.armor", 1, 1);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
@@ -193,7 +214,14 @@ public class ShopItemsArmor {
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 10));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.CHAINMAIL_BOOTS));
+                // si le joueur a une armure moins puissante que la chainmail, on lui équipe la chainmail et on lui donne l'ancienne armure dans son inventaire
+                if (event.getWhoClicked().getInventory().getBoots() == null || event.getWhoClicked().getInventory().getBoots().getType() == Material.AIR) {
+                    event.getWhoClicked().getInventory().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
+                } else {
+                    event.getWhoClicked().getInventory().addItem(event.getWhoClicked().getInventory().getBoots());
+                    event.getWhoClicked().getInventory().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
+                }
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), "mob.horse.armor", 1, 1);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
@@ -208,7 +236,14 @@ public class ShopItemsArmor {
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 50));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.IRON_HELMET));
+                // si le joueur a une armure moins puissante que l'iron, on lui équipe l'iron et on lui donne l'ancienne armure dans son inventaire
+                if (event.getWhoClicked().getInventory().getHelmet() == null || event.getWhoClicked().getInventory().getHelmet().getType() == Material.AIR) {
+                    event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.IRON_HELMET));
+                } else {
+                    event.getWhoClicked().getInventory().addItem(event.getWhoClicked().getInventory().getHelmet());
+                    event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.IRON_HELMET));
+                }
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), "mob.horse.armor", 1, 1);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
@@ -223,7 +258,14 @@ public class ShopItemsArmor {
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 2));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.IRON_CHESTPLATE));
+                // si le joueur a une armure moins puissante que l'iron, on lui équipe l'iron et on lui donne l'ancienne armure dans son inventaire
+                if (event.getWhoClicked().getInventory().getChestplate() == null || event.getWhoClicked().getInventory().getChestplate().getType() == Material.AIR) {
+                    event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
+                } else {
+                    event.getWhoClicked().getInventory().addItem(event.getWhoClicked().getInventory().getChestplate());
+                    event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
+                }
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), "mob.horse.armor", 1, 1);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
@@ -238,7 +280,14 @@ public class ShopItemsArmor {
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 20));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.IRON_LEGGINGS));
+                // si le joueur a une armure moins puissante que l'iron, on lui équipe l'iron et on lui donne l'ancienne armure dans son inventaire
+                if (event.getWhoClicked().getInventory().getLeggings() == null || event.getWhoClicked().getInventory().getLeggings().getType() == Material.AIR) {
+                    event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
+                } else {
+                    event.getWhoClicked().getInventory().addItem(event.getWhoClicked().getInventory().getLeggings());
+                    event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
+                }
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), "mob.horse.armor", 1, 1);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
@@ -253,7 +302,14 @@ public class ShopItemsArmor {
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 50));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.IRON_BOOTS));
+                // si le joueur a une armure moins puissante que l'iron, on lui équipe l'iron et on lui donne l'ancienne armure dans son inventaire
+                if (event.getWhoClicked().getInventory().getBoots() == null || event.getWhoClicked().getInventory().getBoots().getType() == Material.AIR) {
+                    event.getWhoClicked().getInventory().setBoots(new ItemStack(Material.IRON_BOOTS));
+                } else {
+                    event.getWhoClicked().getInventory().addItem(event.getWhoClicked().getInventory().getBoots());
+                    event.getWhoClicked().getInventory().setBoots(new ItemStack(Material.IRON_BOOTS));
+                }
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), "mob.horse.armor", 1, 1);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
@@ -268,7 +324,14 @@ public class ShopItemsArmor {
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 200));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.DIAMOND_HELMET));
+                // si le joueur a une armure moins puissante que l'iron, on lui équipe l'iron et on lui donne l'ancienne armure dans son inventaire
+                if (event.getWhoClicked().getInventory().getHelmet() == null || event.getWhoClicked().getInventory().getHelmet().getType() == Material.AIR) {
+                    event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
+                } else {
+                    event.getWhoClicked().getInventory().addItem(event.getWhoClicked().getInventory().getHelmet());
+                    event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
+                }
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), "mob.horse.armor", 1, 1);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
@@ -283,7 +346,14 @@ public class ShopItemsArmor {
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 5));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.DIAMOND_CHESTPLATE));
+                // si le joueur a une armure moins puissante que l'iron, on lui équipe l'iron et on lui donne l'ancienne armure dans son inventaire
+                if (event.getWhoClicked().getInventory().getChestplate() == null || event.getWhoClicked().getInventory().getChestplate().getType() == Material.AIR) {
+                    event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
+                } else {
+                    event.getWhoClicked().getInventory().addItem(event.getWhoClicked().getInventory().getChestplate());
+                    event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
+                }
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), "mob.horse.armor", 1, 1);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
@@ -298,7 +368,14 @@ public class ShopItemsArmor {
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 50));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.DIAMOND_LEGGINGS));
+                // si le joueur a une armure moins puissante que l'iron, on lui équipe l'iron et on lui donne l'ancienne armure dans son inventaire
+                if (event.getWhoClicked().getInventory().getLeggings() == null || event.getWhoClicked().getInventory().getLeggings().getType() == Material.AIR) {
+                    event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
+                } else {
+                    event.getWhoClicked().getInventory().addItem(event.getWhoClicked().getInventory().getLeggings());
+                    event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
+                }
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), "mob.horse.armor", 1, 1);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {
@@ -313,7 +390,14 @@ public class ShopItemsArmor {
                     return;
                 }
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 200));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.DIAMOND_BOOTS));
+                // si le joueur a une armure moins puissante que l'iron, on lui équipe l'iron et on lui donne l'ancienne armure dans son inventaire
+                if (event.getWhoClicked().getInventory().getBoots() == null || event.getWhoClicked().getInventory().getBoots().getType() == Material.AIR) {
+                    event.getWhoClicked().getInventory().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+                } else {
+                    event.getWhoClicked().getInventory().addItem(event.getWhoClicked().getInventory().getBoots());
+                    event.getWhoClicked().getInventory().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+                }
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), "mob.horse.armor", 1, 1);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 ((Player) event.getWhoClicked()).updateInventory();
             } else {

@@ -38,6 +38,10 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                 if(event.getDamager() instanceof Player){
                     Player damager = (Player) event.getDamager();
                     if(Manager.isCurrentlyInGame(damager)){
+                        if(Manager.getManager(player).getManagerState().getCurrentState() == State.WAITING || Manager.getManager(player).getManagerState().getCurrentState() == State.STARTING){
+                            event.setCancelled(true);
+                            return;
+                        }
                         // if is in the same team
                         if(Manager.getManager(player).getTeam(player) == Manager.getManager(damager).getTeam(damager)){
                             event.setCancelled(true);
@@ -233,6 +237,9 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
             if (!Manager.isCurrentlyInGame(player)) {
                 if (Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")).getWorld() == player.getWorld()) {
                     event.setCancelled(true);
+                    if(event.getCause() == EntityDamageEvent.DamageCause.VOID) {
+                        player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
+                    }
                 }
             }
 
