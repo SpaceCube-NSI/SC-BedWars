@@ -23,6 +23,9 @@ public class Team {
     private Boolean isBedAlive = true;
     private ArrayList<Hologram> shopHolograms = new ArrayList<>();
     private ArrayList<Hologram> generatorHolograms = new ArrayList<>();
+    private int lvlSpeed;
+    private boolean alarm;
+    private boolean healpool;
 
     public Team(String name, ChatColor ChatColor, Location spawn, ArrayList<GeneratorTeam> generators, Location pnjItems, Location pnjUpgrades, Block bed) {
         this.name = name;
@@ -33,7 +36,9 @@ public class Team {
         this.bed = bed;
         this.generators = generators;
         this.enderchest = Bukkit.createInventory(null, 6 * 9, ChatColor + "Enderchest" + name);
-
+        lvlSpeed = 0;
+        alarm = false;
+        healpool = false;
     }
 
     public Team(String name, ChatColor ChatColor) {
@@ -45,6 +50,9 @@ public class Team {
         this.bed = null;
         this.generators = new ArrayList<>();
         this.enderchest = Bukkit.createInventory(null, 6 * 9, ChatColor + "Enderchest " + name);
+        lvlSpeed = 0;
+        alarm = false;
+        healpool = false;
     }
 
     public String getName() {
@@ -236,6 +244,7 @@ public class Team {
         return generatorHolograms.contains(hologram);
     }
 
+
     public void updateGeneratorHolograms() {
         for (Hologram hologram : generatorHolograms) {
             System.out.println("test");
@@ -276,6 +285,66 @@ public class Team {
             hologram.removeLine(1);
             hologram.insertLine(1, str);
         }
+    }
+
+    public int getLvlSpeed(){
+        return lvlSpeed;
+    }
+
+    public void setLvlSpeed(int lvlSpeed){
+        this.lvlSpeed = lvlSpeed;
+    }
+
+    public void increaseLvlSpeed(){
+        lvlSpeed++;
+    }
+
+    public void decreaseLvlSpeed(){
+        lvlSpeed--;
+    }
+
+    public boolean isSpeedMax(){
+        return lvlSpeed == 2;
+    }
+
+    public boolean getAlarm(){
+        return alarm;
+    }
+
+    public void setAlarm(boolean alarm){
+        this.alarm = alarm;
+    }
+
+    public void toggleAlarm(){
+        alarm = !alarm;
+    }
+
+    public void enableAlarm(){
+        alarm = true;
+    }
+
+    public void disableAlarm(){
+        alarm = false;
+    }
+
+    public boolean getHealpool(){
+        return healpool;
+    }
+
+    public void setHealpool(boolean healpool){
+        this.healpool = healpool;
+    }
+
+    public void toggleHealpool(){
+        healpool = !healpool;
+    }
+
+    public void enableHealpool(){
+        healpool = true;
+    }
+
+    public void disableHealpool(){
+        healpool = false;
     }
 
     public void broadcast(String message){

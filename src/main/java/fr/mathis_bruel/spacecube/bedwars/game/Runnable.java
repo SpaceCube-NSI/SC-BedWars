@@ -160,6 +160,11 @@ public class Runnable extends BukkitRunnable {
                 stats.updateStats();
             });
 
+            arena.getTeams().forEach(team -> {
+                team.getEnderchest().clear();
+            });
+
+
             for (Player player : manager.getPlayers()){
                 player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
                 player.getInventory().clear();
@@ -169,6 +174,8 @@ public class Runnable extends BukkitRunnable {
                 player.setGameMode(GameMode.SURVIVAL);
                 FastBoard board = new FastBoard(player);
                 board.updateTitle("§6§lBedWars");
+                Stats state = new Stats(Games.BedWars, player.getUniqueId());
+                state.init();
                 board.updateLines(Arrays.asList(
                         "§f",
                         "§fNiveau: §f" + 0,
@@ -178,9 +185,9 @@ public class Runnable extends BukkitRunnable {
                         "§f",
                         "§fCoins: §e" + 0,
                         "§f",
-                        "§fKills: §a" + 0,
-                        "§fDeaths: §a" + 0,
-                        "§fWins: §a" + 0,
+                        "§fKills: §a" + state.getKills(),
+                        "§fDeaths: §a" + state.getDeath(),
+                        "§fWins: §a" + state.getWins(),
                         "§fStreak: §a" + 0,
                         "§f",
                         "§6§lwww.spacecube.games"
@@ -205,6 +212,8 @@ public class Runnable extends BukkitRunnable {
                 player.setGameMode(GameMode.SURVIVAL);
                 FastBoard board = new FastBoard(player);
                 board.updateTitle("§6§lBedWars");
+                Stats state = new Stats(Games.BedWars, player.getUniqueId());
+                state.init();
                 board.updateLines(Arrays.asList(
                         "§f",
                         "§fNiveau: §f" + 0,
@@ -214,9 +223,9 @@ public class Runnable extends BukkitRunnable {
                         "§f",
                         "§fCoins: §e" + 0,
                         "§f",
-                        "§fKills: §a" + 0,
-                        "§fDeaths: §a" + 0,
-                        "§fWins: §a" + 0,
+                        "§fKills: §a" + state.getKills(),
+                        "§fDeaths: §a" + state.getDeath(),
+                        "§fWins: §a" + state.getWins(),
                         "§fStreak: §a" + 0,
                         "§f",
                         "§6§lwww.spacecube.games"
@@ -266,6 +275,7 @@ public class Runnable extends BukkitRunnable {
             arena.getNpcs().forEach(TruenoNPC::delete);
 
             timeEnd = 10;
+            manager.setStartingTime(30);
             manager.getManagerState().setState(State.WAITING);
         }
 
@@ -305,6 +315,37 @@ public class Runnable extends BukkitRunnable {
             });
         } else if (manager.getManagerState().getCurrentState() == State.RUNNING) {
             manager.getPlayers().forEach(player -> {
+                FastBoard board = Main.getBoard(player.getUniqueId());
+                board.updateTitle("§6§lBedWars");
+                StringBuilder teamsLeft = new StringBuilder();
+                for (Team team : arena.getTeams()) {
+                    if (team.isBedAlive()) {
+                        teamsLeft.append(team.getColor()).append("■ ");
+                    } else if (team.getPlayers().size() > 0) {
+                        teamsLeft.append(team.getColor() + "" + team.getPlayers().size() + " ");
+                    }
+                }
+                Team team = manager.getTeam(player);
+                board.updateLines(Arrays.asList(
+                        "",
+                        "§e§lTeams Left",
+                        "§l"+teamsLeft.toString(),
+                        "",
+                        "§f§lYour Team",
+                        "§7Color: " + (team != null ? team.getColor() + team.getName() : "§cEliminated"),
+                        "§7Bed: " + (team != null ? (team.isBedAlive() ? "§aAlive" : "§cDead") : "§cEliminated"),
+                        "",
+                        "§4§lYour Stats",
+                        "§7Kills: §f" + manager.getPlayerKills().get(player),
+                        "§7Deaths: §f" + manager.getPlayerDeaths().get(player),
+                        "§7Beds: §f" + manager.getPlayerBeds().get(player),
+                        "§7§n                ",
+                        "",
+                        "§6§lwww.spacecube.games"
+
+                ));
+            });
+            manager.getSpecators().forEach(player -> {
                 FastBoard board = Main.getBoard(player.getUniqueId());
                 board.updateTitle("§6§lBedWars");
                 StringBuilder teamsLeft = new StringBuilder();
