@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 
-public class ShopTheSpecialist {
+public class ShopSpeTheSpecialist {
 
     public static Inventory getInventory(){
         Inventory inv = Bukkit.createInventory(null, 9 * 4, "§6The Specialist");
