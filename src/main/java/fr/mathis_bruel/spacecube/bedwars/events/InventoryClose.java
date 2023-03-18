@@ -1,6 +1,6 @@
 package fr.mathis_bruel.spacecube.bedwars.events;
 
-import fr.mathis_bruel.spacecube.bedwars.gui.ShopEnchanter;
+import fr.mathis_bruel.spacecube.bedwars.gui.ShopSpeEnchanter;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ public class InventoryClose implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event){
-        if(event.getInventory().getName().equals(ShopEnchanter.getInventory().getName())){
+        if(event.getInventory().getName().equals(ShopSpeEnchanter.getInventory().getName())){
             if (event.getInventory().getItem(10) != null && event.getInventory().getItem(10).getType() != Material.AIR) {
                 if (Utils.canAddItemInInventory((Player) event.getPlayer(), event.getInventory().getItem(10)))
                     event.getPlayer().getInventory().addItem(event.getInventory().getItem(10));

@@ -4,9 +4,9 @@ import es.eltrueno.npc.TruenoNPC;
 import es.eltrueno.npc.event.TruenoNPCInteractEvent;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
-import fr.mathis_bruel.spacecube.bedwars.gui.ShopEnchanter;
+import fr.mathis_bruel.spacecube.bedwars.gui.ShopSpeEnchanter;
 import fr.mathis_bruel.spacecube.bedwars.gui.ShopItems;
-import fr.mathis_bruel.spacecube.bedwars.gui.ShopTheSpecialist;
+import fr.mathis_bruel.spacecube.bedwars.gui.ShopSpeTheSpecialist;
 import fr.mathis_bruel.spacecube.bedwars.gui.ShopUpgrades;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.event.EventHandler;
@@ -30,10 +30,10 @@ public class InteractNPCEvent implements Listener {
                 event.getPlayer().openInventory(ShopUpgrades.getInventory(team));
                 break;
             case THE_SPECIALIST:
-                event.getPlayer().openInventory(ShopTheSpecialist.getInventory());
+                event.getPlayer().openInventory(ShopSpeTheSpecialist.getInventory());
                 break;
             case ENCHANTER:
-                event.getPlayer().openInventory(ShopEnchanter.getInventory());
+                event.getPlayer().openInventory(ShopSpeEnchanter.getInventory());
                 break;
         }
     }

@@ -90,7 +90,7 @@ public class ShopUpgrades {
         }
 
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Upgrade Items Summoner")) {
-            event.getWhoClicked().openInventory(ShopItemsSummoner.getInventory(team));
+            event.getWhoClicked().openInventory(ShopUpgradesSummoner.getInventory(team));
             return;
         }
 

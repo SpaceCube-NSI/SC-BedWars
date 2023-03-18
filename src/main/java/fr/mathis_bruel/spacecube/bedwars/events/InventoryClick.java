@@ -13,7 +13,7 @@ public class InventoryClick implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event){
-        if(event.getInventory().getName().equals(ShopEnchanter.getInventory().getName())) ShopEnchanter.execute(event);
+        if(event.getInventory().getName().equals(ShopSpeEnchanter.getInventory().getName())) ShopSpeEnchanter.execute(event);
         if(event.getInventory().getName().equals( Join.getInventory().getName())) Join.execute(event);
         if(event.getInventory().getName().equals(JoinChoice.getInventory().getName())) JoinChoice.execute(event);
         if(Manager.isCurrentlyInGame((Player) event.getWhoClicked())){
@@ -24,8 +24,8 @@ public class InventoryClick implements Listener {
             if(event.getInventory().getName().equals(ShopItemsArmor.getInventory().getName())) ShopItemsArmor.execute(event);
             if(event.getInventory().getName().equals(ShopItemsTools.getInventory().getName())) ShopItemsTools.execute(event);
             if(event.getInventory().getName().equals(ShopUpgrades.getInventory(team).getName())) ShopUpgrades.execute(event);
-            if(event.getInventory().getName().equals(ShopTheSpecialist.getInventory().getName())) ShopTheSpecialist.execute(event);
-            if(event.getInventory().getName().equals(ShopItemsSummoner.getInventory(team).getName())) ShopItemsSummoner.execute(event);
+            if(event.getInventory().getName().equals(ShopSpeTheSpecialist.getInventory().getName())) ShopSpeTheSpecialist.execute(event);
+            if(event.getInventory().getName().equals(ShopUpgradesSummoner.getInventory(team).getName())) ShopUpgradesSummoner.execute(event);
         }
 
 
