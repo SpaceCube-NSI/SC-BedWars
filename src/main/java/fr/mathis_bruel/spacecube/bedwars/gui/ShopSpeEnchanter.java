@@ -16,7 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 
-public class ShopEnchanter {
+public class ShopSpeEnchanter {
 
     public static Inventory getInventory() {
         Inventory inv = Bukkit.createInventory(null, 9 * 5, "§6Enchanter");
@@ -400,7 +400,7 @@ public class ShopEnchanter {
                         }
                         item.addUnsafeEnchantment(enchantment, 1);
                         item = item.clone();
-                        event.getInventory().setContents(ShopEnchanter.getInventory().getContents());
+                        event.getInventory().setContents(ShopSpeEnchanter.getInventory().getContents());
                         event.getInventory().setItem(16, item);
                         event.getWhoClicked().sendMessage("§aYou have successfully enchanted your item!");
                         ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.LEVEL_UP, 1, 1);

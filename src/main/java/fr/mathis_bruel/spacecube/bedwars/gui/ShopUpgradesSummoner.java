@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 
-public class ShopItemsSummoner {
+public class ShopUpgradesSummoner {
 
     public static Inventory getInventory(Team team){
         Inventory inv = Bukkit.createInventory(null, 9*5, "Items Summoner");
