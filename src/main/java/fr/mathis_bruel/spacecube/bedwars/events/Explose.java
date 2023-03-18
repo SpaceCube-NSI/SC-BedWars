@@ -2,9 +2,7 @@ package fr.mathis_bruel.spacecube.bedwars.events;
 
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
-import fr.mathis_bruel.spacecube.bedwars.game.State;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 
 import java.util.ArrayList;
@@ -38,7 +36,7 @@ public class Explose implements org.bukkit.event.Listener {
                 System.out.println(5);
                 event.getLocation().getWorld().getBlockAt(block.getLocation()).setType(Material.AIR);
             });
-        }*/
+        }
 
         if (event.getEntity().getType() == EntityType.PRIMED_TNT) {
             System.out.println(destroyed);
@@ -49,7 +47,17 @@ public class Explose implements org.bukkit.event.Listener {
             destroyed.removeIf(block -> manager.isBlockNotBreakable(block));
 
 
+        }*/
+
+        // ne pas exploser les block de la map (manager.isBlockNotBreakable(block))
+        if (event.getEntity().getType() == org.bukkit.entity.EntityType.PRIMED_TNT) {
+            Arena arena = Arena.getArenaByWorld(event.getEntity().getWorld());
+            Manager manager = Manager.getManager(arena);
+            if(manager == null) return;
+            event.blockList().removeIf(manager::isBlockNotBreakable);
         }
+
+
 
     }
 
