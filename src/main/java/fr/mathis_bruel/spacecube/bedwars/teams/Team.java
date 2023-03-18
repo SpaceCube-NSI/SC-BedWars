@@ -1,9 +1,11 @@
 package fr.mathis_bruel.spacecube.bedwars.teams;
 
+import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -351,6 +353,52 @@ public class Team {
         for (Player player : players) {
             player.sendMessage(message);
         }
+    }
+
+    public void playSound(Sound sound){
+        for (Player player : players) {
+            player.playSound(player.getLocation(), sound, 1, 1);
+        }
+    }
+
+    public void playSound(Sound sound, float volume, float pitch){
+        for (Player player : players) {
+            player.playSound(player.getLocation(), sound, volume, pitch);
+        }
+    }
+
+    public void playSound(Sound sound, float volume, float pitch, int delay){
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                for (Player player : players) {
+                    player.playSound(player.getLocation(), sound, volume, pitch);
+                }
+            }
+        }, delay);
+    }
+
+    public void playSound(String sound){
+        for (Player player : players) {
+            player.playSound(player.getLocation(), sound, 1, 1);
+        }
+    }
+
+    public void playSound(String sound, float volume, float pitch){
+        for (Player player : players) {
+            player.playSound(player.getLocation(), sound, volume, pitch);
+        }
+    }
+
+    public void playSound(String sound, float volume, float pitch, int delay){
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                for (Player player : players) {
+                    player.playSound(player.getLocation(), sound, volume, pitch);
+                }
+            }
+        }, delay);
     }
 
 
