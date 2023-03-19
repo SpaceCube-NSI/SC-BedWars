@@ -2,6 +2,8 @@ package fr.mathis_bruel.spacecube.bedwars.commands;
 
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
+import fr.mathis_bruel.spacecube.bedwars.game.Manager;
+import fr.mathis_bruel.spacecube.bedwars.game.State;
 import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
 import fr.mathis_bruel.spacecube.bedwars.generator.GeneratorType;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
@@ -34,6 +36,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
             sender.sendMessage(prefix + "§c/bedwars-a arena §7 - §fManage arenas");
             sender.sendMessage(prefix + "§c/bedwars-a hologram §7 - §fManage holograms for stats");
             sender.sendMessage(prefix + "§c/bedwars-a setlobby §7 - §fSet the lobby");
+            sender.sendMessage(prefix + "§c/bedwars-a forceStart §7 - §fForce start the game");
             sender.sendMessage(prefix + "§c/bedwars-a reload §7 - §fReload the plugin");
             sender.sendMessage(prefix + "§c/bedwars-a help §7 - §fShow this help");
             sender.sendMessage("--------------------------------");
@@ -42,12 +45,25 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
 
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
-                Main.getInstance().getPluginLoader().disablePlugin(Main.getInstance());
-                Main.getInstance().getPluginLoader().enablePlugin(Main.getInstance());
-                sender.sendMessage(prefix + "§aPlugin reloaded!");
-                return true;
             }
-            switch (args[0]) {
+            switch (args[0].toLowerCase()) {
+                case "reaload":
+                    Main.getInstance().getPluginLoader().disablePlugin(Main.getInstance());
+                    Main.getInstance().getPluginLoader().enablePlugin(Main.getInstance());
+                    sender.sendMessage(prefix + "§aPlugin reloaded!");
+                    return true;
+                case "forcestart":
+                    if(sender instanceof Player){
+                        if(Manager.isCurrentlyInGame((Player) sender)) {
+                            Manager manager = Manager.getManager((Player) sender);
+                            if(manager.getManagerState().getCurrentState() == State.STARTING){
+                                manager.setStartingTime(1);
+                                sender.sendMessage(prefix + "§aThe game is starting!");
+                                ((Player) sender).playSound(((Player) sender).getLocation(), "random.levelup", 1, 1);
+                            }else sender.sendMessage(prefix + "§cThe game is not starting!");
+                        }else sender.sendMessage(prefix + "§cYou must be in a game to use this command!");
+                    }else sender.sendMessage(prefix + "§cYou must be a player to use this command!");
+                    return true;
                 case "arena":
                     sender.sendMessage("--------------------------------");
                     sender.sendMessage(prefix + "§cBedwarsAdmin arena commands:");
