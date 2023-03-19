@@ -62,7 +62,7 @@ public class RunnableGenerators extends BukkitRunnable {
                         }
                     }
                 }
-                if(emeraldCount <= 3) {
+                if(emeraldCount <= 2) {
                     Location loc = generator.getLocation().clone().add(0, 2, 0);
                     loc.getWorld().dropItem(loc, new ItemStack(Material.EMERALD)).setVelocity(new Vector(0, 0, 0));
                     generator.updateHologram(timerEmeraldMap);
