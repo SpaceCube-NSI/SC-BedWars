@@ -84,8 +84,7 @@ public class ShopUpgrades {
         }
 
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Upgrade Base")) {
-            event.getWhoClicked().closeInventory();
-            event.getWhoClicked().sendMessage("§cIn development");
+            event.getWhoClicked().openInventory(ShopUpgradesBase.getInventory(team));
             return;
         }
 

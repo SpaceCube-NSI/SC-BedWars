@@ -12,10 +12,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 
-public class ShopUpgradesBases {
+public class ShopUpgradesBase {
 
     public static Inventory getInventory(Team team){
         Inventory inv = org.bukkit.Bukkit.createInventory(null, 9*4, "§6§lShop Upgrades Bases");
@@ -110,25 +112,8 @@ public class ShopUpgradesBases {
             return;
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§5Back")) {
-            return;
+            event.getWhoClicked().openInventory(ShopUpgrades.getInventory(team));
         }
-        /*
-        if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Iron Sword")) {
-            if (event.getWhoClicked().getInventory().contains(Material.GOLD_INGOT, 10)) {
-                if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.IRON_SWORD))) {
-                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
-                    event.getWhoClicked().closeInventory();
-                    return;
-                }
-                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.GOLD_INGOT, 10));
-                event.getWhoClicked().getInventory().addItem(new ItemStack(Material.IRON_SWORD));
-                ((Player) event.getWhoClicked()).updateInventory();
-                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-            } else {
-                event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
-            }
-        }
-         */
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Alarm")) {
             if(team.getAlarm()){
                 event.getWhoClicked().sendMessage("§cYou already have an alarm!");
@@ -192,6 +177,7 @@ public class ShopUpgradesBases {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 5));
                 team.broadcast("§a" + event.getWhoClicked().getName() + " §7has bought speed 1!");
                 team.setLvlSpeed(1);
+                team.getPlayers().forEach(player -> player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999999, 0, true)));
                 team.playSound(Sound.ORB_PICKUP);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 event.getWhoClicked().sendMessage("§aYou have bought speed 1!");
@@ -216,6 +202,8 @@ public class ShopUpgradesBases {
                 event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 5));
                 team.broadcast("§a" + event.getWhoClicked().getName() + " §7has bought speed 2!");
                 team.setLvlSpeed(2);
+                team.getPlayers().forEach(player -> player.removePotionEffect(PotionEffectType.SPEED));
+                team.getPlayers().forEach(player -> player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999999, 1, true)));
                 team.playSound(Sound.ORB_PICKUP);
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                 event.getWhoClicked().sendMessage("§aYou have bought speed 2!");
