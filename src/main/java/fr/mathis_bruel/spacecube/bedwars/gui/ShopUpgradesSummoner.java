@@ -171,7 +171,7 @@ public class ShopUpgradesSummoner {
             return;
         }
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§5Back")) {
-            return;
+            event.getWhoClicked().openInventory(ShopUpgrades.getInventory(team));
         }
 
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Iron lvl 1")) {
