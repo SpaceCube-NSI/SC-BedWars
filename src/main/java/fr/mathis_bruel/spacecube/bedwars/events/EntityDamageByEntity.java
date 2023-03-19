@@ -13,6 +13,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,6 +183,11 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                         }
                         player.teleport(manager.getArena().getSpecSpawn());
                         player.setGameMode(GameMode.SPECTATOR);
+                        if(team.getLvlSpeed() == 2){
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999999, 1, true));
+                        }else if(team.getLvlSpeed() == 1){
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999999, 0, true));
+                        }
 
                         player.getInventory().clear();
                         System.out.println(team.getName() + " " + team.isBedAlive());
