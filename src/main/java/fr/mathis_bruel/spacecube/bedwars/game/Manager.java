@@ -39,6 +39,7 @@ public class Manager {
     private final ArrayList<EntityPlayer> npcs = new ArrayList<>();
     private final ArrayList<Block> blocksNotBreakable = new ArrayList<>();
     private final ArrayList<Location> locationsNotPlaceable = new ArrayList<>();
+    private final ArrayList<Location> inBase = new ArrayList<>();
     private final HashMap<Player, Integer> playerKills = new HashMap<>();
     private final HashMap<Player, Integer> playerDeaths = new HashMap<>();
     private final HashMap<Player, Integer> playerBeds = new HashMap<>();
@@ -137,10 +138,18 @@ public class Manager {
         return null;
     }
 
-    public Team getTeam(Block bed){
+    public Team getTeam(Block bed) {
         // ~ 1 block de différence
-        for(Team team : arena.getTeams()){
-            if(team.getBed().getLocation().distance(bed.getLocation()) < 1.5)
+        for (Team team : arena.getTeams()) {
+            if (team.getBed().getLocation().distance(bed.getLocation()) < 1.5)
+                return team;
+        }
+        return null;
+    }
+
+    public Team getTeam(String name) {
+        for (Team team : arena.getTeams()) {
+            if (team.getName().equalsIgnoreCase(name))
                 return team;
         }
         return null;
@@ -171,7 +180,7 @@ public class Manager {
     }
 
     public void addPlayerKill(Player player) {
-        if(playerKills.containsKey(player)) {
+        if (playerKills.containsKey(player)) {
             playerKills.put(player, playerKills.get(player) + 1);
         } else {
             playerKills.put(player, 1);
@@ -179,7 +188,7 @@ public class Manager {
     }
 
     public void removePlayerKill(Player player) {
-        if(playerKills.containsKey(player)) {
+        if (playerKills.containsKey(player)) {
             playerKills.put(player, playerKills.get(player) - 1);
         } else {
             playerKills.put(player, 0);
@@ -199,7 +208,7 @@ public class Manager {
     }
 
     public void addPlayerDeath(Player player) {
-        if(playerDeaths.containsKey(player)) {
+        if (playerDeaths.containsKey(player)) {
             playerDeaths.put(player, playerDeaths.get(player) + 1);
         } else {
             playerDeaths.put(player, 1);
@@ -207,7 +216,7 @@ public class Manager {
     }
 
     public void removePlayerDeath(Player player) {
-        if(playerDeaths.containsKey(player)) {
+        if (playerDeaths.containsKey(player)) {
             playerDeaths.put(player, playerDeaths.get(player) - 1);
         } else {
             playerDeaths.put(player, 0);
@@ -227,7 +236,7 @@ public class Manager {
     }
 
     public void addPlayerBed(Player player) {
-        if(playerBeds.containsKey(player)) {
+        if (playerBeds.containsKey(player)) {
             playerBeds.put(player, playerBeds.get(player) + 1);
         } else {
             playerBeds.put(player, 1);
@@ -235,7 +244,7 @@ public class Manager {
     }
 
     public void removePlayerBed(Player player) {
-        if(playerBeds.containsKey(player)) {
+        if (playerBeds.containsKey(player)) {
             playerBeds.put(player, playerBeds.get(player) - 1);
         } else {
             playerBeds.put(player, 0);
@@ -352,7 +361,7 @@ public class Manager {
             for (int y = minY; y <= maxY; y++) {
                 for (int z = minZ; z <= maxZ; z++) {
                     Block block = arena.getPos1Map().getWorld().getBlockAt(x, y, z);
-                    if(!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
+                    if (!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
                         this.blocksNotBreakable.add(block);
                     }
                 }
@@ -373,7 +382,7 @@ public class Manager {
                 for (int y = minY2; y <= maxY2; y++) {
                     for (int z = minZ2; z <= maxZ2; z++) {
                         Block block = location3.getWorld().getBlockAt(x, y, z);
-                        if(!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
+                        if (!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
                             this.blocksNotBreakable.add(block);
                         }
                     }
@@ -382,18 +391,18 @@ public class Manager {
             // around generator team
             for (GeneratorTeam generator : team.getGenerators()) {
                 Location location4 = generator.getLocation();
-                int minX3 = (int) Math.min(location4.getBlockX() - 2, location4.getBlockX() + 2);
-                int maxX3 = (int) Math.max(location4.getBlockX() - 2, location4.getBlockX() + 2);
-                int minY3 = (int) Math.min(location4.getBlockY() - 2, location4.getBlockY() + 2);
-                int maxY3 = (int) Math.max(location4.getBlockY() - 2, location4.getBlockY() + 2);
-                int minZ3 = (int) Math.min(location4.getBlockZ() - 2, location4.getBlockZ() + 2);
-                int maxZ3 = (int) Math.max(location4.getBlockZ() - 2, location4.getBlockZ() + 2);
+                int minX3 = Math.min(location4.getBlockX() - 2, location4.getBlockX() + 2);
+                int maxX3 = Math.max(location4.getBlockX() - 2, location4.getBlockX() + 2);
+                int minY3 = Math.min(location4.getBlockY() - 2, location4.getBlockY() + 2);
+                int maxY3 = Math.max(location4.getBlockY() - 2, location4.getBlockY() + 2);
+                int minZ3 = Math.min(location4.getBlockZ() - 2, location4.getBlockZ() + 2);
+                int maxZ3 = Math.max(location4.getBlockZ() - 2, location4.getBlockZ() + 2);
 
                 for (int x = minX3; x <= maxX3; x++) {
                     for (int y = minY3; y <= maxY3; y++) {
                         for (int z = minZ3; z <= maxZ3; z++) {
                             Block block = location4.getWorld().getBlockAt(x, y, z);
-                            if(!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
+                            if (!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
                                 this.blocksNotBreakable.add(block);
                             }
                         }
@@ -404,18 +413,18 @@ public class Manager {
         }
         for (Generator generator : arena.getDiamondsGenerators()) {
             Location location3 = generator.getLocation();
-            int minX2 = (int) Math.min(location3.getBlockX() - 2, location3.getBlockX() + 2);
-            int maxX2 = (int) Math.max(location3.getBlockX() - 2, location3.getBlockX() + 2);
-            int minY2 = (int) Math.min(location3.getBlockY() - 2, location3.getBlockY() + 2);
-            int maxY2 = (int) Math.max(location3.getBlockY() - 2, location3.getBlockY() + 2);
-            int minZ2 = (int) Math.min(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
-            int maxZ2 = (int) Math.max(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+            int minX2 = Math.min(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int maxX2 = Math.max(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int minY2 = Math.min(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int maxY2 = Math.max(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int minZ2 = Math.min(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+            int maxZ2 = Math.max(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
 
             for (int x = minX2; x <= maxX2; x++) {
                 for (int y = minY2; y <= maxY2; y++) {
                     for (int z = minZ2; z <= maxZ2; z++) {
                         Block block = location3.getWorld().getBlockAt(x, y, z);
-                        if(!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
+                        if (!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
                             this.blocksNotBreakable.add(block);
                         }
                     }
@@ -425,20 +434,115 @@ public class Manager {
 
         for (Generator generator : arena.getEmeraldsGenerators()) {
             Location location3 = generator.getLocation();
-            int minX2 = (int) Math.min(location3.getBlockX() - 2, location3.getBlockX() + 2);
-            int maxX2 = (int) Math.max(location3.getBlockX() - 2, location3.getBlockX() + 2);
-            int minY2 = (int) Math.min(location3.getBlockY() - 2, location3.getBlockY() + 2);
-            int maxY2 = (int) Math.max(location3.getBlockY() - 2, location3.getBlockY() + 2);
-            int minZ2 = (int) Math.min(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
-            int maxZ2 = (int) Math.max(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+            int minX2 = Math.min(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int maxX2 = Math.max(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int minY2 = Math.min(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int maxY2 = Math.max(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int minZ2 = Math.min(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+            int maxZ2 = Math.max(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
 
             for (int x = minX2; x <= maxX2; x++) {
                 for (int y = minY2; y <= maxY2; y++) {
                     for (int z = minZ2; z <= maxZ2; z++) {
                         Block block = location3.getWorld().getBlockAt(x, y, z);
-                        if(!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
+                        if (!(block.getType() == Material.AIR || block.getType() == Material.DOUBLE_PLANT || block.getType() == Material.RED_ROSE || block.getType() == Material.YELLOW_FLOWER || block.getType() == Material.LONG_GRASS || block.getType() == Material.SAPLING || block.getType() == Material.DEAD_BUSH || block.getType() == Material.BROWN_MUSHROOM || block.getType() == Material.RED_MUSHROOM || block.getType() == Material.VINE || block.getType() == Material.WATER_LILY || block.getType() == Material.CROPS || block.getType() == Material.CARROT || block.getType() == Material.POTATO || block.getType() == Material.SUGAR_CANE_BLOCK || block.getType() == Material.CACTUS || block.getType() == Material.MELON_STEM || block.getType() == Material.PUMPKIN_STEM || block.getType() == Material.NETHER_WARTS || block.getType() == Material.COCOA || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS)) {
                             this.blocksNotBreakable.add(block);
                         }
+                    }
+                }
+            }
+        }
+
+        // add 2 block arounds all generators in locationsNotPlaceable
+        for (Generator generator : this.arena.getDiamondsGenerators()) {
+            Location location3 = generator.getLocation();
+            int minX2 = Math.min(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int maxX2 = Math.max(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int minY2 = Math.min(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int maxY2 = Math.max(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int minZ2 = Math.min(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+            int maxZ2 = Math.max(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+
+            for (int x = minX2; x <= maxX2; x++) {
+                for (int y = minY2; y <= maxY2; y++) {
+                    for (int z = minZ2; z <= maxZ2; z++) {
+                        Block block = location3.getWorld().getBlockAt(x, y, z);
+                        this.locationsNotPlaceable.add(block.getLocation());
+                    }
+                }
+            }
+        }
+        for (Generator generator : this.arena.getEmeraldsGenerators()) {
+            Location location3 = generator.getLocation();
+            int minX2 = Math.min(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int maxX2 = Math.max(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int minY2 = Math.min(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int maxY2 = Math.max(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int minZ2 = Math.min(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+            int maxZ2 = Math.max(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+
+            for (int x = minX2; x <= maxX2; x++) {
+                for (int y = minY2; y <= maxY2; y++) {
+                    for (int z = minZ2; z <= maxZ2; z++) {
+                        Block block = location3.getWorld().getBlockAt(x, y, z);
+                        this.locationsNotPlaceable.add(block.getLocation());
+                    }
+                }
+            }
+        }
+        for (Team team : arena.getTeams()) {
+            for (GeneratorTeam generator : team.getGenerators()) {
+                Location location3 = generator.getLocation();
+                int minX2 = Math.min(location3.getBlockX() - 2, location3.getBlockX() + 2);
+                int maxX2 = Math.max(location3.getBlockX() - 2, location3.getBlockX() + 2);
+                int minY2 = Math.min(location3.getBlockY() - 2, location3.getBlockY() + 2);
+                int maxY2 = Math.max(location3.getBlockY() - 2, location3.getBlockY() + 2);
+                int minZ2 = Math.min(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+                int maxZ2 = Math.max(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+
+                for (int x = minX2; x <= maxX2; x++) {
+                    for (int y = minY2; y <= maxY2; y++) {
+                        for (int z = minZ2; z <= maxZ2; z++) {
+                            Block block = location3.getWorld().getBlockAt(x, y, z);
+                            this.locationsNotPlaceable.add(block.getLocation());
+                        }
+                    }
+                }
+            }
+        }
+        for (Team team : arena.getTeams()) {
+            Location location3 = team.getSpawn();
+            int minX2 = Math.min(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int maxX2 = Math.max(location3.getBlockX() - 2, location3.getBlockX() + 2);
+            int minY2 = Math.min(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int maxY2 = Math.max(location3.getBlockY() - 2, location3.getBlockY() + 2);
+            int minZ2 = Math.min(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+            int maxZ2 = Math.max(location3.getBlockZ() - 2, location3.getBlockZ() + 2);
+
+            for (int x = minX2; x <= maxX2; x++) {
+                for (int y = minY2; y <= maxY2; y++) {
+                    for (int z = minZ2; z <= maxZ2; z++) {
+                        Block block = location3.getWorld().getBlockAt(x, y, z);
+                        this.locationsNotPlaceable.add(block.getLocation());
+                    }
+                }
+            }
+        }
+        // set in InBase the location of 25 block around spawn of each team
+        for (Team team : arena.getTeams()) {
+            Location location3 = team.getSpawn();
+            int minX2 = Math.min(location3.getBlockX() - 25, location3.getBlockX() + 25);
+            int maxX2 = Math.max(location3.getBlockX() - 25, location3.getBlockX() + 25);
+            int minY2 = Math.min(location3.getBlockY() - 25, location3.getBlockY() + 25);
+            int maxY2 = Math.max(location3.getBlockY() - 25, location3.getBlockY() + 25);
+            int minZ2 = Math.min(location3.getBlockZ() - 25, location3.getBlockZ() + 25);
+            int maxZ2 = Math.max(location3.getBlockZ() - 25, location3.getBlockZ() + 25);
+
+            for (int x = minX2; x <= maxX2; x++) {
+                for (int y = minY2; y <= maxY2; y++) {
+                    for (int z = minZ2; z <= maxZ2; z++) {
+                        Block block = location3.getWorld().getBlockAt(x, y, z);
+                        this.inBase.add(block.getLocation());
                     }
                 }
             }
@@ -554,30 +658,30 @@ public class Manager {
     }
 
 
-    public Boolean isFinish(){
-        if(this.players.size() <= 1) {
+    public Boolean isFinish() {
+        if (this.players.size() <= 1) {
             return true;
         }
         int teamAlive = 0;
-        for (Team team : this.arena.getTeams()){
-            if(!team.isBedAlive()){
-                if(team.getPlayers().size() > 0){
+        for (Team team : this.arena.getTeams()) {
+            if (!team.isBedAlive()) {
+                if (team.getPlayers().size() > 0) {
                     teamAlive++;
                 }
-            }else {
+            } else {
                 teamAlive++;
             }
         }
         return false;
     }
 
-    public ArrayList<Player> getWinners(){
+    public ArrayList<Player> getWinners() {
         ArrayList<Player> winners = new ArrayList<>();
-        for (Team team : this.arena.getTeams()){
-            if(team.isBedAlive()){
+        for (Team team : this.arena.getTeams()) {
+            if (team.isBedAlive()) {
                 winners.addAll(team.getPlayers());
-            }else{
-                if(team.getPlayers().size() > 0){
+            } else {
+                if (team.getPlayers().size() > 0) {
                     winners.addAll(team.getPlayers());
                 }
             }
@@ -593,6 +697,12 @@ public class Manager {
         return locationsNotPlaceable;
     }
 
+    public ArrayList<Location> getInBase() {
+        return inBase;
+    }
+
+
+
     public boolean isBlockNotBreakable(Block block) {
         return blocksNotBreakable.contains(block);
     }
@@ -600,6 +710,21 @@ public class Manager {
     public boolean isLocationNotPlaceable(Location location) {
         return locationsNotPlaceable.contains(location);
     }
+
+    public boolean isInBase(Location location) {
+        return inBase.contains(location);
+    }
+
+    public Team getTeam(Location location){
+        for(Team team : this.arena.getTeams()){
+            if(team.getSpawn().distance(location) <= 25){
+                return team;
+            }
+        }
+        return null;
+    }
+
+
 
 
     public static void init() {

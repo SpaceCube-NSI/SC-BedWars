@@ -11,7 +11,7 @@ public class Test implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        ((Player) sender).playSound(((Player) sender).getLocation(), "minecraft:entity.enderdragon.flap", 1, 1);
+        ((Player) sender).playSound(((Player) sender).getLocation(), "note.snare", 1, 1);
 
         return true;
     }

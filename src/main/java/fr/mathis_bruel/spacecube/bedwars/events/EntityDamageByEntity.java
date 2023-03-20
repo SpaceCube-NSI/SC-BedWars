@@ -58,12 +58,16 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
+            System.out.println(1);
             Player player = (Player) event.getEntity();
             if (player.getHealth() <= event.getFinalDamage()) {
+                System.out.println(2);
                 if (Manager.isCurrentlyInGame(player)) {
+                    System.out.println(3);
                     Manager manager = Manager.getManager(player);
                     Team team = manager.getTeam(player);
                     if (team != null) {
+                        System.out.println(event.getCause());
                         List<String> m = new ArrayList<>();
                         switch (event.getCause()) {
                             case BLOCK_EXPLOSION:
@@ -71,28 +75,41 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                                 m.add("was destroyed by an explosion.");
                                 m.add("went boom... §oBOOM!");
                                 break;
-                            case CONTACT:
-                            case CUSTOM:
-                                break;
+
                             case DROWNING:
                                 m.add("drowned.");
                                 m.add("didn't know how to swim.");
                                 m.add("glug glug glug...");
                                 break;
                             case ENTITY_ATTACK:
-                                Player killer = ((Player) event.getEntity()).getKiller();
-                                if(!Manager.isCurrentlyInGame(killer)) return;
-                                String s = killer.getName();
-                                Manager.getManager(killer).addPlayerKill(killer);
-                                killer.playSound(killer.getLocation(), "ORB_PICKUP", 1, 1);
-                                m.add("was killed by " + s + "§r.");
-                                m.add("was slain by " + s + "§r.");
-                                m.add("was murdered by " + s + "§r.");
-                                m.add("lost the fight against " + s + "§r.");
-                                m.add("lost the battle against " + s + "§r.");
-                                m.add("fought " + s + "§r.");
-                                m.add("opposed " + s + "§r.");
-                                m.add("challenged " + s + "§r and lost...");
+                                if(((Player) event.getEntity()).getKiller() instanceof Player) {
+                                    Player killer = ((Player) event.getEntity()).getKiller();
+                                    if (!Manager.isCurrentlyInGame(killer)) return;
+                                    Team killerTeam = Manager.getManager(killer).getTeam(killer);
+                                    String s = killerTeam.getColor() + killer.getName();
+                                    Manager.getManager(killer).addPlayerKill(killer);
+                                    killer.playSound(killer.getLocation(), "ORB_PICKUP", 1, 1);
+                                    m.add("was killed by " + s + "§r§7.");
+                                    m.add("was slain by " + s + "§r§7.");
+                                    m.add("was murdered by " + s + "§r§7.");
+                                    m.add("lost the fight against " + s + "§r§7.");
+                                    m.add("lost the battle against " + s + "§r§7.");
+                                    m.add("fought " + s + "§r§7.");
+                                    m.add("opposed " + s + "§r§7.");
+                                    m.add("challenged " + s + "§r§7 and lost...");
+                                }else{
+                                    System.out.println(((Player) event.getEntity()).getKiller());
+                                    if(((Player) event.getEntity()).getKiller() == null) {
+                                        m.add("was killed by an iron golem.");
+                                        m.add("was slain by an iron golem.");
+                                        m.add("was murdered by an iron golem.");
+                                        m.add("lost the fight against an iron golem.");
+                                        m.add("lost the battle against an iron golem.");
+                                        m.add("fought an iron golem.");
+                                        m.add("opposed an iron golem.");
+                                        m.add("challenged an iron golem and lost...");
+                                    }
+                                }
                                 break;
                             case ENTITY_EXPLOSION:
                                 m.add("was blown up.");
@@ -167,14 +184,15 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                                 m.add("was infected by the wither.");
                                 break;
                             default:
-                                break;
+                                m.add("died. Reason: "+ event.getCause());
                         }
                         if (m.size() == 0) {
                             m.add("was dead");
                         }
+                        System.out.println(5);
                         manager.addPlayerDeath(player);
                         player.spigot().respawn();
-                        player.setHealth(20);
+                        player.setHealth(player.getMaxHealth());
                         player.setFoodLevel(20);
                         for (ItemStack item : player.getInventory().getContents()) {
                             if (item != null) {
@@ -190,7 +208,6 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                         }
 
                         player.getInventory().clear();
-                        System.out.println(team.getName() + " " + team.isBedAlive());
                         if(team.isBedAlive()) {
                             manager.broadcast(team.getColor() + player.getName() + " §r§7" + m.get(new Random().nextInt(m.size())));
                             Death death = new Death();

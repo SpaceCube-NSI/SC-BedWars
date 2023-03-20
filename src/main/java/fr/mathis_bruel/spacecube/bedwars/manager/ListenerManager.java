@@ -34,6 +34,7 @@ public class ListenerManager {
         this.listeners.add(new ItemSpawn());
         this.listeners.add(new FoodLevelChange());
         this.listeners.add(new InventoryClose());
+        this.listeners.add(new EntitySpawn());
 
 
 

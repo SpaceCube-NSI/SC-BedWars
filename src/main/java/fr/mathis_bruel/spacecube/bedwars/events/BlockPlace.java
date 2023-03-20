@@ -3,10 +3,17 @@ package fr.mathis_bruel.spacecube.bedwars.events;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
+import fr.mathis_bruel.spacecube.bedwars.game.RunnableIronGolem;
 import fr.mathis_bruel.spacecube.bedwars.game.State;
+import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftIronGolem;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPlaceEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockPlace implements org.bukkit.event.Listener {
 
@@ -26,14 +33,43 @@ public class BlockPlace implements org.bukkit.event.Listener {
             if(arena == null)
                 return;
             if(manager.getManagerState().getCurrentState() != State.RUNNING) event.setCancelled(true);
+            Team team = manager.getTeam(event.getPlayer());
+            if(team == null)
+                return;
             if(manager.isLocationNotPlaceable(event.getBlock().getLocation())) {
                 event.setCancelled(true);
                 event.getPlayer().sendMessage("§cYou can't place blocks here!");
+                return;
             }
             // if is left the region of arena (manager.getArena().getPos1Map() and manager.getArena().getPos2Map())
             if(!isBlockInRegion(event.getBlock().getLocation(), manager.getArena().getPos1Map(), manager.getArena().getPos2Map())) {
                 event.setCancelled(true);
                 event.getPlayer().sendMessage("§cYou can't place blocks here!");
+                return;
+            }
+
+            if(event.getBlock().getType() == Material.TNT){
+                event.getBlock().setType(Material.AIR);
+                event.getBlock().getWorld().spawn(event.getBlock().getLocation(), org.bukkit.entity.TNTPrimed.class);
+            }
+
+            if(event.getBlock().getType() == Material.PUMPKIN){
+                // create iron golem
+                CraftIronGolem golem = (CraftIronGolem) event.getBlock().getWorld().spawn(event.getBlock().getLocation(), org.bukkit.entity.IronGolem.class);
+                golem.setPlayerCreated(true);
+                golem.setCustomName(team.getColor() + "§l" + team.getName() + "§r§f's golem");
+                golem.setCustomNameVisible(true);
+                List<String> aggroList = new ArrayList<>();
+                manager.getPlayers().forEach(player -> {
+                    if (manager.getTeam(player) != team) {
+                        aggroList.add(player.getName());
+                    }
+                });
+                RunnableIronGolem runnableIronGolem = new RunnableIronGolem();
+                runnableIronGolem.aggroList = aggroList;
+                runnableIronGolem.golem = golem;
+                runnableIronGolem.runTaskTimer(Main.getInstance(), 0, 20);
+                event.getBlock().setType(Material.AIR);
             }
 
         }
