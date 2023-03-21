@@ -320,7 +320,7 @@ public class Runnable extends BukkitRunnable {
                 StringBuilder teamsLeft = new StringBuilder();
                 for (Team team : arena.getTeams()) {
                     if (team.isBedAlive()) {
-                        teamsLeft.append(team.getColor()).append("§l█ ");
+                        teamsLeft.append(team.getColor()).append("█ ");
                     } else if (team.getPlayers().size() > 0) {
                         teamsLeft.append(team.getColor() + "" + team.getPlayers().size() + " ");
                     }
