@@ -23,6 +23,7 @@ repositories {
 dependencies {
     compileOnly fileTree(dir: "libs", include: "*.jar")
     implementation 'xyz.xenondevs:particle:1.8.3'
+    implementation 'com.google.code.gson:gson:2.8.9'
 }
 
 def targetJavaVersion = 8
