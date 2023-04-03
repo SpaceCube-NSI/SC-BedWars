@@ -27,11 +27,24 @@ public class NPCManager {
     private Location location;
     private String npcName;
     private EntityPlayer entityPlayer;
+    private String data;
+    private String signature;
 
     public NPCManager(Location location, EntityType entityType, String npcName) throws IOException {
         this.location = location;
         this.entityType = entityType;
         this.npcName = npcName;
+
+        spawnNPC();
+
+    }
+
+    public NPCManager(Location location, EntityType entityType, String npcName, String data, String signature) throws IOException {
+        this.location = location;
+        this.entityType = entityType;
+        this.npcName = npcName;
+        this.data = data;
+        this.signature = signature;
 
         spawnNPC();
 
@@ -57,7 +70,7 @@ public class NPCManager {
 
         entityPlayer.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(),
                 location.getPitch());
-        entityPlayer.setCustomNameVisible(false);
+        //entityPlayer.setCustomNameVisible(false);
 
         nmsWorld.addEntity(entityPlayer);
 
@@ -69,11 +82,20 @@ public class NPCManager {
         PacketPlayOutPlayerInfo playerInfoRemove = new PacketPlayOutPlayerInfo(
                 PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer);
 
+        if(data != null && signature != null) {
+            GameProfile gameProfile = entityPlayer.getProfile();
+            gameProfile.getProperties().put("textures", new Property("textures", data, signature));
+            entityPlayer.updateAbilities();
+        }
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(playerInfoAdd);
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(namedEntitySpawn);
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(headRotation);
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(playerInfoRemove);
+            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
+            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
+
         }
 
         npcUUID = entityPlayer.getUniqueID();
