@@ -1,9 +1,9 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
-import es.eltrueno.npc.TruenoNPC;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
 import fr.mathis_bruel.spacecube.bedwars.generator.GeneratorType;
+import fr.mathis_bruel.spacecube.bedwars.manager.NPCManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Arena {
     private World world;
@@ -35,8 +36,8 @@ public class Arena {
     private double protectionRadius;
     private Location pos1Map;
     private Location pos2Map;
-    private final HashMap<Integer, TypeShop> shops = new HashMap<>();
-    private ArrayList<TruenoNPC> npcs = new ArrayList<>();
+    private final HashMap<UUID, TypeShop> shops = new HashMap<>();
+    private ArrayList<NPCManager> npcs = new ArrayList<>();
 
     public Arena(World world, String name) {
         this.world = world;
@@ -269,16 +270,16 @@ public class Arena {
     }
 
 
-    public HashMap<Integer, TypeShop> getShops() {
+    public HashMap<UUID, TypeShop> getShops() {
         return shops;
     }
 
-    public TypeShop getShop(int id) {
-        return shops.get(id);
+    public TypeShop getShop(UUID uuid) {
+        return shops.get(uuid);
     }
 
-    public void addShop(int id, TypeShop shop) {
-        shops.put(id, shop);
+    public void addShop(UUID uuid, TypeShop shop) {
+        shops.put(uuid, shop);
     }
 
     public void removeShop(int id) {
@@ -289,19 +290,19 @@ public class Arena {
         shops.clear();
     }
 
-    public void setNpcs(ArrayList<TruenoNPC> npcs) {
+    public void setNpcs(ArrayList<NPCManager> npcs) {
         this.npcs = npcs;
     }
 
-    public ArrayList<TruenoNPC> getNpcs() {
+    public ArrayList<NPCManager> getNpcs() {
         return npcs;
     }
 
-    public void addNpc(TruenoNPC npc) {
+    public void addNpc(NPCManager npc) {
         npcs.add(npc);
     }
 
-    public void removeNpc(TruenoNPC npc) {
+    public void removeNpc(NPCManager npc) {
         npcs.remove(npc);
     }
 

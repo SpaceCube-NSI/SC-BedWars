@@ -1,11 +1,11 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
 import com.sk89q.worldedit.WorldEditException;
-import es.eltrueno.npc.TruenoNPC;
 import fr.Mathis_Bruel.spacecube.spacecubeapi.api.games.Games;
 import fr.Mathis_Bruel.spacecube.spacecubeapi.api.games.Stats;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGeneratorsTeams;
+import fr.mathis_bruel.spacecube.bedwars.manager.NPCManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
@@ -21,7 +21,6 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,7 +86,7 @@ public class Runnable extends BukkitRunnable {
 
                 try {
                     manager.initGame();
-                } catch (FileNotFoundException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 } catch (WorldEditException e) {
                     e.printStackTrace();
@@ -272,7 +271,7 @@ public class Runnable extends BukkitRunnable {
                     generator.setLevelDiamond(0);
                 });
             });
-            arena.getNpcs().forEach(TruenoNPC::delete);
+            arena.getNpcs().forEach(NPCManager::destroy);
 
             timeEnd = 10;
             manager.setStartingTime(30);

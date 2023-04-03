@@ -1,6 +1,9 @@
 package fr.mathis_bruel.spacecube.bedwars.commands;
 
+import fr.mathis_bruel.spacecube.bedwars.Main;
+import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.manager.NPCManager;
+import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,6 +26,10 @@ public class Test implements CommandExecutor {
 
             try {
                 NPCManager npcManager = new NPCManager(location, entityType, npcName);
+                Main.addNPC(npcManager);
+                System.out.println(npcManager.getNpcUUID());
+                Arena arena = Arena.getArenaByWorld(player.getWorld());
+                arena.addShop(npcManager.getNpcUUID(), TypeShop.ITEMS);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

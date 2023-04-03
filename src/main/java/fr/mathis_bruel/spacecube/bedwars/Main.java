@@ -7,6 +7,7 @@ import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
 import fr.mathis_bruel.spacecube.bedwars.manager.ListenerManager;
+import fr.mathis_bruel.spacecube.bedwars.manager.NPCManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.Bukkit;
@@ -27,6 +28,7 @@ public final class Main extends JavaPlugin implements Listener {
     public static ArrayList<Hologram> holograms = new ArrayList<>();
     public static ArrayList<Player> playersFreeze = new ArrayList<>();
     public static ArrayList<Player> godMode = new ArrayList<>();
+    public static ArrayList<NPCManager> npcs = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -156,6 +158,30 @@ public final class Main extends JavaPlugin implements Listener {
 
     public static boolean isGodMode(Player player) {
         return godMode.contains(player);
+    }
+
+    public static void addNPC(NPCManager npc) {
+        npcs.add(npc);
+    }
+
+    public static void removeNPC(NPCManager npc) {
+        npcs.remove(npc);
+    }
+
+    public static void clearNPCs() {
+        npcs.clear();
+    }
+
+    public static ArrayList<NPCManager> getNpcs() {
+        return npcs;
+    }
+
+    public static NPCManager getNpc(UUID uuid){
+        for(NPCManager npc : npcs){
+            if(npc.getNpcUUID().equals(uuid))
+                return npc;
+        }
+        return null;
     }
 
 

@@ -1,14 +1,11 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
 import com.sk89q.worldedit.WorldEditException;
-import es.eltrueno.npc.TruenoNPC;
-import es.eltrueno.npc.TruenoNPCApi;
-import es.eltrueno.npc.skin.TruenoNPCSkin;
-import es.eltrueno.npc.skin.TruenoNPCSkinBuilder;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
 import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGenerators;
 import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
+import fr.mathis_bruel.spacecube.bedwars.manager.NPCManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
@@ -20,11 +17,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -255,7 +253,7 @@ public class Manager {
         playerBeds.clear();
     }
 
-    public void initGame() throws FileNotFoundException, WorldEditException {
+    public void initGame() throws IOException, WorldEditException {
         RunnableGenerators runnableGenerators = new RunnableGenerators();
         runnableGenerators.arena = arena;
         runnableGenerators.runTaskTimer(Main.getInstance(), 0, 20);
@@ -269,10 +267,11 @@ public class Manager {
         Utils.saveSchem(arena.getName(), x1, y1, z1, x2, y2, z2, arena.getWorld());
 
         for (Team team : arena.getTeams()) {
-            TruenoNPCSkin skin = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "f52dc72a8953457f972c0fecd8fd553d");
             Location location = team.getPnjItems();
             Location loc2 = location.clone().add(0, 1.8, 0);
-            TruenoNPC npc = TruenoNPCApi.createNPC(Main.getInstance(), location, skin);
+            //TruenoNPC npc = TruenoNPCApi.createNPC(Main.getInstance(), location, skin);
+            NPCManager npc = new NPCManager(location, EntityType.PLAYER, "SHOP-ITEMS");
+            npc.setSkin("f52dc72a8953457f972c0fecd8fd553d");
             ArrayList<String> lines = new ArrayList<>();
             lines.add("§6§lSHOP ITEMS");
             lines.add("§7Click to open");
@@ -280,9 +279,7 @@ public class Manager {
             hologram.showHologram();
 
             Location location2 = team.getPnjUpgrades();
-
-            TruenoNPCSkin skin2 = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "f52dc72a8953457f972c0fecd8fd553d");
-            TruenoNPC npc2 = TruenoNPCApi.createNPC(Main.getInstance(), location2, skin2);
+            NPCManager npc2 = new NPCManager(location2, EntityType.PLAYER, "SHOP-UPGRADES");
             Location loc = location2.clone().add(0, 1.8, 0);
             ArrayList<String> lines2 = new ArrayList<>();
             lines2.add("§6§lSHOP UPGRADES");
@@ -290,8 +287,8 @@ public class Manager {
             Hologram hologram2 = new Hologram(loc, lines2);
             hologram2.showHologram();
 
-            arena.addShop(npc.getNpcID(), TypeShop.ITEMS);
-            arena.addShop(npc2.getNpcID(), TypeShop.UPGRADES);
+            arena.addShop(npc.getNpcUUID(), TypeShop.ITEMS);
+            arena.addShop(npc2.getNpcUUID(), TypeShop.UPGRADES);
             arena.addNpc(npc);
             arena.addNpc(npc2);
 
@@ -325,28 +322,30 @@ public class Manager {
         }
 
         // create npc for arena.getTheSpecialist and arena.getEnchanter
-        TruenoNPCSkin skin = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "f1894a3e64e64fb483ade05ddf00fdff");
+        //TruenoNPCSkin skin = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "f1894a3e64e64fb483ade05ddf00fdff");
         Location location = arena.getTheSpecialist();
         Location loc2 = location.clone().add(0, 1.8, 0);
-        TruenoNPC npc = TruenoNPCApi.createNPC(Main.getInstance(), location, skin);
+        //TruenoNPC npc = TruenoNPCApi.createNPC(Main.getInstance(), location, skin);
+        NPCManager npc = new NPCManager(location, EntityType.PLAYER, "THE-SPECIALIST");
         ArrayList<String> lines = new ArrayList<>();
         lines.add("§6§lTHE SPECIALIST");
         lines.add("§7Click to open");
         Hologram hologram = new Hologram(loc2, lines);
         hologram.showHologram();
-        arena.addShop(npc.getNpcID(), TypeShop.THE_SPECIALIST);
+        arena.addShop(npc.getNpcUUID(), TypeShop.THE_SPECIALIST);
         arena.addNpc(npc);
 
-        TruenoNPCSkin skin2 = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "473cae4d3c8e4d20857a01f6e52076b7");
+        //TruenoNPCSkin skin2 = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "473cae4d3c8e4d20857a01f6e52076b7");
         Location location2 = arena.getEnchanter();
         Location loc3 = location2.clone().add(0, 1.8, 0);
-        TruenoNPC npc2 = TruenoNPCApi.createNPC(Main.getInstance(), location2, skin2);
+        //TruenoNPC npc2 = TruenoNPCApi.createNPC(Main.getInstance(), location2, skin2);
+        NPCManager npc2 = new NPCManager(location2, EntityType.PLAYER, "ENCHANTER");
         ArrayList<String> lines2 = new ArrayList<>();
         lines2.add("§6§lENCHANTER");
         lines2.add("§7Click to open");
         Hologram hologram2 = new Hologram(loc3, lines2);
         hologram2.showHologram();
-        arena.addShop(npc2.getNpcID(), TypeShop.ENCHANTER);
+        arena.addShop(npc2.getNpcUUID(), TypeShop.ENCHANTER);
         arena.addNpc(npc2);
 
         // get all blocks in the arena and add them to the list
@@ -566,7 +565,7 @@ public class Manager {
     public String join(Player player) {
         if (isPlayer(player) || isSpecator(player)) return "§cYou are already in this game !";
         if (Manager.isCurrentlyInGame(player)) return "§cYou are already in a game !";
-        if (managerState.getCurrentState() == State.WAITING) {
+        if (managerState.getCurrentState() == State.WAITING || (managerState.getCurrentState() == State.STARTING && this.getPlayers().size() <= this.arena.getMaxPlayers())) {
             addPlayer(player);
             player.teleport(arena.getLobbySpawn());
             player.getInventory().clear();
