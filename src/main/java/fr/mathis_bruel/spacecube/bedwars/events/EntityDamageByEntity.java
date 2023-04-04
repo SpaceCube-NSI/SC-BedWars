@@ -34,6 +34,9 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onDamageByEntity(EntityDamageByEntityEvent event){
+        if(event.getEntity().getName().equals("SHOP-ITEMS") || event.getEntity().getName().equals("SHOP-UPGRADES") || event.getEntity().getName().equals("THE-SPECIALIST") || event.getEntity().getName().equals("ENCHANTER")){
+            event.setCancelled(true);
+        }
         if(event.getEntity() instanceof Player){
             Player player = (Player) event.getEntity();
             if(Manager.isCurrentlyInGame(player)){
@@ -49,6 +52,7 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                             event.setCancelled(true);
                             damager.sendMessage("§cYou can't hurt your own team!");
                         }
+
                     }
                 }
             }
@@ -58,12 +62,9 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
-            System.out.println(1);
             Player player = (Player) event.getEntity();
             if (player.getHealth() <= event.getFinalDamage()) {
-                System.out.println(2);
                 if (Manager.isCurrentlyInGame(player)) {
-                    System.out.println(3);
                     Manager manager = Manager.getManager(player);
                     Team team = manager.getTeam(player);
                     if (team != null) {
@@ -98,7 +99,6 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                                     m.add("opposed " + s + "§r§7.");
                                     m.add("challenged " + s + "§r§7 and lost...");
                                 }else{
-                                    System.out.println(((Player) event.getEntity()).getKiller());
                                     if(((Player) event.getEntity()).getKiller() == null) {
                                         m.add("was killed by an iron golem.");
                                         m.add("was slain by an iron golem.");

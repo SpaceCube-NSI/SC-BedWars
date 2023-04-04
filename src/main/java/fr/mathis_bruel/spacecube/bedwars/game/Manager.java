@@ -671,6 +671,9 @@ public class Manager {
                 teamAlive++;
             }
         }
+        if(teamAlive <= 1) {
+            return true;
+        }
         return false;
     }
 
