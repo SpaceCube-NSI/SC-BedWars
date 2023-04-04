@@ -3,8 +3,7 @@ package fr.mathis_bruel.spacecube.bedwars.commands;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
-import fr.mathis_bruel.spacecube.bedwars.gui.Join;
-import fr.mathis_bruel.spacecube.bedwars.gui.Stats;
+import fr.mathis_bruel.spacecube.bedwars.gui.*;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -123,15 +122,26 @@ public class Bedwars implements CommandExecutor {
                         if (Manager.isCurrentlyInGame(player)) {
                             sender.sendMessage(prefix + "§cYou are already in a game!");
                         } else {
-                            Arena arena = Arena.getArenaByName(args[1]);
-                            if (arena != null) {
-                                Manager manager = Manager.getManager(arena);
-                                if(manager == null) sender.sendMessage(prefix + "§cThis arena is not ready yet!");
-                                else {
-                                    player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
-                                    manager.join(player);
-                                }
-                            }else sender.sendMessage(prefix + "§cThis arena does not exist!");
+                            if(args[1].equalsIgnoreCase("1")){
+                                player.openInventory(JoinChoiceSolo.getInventory());
+                            }else if (args[1].equalsIgnoreCase("2")){
+                                player.openInventory(JoinChoiceDouble.getInventory());
+                            }else if (args[1].equalsIgnoreCase("3")){
+                                player.openInventory(JoinChoiceTriple.getInventory());
+                            }else if (args[1].equalsIgnoreCase("4")){
+                                player.openInventory(JoinChoiceQuatre.getInventory());
+                            }else {
+                                Arena arena = Arena.getArenaByName(args[1]);
+                                if (arena != null) {
+                                    Manager manager = Manager.getManager(arena);
+                                    if(manager == null) sender.sendMessage(prefix + "§cThis arena is not ready yet!");
+                                    else {
+                                        player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+                                        manager.join(player);
+                                    }
+                                }else sender.sendMessage(prefix + "§cThis arena does not exist!");
+                            }
+
                         }
                     } else sender.sendMessage(prefix + "§cYou must be a player to use this command!");
                     break;
