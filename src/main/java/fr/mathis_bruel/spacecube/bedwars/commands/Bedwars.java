@@ -4,6 +4,7 @@ import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.gui.Join;
+import fr.mathis_bruel.spacecube.bedwars.gui.Stats;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -66,10 +67,7 @@ public class Bedwars implements CommandExecutor {
                     sender.sendMessage("--------------------------------");
                     break;
                 case "stats":
-                    sender.sendMessage("--------------------------------");
-                    sender.sendMessage(prefix + "§cBedwars stats:");
-                    sender.sendMessage(prefix + "§cComing soon!");
-                    sender.sendMessage("--------------------------------");
+                    ((Player) sender).openInventory(Stats.getInventory((Player) sender));
                     break;
                 case "top":
                     sender.sendMessage("--------------------------------");

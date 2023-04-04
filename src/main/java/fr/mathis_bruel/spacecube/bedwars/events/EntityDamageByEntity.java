@@ -34,9 +34,11 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onDamageByEntity(EntityDamageByEntityEvent event){
-        if(event.getEntity().getName().equals("SHOP-ITEMS") || event.getEntity().getName().equals("SHOP-UPGRADES") || event.getEntity().getName().equals("THE-SPECIALIST") || event.getEntity().getName().equals("ENCHANTER")){
-            event.setCancelled(true);
-        }
+        Main.getNpcs().forEach(npc -> {
+            if(event.getEntity().getName().equals(npc.getNpcName())){
+                event.setCancelled(true);
+            }
+        });
         if(event.getEntity() instanceof Player){
             Player player = (Player) event.getEntity();
             if(Manager.isCurrentlyInGame(player)){

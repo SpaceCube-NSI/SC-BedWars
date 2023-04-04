@@ -264,6 +264,7 @@ public class Utils {
                 lore.add("§7Players: §a" + manager.getPlayers().size() + "§7/§4" + manager.getArena().getPlayerPerTeam() * manager.getArena().getTeams().size());
                 lore.add("§7State: §aWaiting");
                 lore.add("§7Id: §a" + Main.getInstance().arenas.indexOf(manager.getArena()));
+                lore.add("§7PlayerPerTeam: §a" + manager.getArena().getPlayerPerTeam());
                 meta.setLore(lore);
                 item.setItemMeta(meta);
                 return item;

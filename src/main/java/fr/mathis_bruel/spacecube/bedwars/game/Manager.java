@@ -269,7 +269,6 @@ public class Manager {
         for (Team team : arena.getTeams()) {
             Location location = team.getPnjItems();
             Location loc2 = location.clone().add(0, 1.8, 0);
-            //TruenoNPC npc = TruenoNPCApi.createNPC(Main.getInstance(), location, skin);
             NPCManager npc = new NPCManager(location, EntityType.PLAYER, "SHOP-ITEMS");
             npc.setSkin("f52dc72a8953457f972c0fecd8fd553d");
             ArrayList<String> lines = new ArrayList<>();
@@ -280,6 +279,7 @@ public class Manager {
 
             Location location2 = team.getPnjUpgrades();
             NPCManager npc2 = new NPCManager(location2, EntityType.PLAYER, "SHOP-UPGRADES");
+            npc2.setSkin("f52dc72a8953457f972c0fecd8fd553d");
             Location loc = location2.clone().add(0, 1.8, 0);
             ArrayList<String> lines2 = new ArrayList<>();
             lines2.add("§6§lSHOP UPGRADES");
@@ -327,6 +327,7 @@ public class Manager {
         Location loc2 = location.clone().add(0, 1.8, 0);
         //TruenoNPC npc = TruenoNPCApi.createNPC(Main.getInstance(), location, skin);
         NPCManager npc = new NPCManager(location, EntityType.PLAYER, "THE-SPECIALIST");
+        npc.setSkin("f1894a3e64e64fb483ade05ddf00fdff");
         ArrayList<String> lines = new ArrayList<>();
         lines.add("§6§lTHE SPECIALIST");
         lines.add("§7Click to open");
@@ -340,6 +341,7 @@ public class Manager {
         Location loc3 = location2.clone().add(0, 1.8, 0);
         //TruenoNPC npc2 = TruenoNPCApi.createNPC(Main.getInstance(), location2, skin2);
         NPCManager npc2 = new NPCManager(location2, EntityType.PLAYER, "ENCHANTER");
+        npc2.setSkin("473cae4d3c8e4d20857a01f6e52076b7");
         ArrayList<String> lines2 = new ArrayList<>();
         lines2.add("§6§lENCHANTER");
         lines2.add("§7Click to open");
@@ -702,7 +704,6 @@ public class Manager {
     public ArrayList<Location> getInBase() {
         return inBase;
     }
-
 
 
     public boolean isBlockNotBreakable(Block block) {

@@ -16,6 +16,11 @@ public class InventoryClick implements Listener {
         if(event.getInventory().getName().equals(ShopSpeEnchanter.getInventory().getName())) ShopSpeEnchanter.execute(event);
         if(event.getInventory().getName().equals( Join.getInventory().getName())) Join.execute(event);
         if(event.getInventory().getName().equals(JoinChoice.getInventory().getName())) JoinChoice.execute(event);
+        if(event.getInventory().getName().equals(JoinChoiceSolo.getInventory().getName())) JoinChoiceSolo.execute(event);
+        if(event.getInventory().getName().equals(JoinChoiceDouble.getInventory().getName())) JoinChoiceDouble.execute(event);
+        if(event.getInventory().getName().equals(JoinChoiceTriple.getInventory().getName())) JoinChoiceTriple.execute(event);
+        if(event.getInventory().getName().equals(JoinChoiceQuatre.getInventory().getName())) JoinChoiceQuatre.execute(event);
+        if(event.getInventory().getName().equals(Stats.getInventory((Player) event.getWhoClicked()).getName())) Stats.execute(event);
         if(Manager.isCurrentlyInGame((Player) event.getWhoClicked())){
             Team team = Manager.getManager((Player) event.getWhoClicked()).getTeam((Player) event.getWhoClicked());
             if(team == null) return;

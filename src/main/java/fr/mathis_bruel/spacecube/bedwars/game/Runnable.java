@@ -158,6 +158,7 @@ public class Runnable extends BukkitRunnable {
                 stats.addWins(1);
                 stats.updateStats();
             });
+            
 
             arena.getTeams().forEach(team -> {
                 team.getEnderchest().clear();

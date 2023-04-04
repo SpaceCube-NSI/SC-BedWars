@@ -14,10 +14,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 
-public class JoinChoice {
+public class JoinChoiceDouble {
 
     public static Inventory getInventory() {
-        Inventory inv = Bukkit.createInventory(null, 9 * 6, "§2Choice your game");
+        Inventory inv = Bukkit.createInventory(null, 9 * 6, "§2Choice your game | DOUBLE");
         if (Main.getInstance().managers.size() > 21) {
             System.out.println("Too much games");
             return null;
@@ -46,8 +46,10 @@ public class JoinChoice {
             inv.setItem(i, glass);
         }
         Main.getInstance().managers.forEach((manager) -> {
-            ItemStack item = Utils.getIcon(manager);
-            inv.addItem(item);
+            if (manager.getArena().getPlayerPerTeam() == 2) {
+                ItemStack item = Utils.getIcon(manager);
+                inv.addItem(item);
+            }
         });
         inv.setItem(45, close);
         inv.setItem(53, back);
