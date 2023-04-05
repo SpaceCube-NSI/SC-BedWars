@@ -14,12 +14,15 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -244,6 +247,28 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                 if (args[0].equalsIgnoreCase("holograms")) {
                     sender.sendMessage(prefix + "§cIn development");
                 }
+            }else if (args[0].equalsIgnoreCase("holo")) {
+                switch (args[1]) {
+                    case "set":
+                        if(Main.getInstance().getConfig().getString("hologram") != null){
+                            Location loc = Utils.parseStringToLoc(Main.getInstance().getConfig().getString("hologram"));
+                            // get the entity from location
+                            Entity entity = loc.getWorld().getNearbyEntities(loc, 1, 1, 1).stream().findFirst().orElse(null);
+                            Player player = (Player) sender;
+                            if(entity != null && entity.getType() == EntityType.ARMOR_STAND){
+                                entity.teleport(player.getLocation());
+                            }else {
+                                
+                            }
+
+                        }
+                    case "remove":
+                        break;
+                    default:
+                        sender.sendMessage(prefix + "§cUnknown command. Type §f/bedwars-a help §cfor help.");
+                        break;
+                }
+
             }
         }
         if (args.length == 3) {

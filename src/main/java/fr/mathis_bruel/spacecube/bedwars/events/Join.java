@@ -57,6 +57,7 @@ public class Join implements Listener {
         headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
         headPlayer.setItemMeta(headPlayerMeta);
         player.getInventory().setItem(4, headPlayer);
+        player.getActivePotionEffects().clear();
 
 
     }

@@ -167,6 +167,7 @@ public class Runnable extends BukkitRunnable {
 
             for (Player player : manager.getPlayers()){
                 player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
+                player.getActivePotionEffects().clear();
                 player.getInventory().clear();
                 player.getInventory().setArmorContents(null);
                 player.setHealth(20);
