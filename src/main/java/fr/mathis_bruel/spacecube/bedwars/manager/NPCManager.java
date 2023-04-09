@@ -17,6 +17,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
@@ -39,29 +40,27 @@ public class NPCManager {
 
     }
 
-    public NPCManager(Location location, EntityType entityType, String npcName, String data, String signature) throws IOException {
+    public NPCManager(Location location, EntityType entityType, String npcName, String skinId) throws IOException {
         this.location = location;
         this.entityType = entityType;
         this.npcName = npcName;
-        this.data = data;
-        this.signature = signature;
 
-        spawnNPC();
+        spawnNPC(skinId);
 
     }
+
     public void spawnNPC() throws IOException {
         MinecraftServer nmsServer = ((CraftServer) Bukkit.getServer()).getServer();
         WorldServer nmsWorld = ((CraftWorld) location.getWorld()).getHandle();
         GameProfile profile = new GameProfile(UUID.randomUUID(), npcName);
-        profile.getProperties().removeAll("textures"); // supprime la propriété de texture qui affiche le pseudo
         PlayerInteractManager interactManager = new PlayerInteractManager(nmsWorld);
 
         NPCEntity entityPlayer = new NPCEntity(nmsServer, nmsWorld, profile, interactManager);
-        entityPlayer.setCustomNameVisible(false); // masque le nom affiché au-dessus de l'entité
         new PlayerConnection(nmsServer, new DummyNetworkManager(EnumProtocolDirection.CLIENTBOUND), entityPlayer);
 
         entityPlayer.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(),
                 location.getPitch());
+        //entityPlayer.setCustomNameVisible(false);
 
         nmsWorld.addEntity(entityPlayer);
 
@@ -73,13 +72,11 @@ public class NPCManager {
         PacketPlayOutPlayerInfo playerInfoRemove = new PacketPlayOutPlayerInfo(
                 PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer);
 
-        if(data != null && signature != null) {
+        if (data != null && signature != null) {
             GameProfile gameProfile = entityPlayer.getProfile();
             gameProfile.getProperties().put("textures", new Property("textures", data, signature));
             entityPlayer.updateAbilities();
         }
-        PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer);
-
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(playerInfoAdd);
@@ -88,11 +85,84 @@ public class NPCManager {
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(playerInfoRemove);
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+
         }
 
         npcUUID = entityPlayer.getUniqueID();
         this.entityPlayer = entityPlayer;
+    }
+
+    public void spawnNPC(String skinId) throws IOException {
+        try {
+            String skinUrl = "https://api.mineskin.org/get/uuid/" + skinId;
+            URL url = new URL(skinUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            connection.setRequestProperty("Accept", "application/json");
+
+            // put in json the response
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // convert StringBuilder to json
+            JSONParser parser = new JSONParser();
+            JSONObject json = (JSONObject) parser.parse(response.toString());
+
+            // get the texture value and signature
+            String skinData = (String) ((JSONObject) ((JSONObject) json.get("data")).get("texture")).get("value");
+            String signature = (String) ((JSONObject) ((JSONObject) json.get("data")).get("texture")).get("signature");
+            MinecraftServer nmsServer = ((CraftServer) Bukkit.getServer()).getServer();
+            WorldServer nmsWorld = ((CraftWorld) location.getWorld()).getHandle();
+            GameProfile gameProfile = new GameProfile(UUID.randomUUID(), npcName);
+            gameProfile.getProperties().put("textures", new Property("textures", skinData, signature));
+            PlayerInteractManager interactManager = new PlayerInteractManager(nmsWorld);
+            //entityPlayer.updateAbilities();
+            NPCEntity entityPlayer = new NPCEntity(nmsServer, nmsWorld, gameProfile, interactManager);
+            entityPlayer.setCustomNameVisible(false); // masque le nom affiché au-dessus de l'entité
+            Field ff = gameProfile.getClass().getDeclaredField("name");
+            ff.setAccessible(true);
+            ff.set(gameProfile, " ");
+            new PlayerConnection(nmsServer, new DummyNetworkManager(EnumProtocolDirection.CLIENTBOUND), entityPlayer);
+
+            entityPlayer.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(),
+                    location.getPitch());
+
+            nmsWorld.addEntity(entityPlayer);
+
+            PacketPlayOutPlayerInfo playerInfoAdd = new PacketPlayOutPlayerInfo(
+                    PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer);
+            PacketPlayOutNamedEntitySpawn namedEntitySpawn = new PacketPlayOutNamedEntitySpawn(entityPlayer);
+            PacketPlayOutEntityHeadRotation headRotation = new PacketPlayOutEntityHeadRotation(entityPlayer,
+                    (byte) ((location.getYaw() * 256f) / 360f));
+            PacketPlayOutPlayerInfo playerInfoRemove = new PacketPlayOutPlayerInfo(
+                    PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer);
+
+
+            PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer);
+            for (Player player : Bukkit.getOnlinePlayers()) {
+
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
+
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(playerInfoAdd);
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(namedEntitySpawn);
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(headRotation);
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(playerInfoRemove);
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayer));
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+            }
+            npcUUID = entityPlayer.getUniqueID();
+            this.entityPlayer = entityPlayer;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -204,7 +274,6 @@ public class NPCManager {
             e.printStackTrace();
         }
     }
-
 
 
     public void destroy() {

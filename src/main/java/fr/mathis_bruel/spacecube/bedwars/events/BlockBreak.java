@@ -44,6 +44,7 @@ public class BlockBreak implements Listener {
                         event.setCancelled(true);
                         event.getBlock().setType(Material.AIR);
                         teamDestroyBed.setBedAlive(false);
+                        teamDestroyBed.getPlayers().forEach(player -> player.sendTitle("§cYour bed has been destroyed!", "§7You can't respawn now!"));
                         manager.broadcast("§7------------------------");
                         manager.broadcast("§cThe bed of the team " + teamDestroyBed.getColor() + teamDestroyBed.getName() + "§c has been destroyed!");
                         manager.broadcast("§cBy " + manager.getTeam(event.getPlayer()).getColor() + event.getPlayer().getName() + "§c!");

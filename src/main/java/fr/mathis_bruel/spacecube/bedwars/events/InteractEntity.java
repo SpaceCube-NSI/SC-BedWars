@@ -19,20 +19,22 @@ public class InteractEntity implements org.bukkit.event.Listener {
 
 
         if(!Manager.isCurrentlyInGame(event.getPlayer())) return;
-        Team team = Manager.getManager(event.getPlayer()).getTeam(event.getPlayer());
+        Manager manager = Manager.getManager(event.getPlayer());
+        Team team = manager.getTeam(event.getPlayer());
 
         NPCManager npc = Main.getNpc(event.getRightClicked().getUniqueId());
-        switch(event.getRightClicked().getName()) {
-            case "SHOP-ITEMS":
+
+        switch(manager.getArena().getShops().get(event.getRightClicked().getUniqueId())) {
+            case ITEMS:
                 event.getPlayer().openInventory(ShopItems.getInventory(team));
                 break;
-            case "SHOP-UPGRADES":
+            case UPGRADES:
                 event.getPlayer().openInventory(ShopUpgrades.getInventory(team));
                 break;
-            case "THE-SPECIALIST":
+            case THE_SPECIALIST:
                 event.getPlayer().openInventory(ShopSpeTheSpecialist.getInventory());
                 break;
-            case "ENCHANTER":
+            case ENCHANTER:
                 event.getPlayer().openInventory(ShopSpeEnchanter.getInventory());
                 break;
         }
