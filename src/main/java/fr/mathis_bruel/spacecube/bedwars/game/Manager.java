@@ -548,6 +548,7 @@ public class Manager {
             this.setPlayerKills(player, 0);
             this.setPlayerDeaths(player, 0);
             this.setPlayerBeds(player, 0);
+            player.getActivePotionEffects().clear();
         });
 
 
