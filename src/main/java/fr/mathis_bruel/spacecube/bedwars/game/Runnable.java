@@ -162,6 +162,9 @@ public class Runnable extends BukkitRunnable {
 
             arena.getTeams().forEach(team -> {
                 team.getEnderchest().clear();
+                team.setAlarm(false);
+                team.setHealpool(false);
+                team.setLvlSpeed(0);
             });
 
 
