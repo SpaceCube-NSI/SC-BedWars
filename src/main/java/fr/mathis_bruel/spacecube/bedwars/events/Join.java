@@ -9,7 +9,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 public class Join implements Listener {
     @EventHandler
-    public void joinPlayer(PlayerLoginEvent event) {
+    public void joinPlayer(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         player.setGameMode(GameMode.SURVIVAL);
         player.setHealth(20);

@@ -70,7 +70,8 @@ public class Runnable extends BukkitRunnable {
                         player.playSound(player.getLocation(), Sound.SLIME_ATTACK, 1, 1);
                         player.getInventory().clear();
                         player.getInventory().setArmorContents(null);
-
+                        // set player's team's color
+                        player.setDisplayName(team.getColor() + player.getName());
 
                     }
                     team.getGenerators().forEach(generator -> {
@@ -206,6 +207,8 @@ public class Runnable extends BukkitRunnable {
                 headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
                 headPlayer.setItemMeta(headPlayerMeta);
                 player.getInventory().setItem(4, headPlayer);
+                // reset display name
+                player.setDisplayName(player.getName());
             }
             for (Player player : manager.getSpecators()){
                 player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
@@ -244,6 +247,8 @@ public class Runnable extends BukkitRunnable {
                 headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
                 headPlayer.setItemMeta(headPlayerMeta);
                 player.getInventory().setItem(4, headPlayer);
+                // reset display name
+                player.setDisplayName(player.getName());
             }
             try {
                 Utils.restoreMap(arena.getName(), arena.getWorld(), arena.getPos1Map().getBlockX(), arena.getPos1Map().getBlockY(), arena.getPos1Map().getBlockZ());

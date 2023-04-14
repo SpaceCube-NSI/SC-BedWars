@@ -9,8 +9,12 @@ import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftIronGolem;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import xyz.xenondevs.particle.ParticleBuilder;
+import xyz.xenondevs.particle.ParticleEffect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +76,31 @@ public class BlockPlace implements org.bukkit.event.Listener {
                 event.getBlock().setType(Material.AIR);
             }
 
+        }
+        if(event.getBlock().getType() == Material.SKULL){
+            // auto bridging 32 blocks
+            Location locB = event.getBlock().getLocation().clone();
+            Location locP = event.getPlayer().getLocation().clone();
+            int distance = 32;
+            new BukkitRunnable() {
+                int i = 1;
+                @Override
+                public void run() {
+                    if (i <= distance) {
+                        Player player = event.getPlayer();
+                        Location loc = locB.clone().add(locP.getDirection().multiply(i).setY(0));
+                        if(loc.getBlock().getType() == Material.AIR) loc.getBlock().setType(Material.WOOL);
+                        i++;
+                        new ParticleBuilder(ParticleEffect.FLAME, loc)
+                                .setSpeed(0.1f)
+                                .setAmount(50)
+                                .display();
+
+                    } else {
+                        this.cancel();
+                    }
+                }
+            }.runTaskTimer(Main.getInstance(), 1L, 10L);
         }
     }
     private boolean isBlockInRegion(Location blockLocation, Location pos1, Location pos2) {

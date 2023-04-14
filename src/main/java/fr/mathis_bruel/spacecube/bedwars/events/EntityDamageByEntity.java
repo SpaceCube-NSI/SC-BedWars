@@ -70,7 +70,6 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                     Manager manager = Manager.getManager(player);
                     Team team = manager.getTeam(player);
                     if (team != null) {
-                        System.out.println(event.getCause());
                         List<String> m = new ArrayList<>();
                         switch (event.getCause()) {
                             case BLOCK_EXPLOSION:
@@ -192,7 +191,6 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                         if (m.size() == 0) {
                             m.add("was dead");
                         }
-                        System.out.println(5);
                         manager.addPlayerDeath(player);
                         player.spigot().respawn();
                         player.setHealth(player.getMaxHealth());
@@ -225,7 +223,6 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                             team.removePlayer(player);
                             manager.removePlayer(player);
                             manager.addSpecator(player);
-                            System.out.println(team.getName() + " " + team.getPlayers().size());
                         }
                     }
                 }
