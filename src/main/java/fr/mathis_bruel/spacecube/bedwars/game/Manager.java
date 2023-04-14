@@ -6,6 +6,7 @@ import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
 import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGenerators;
 import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
 import fr.mathis_bruel.spacecube.bedwars.manager.NPCManager;
+import fr.mathis_bruel.spacecube.bedwars.manager.PlayerList;
 import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
@@ -21,6 +22,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ public class Manager {
     private final HashMap<Player, Integer> playerKills = new HashMap<>();
     private final HashMap<Player, Integer> playerDeaths = new HashMap<>();
     private final HashMap<Player, Integer> playerBeds = new HashMap<>();
+    private final HashMap<Player, PlayerList> playerLists = new HashMap<>();
 
 
     public Manager(Arena arena) {
@@ -548,7 +551,8 @@ public class Manager {
             this.setPlayerKills(player, 0);
             this.setPlayerDeaths(player, 0);
             this.setPlayerBeds(player, 0);
-            player.getActivePotionEffects().clear();
+            for (PotionEffect effect : player.getActivePotionEffects())
+                player.removePotionEffect(effect.getType());
         });
 
 

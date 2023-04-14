@@ -89,9 +89,10 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                                     Player killer = ((Player) event.getEntity()).getKiller();
                                     if (!Manager.isCurrentlyInGame(killer)) return;
                                     Team killerTeam = Manager.getManager(killer).getTeam(killer);
+                                    Team victimTeam = Manager.getManager(player).getTeam(player);
                                     String s = killerTeam.getColor() + killer.getName();
                                     Manager.getManager(killer).addPlayerKill(killer);
-                                    killer.playSound(killer.getLocation(), "ORB_PICKUP", 1, 1);
+                                    //if(victimTeam.isBedAlive())
                                     m.add("was killed by " + s + "§r§7.");
                                     m.add("was slain by " + s + "§r§7.");
                                     m.add("was murdered by " + s + "§r§7.");

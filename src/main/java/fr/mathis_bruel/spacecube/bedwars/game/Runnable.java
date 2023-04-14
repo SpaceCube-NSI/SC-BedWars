@@ -9,10 +9,7 @@ import fr.mathis_bruel.spacecube.bedwars.manager.NPCManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.GameMode;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -63,6 +60,7 @@ public class Runnable extends BukkitRunnable {
                 for (Team team : arena.getTeams()) {
                     if (team.getPlayers().size() == 0) {
                         team.setBedAlive(false);
+                        team.getBed().setType(Material.AIR);
                     }
                 }
                 // teleport players to their team's spawn
@@ -72,6 +70,8 @@ public class Runnable extends BukkitRunnable {
                         player.playSound(player.getLocation(), Sound.SLIME_ATTACK, 1, 1);
                         player.getInventory().clear();
                         player.getInventory().setArmorContents(null);
+
+
                     }
                     team.getGenerators().forEach(generator -> {
                         RunnableGeneratorsTeams runnableGenerators = new RunnableGeneratorsTeams();

@@ -9,15 +9,16 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.Arrays;
 
 public class Join implements Listener {
     @EventHandler
-    public void joinPlayer(PlayerJoinEvent event){
+    public void joinPlayer(PlayerLoginEvent event) {
         Player player = event.getPlayer();
         player.setGameMode(GameMode.SURVIVAL);
         player.setHealth(20);
@@ -35,7 +36,7 @@ public class Join implements Listener {
                 "§f",
                 "§fNiveau: §f" + 0,
                 "§f",
-                "§fProgrès: §b" + 0 + "§7/§a"+ 0,
+                "§fProgrès: §b" + 0 + "§7/§a" + 0,
                 "§8[§7 §a▊▊▊                §8]",
                 "§f",
                 "§fCoins: §e" + 0,
@@ -57,8 +58,7 @@ public class Join implements Listener {
         headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
         headPlayer.setItemMeta(headPlayerMeta);
         player.getInventory().setItem(4, headPlayer);
-        player.getActivePotionEffects().clear();
-
-
+        for (PotionEffect effect : player.getActivePotionEffects())
+            player.removePotionEffect(effect.getType());
     }
 }
