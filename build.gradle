@@ -18,12 +18,19 @@ repositories {
     repositories {
         maven { url "https://repo.dmulloy2.net/repository/public/" }
     }
+
 }
 
 dependencies {
     compileOnly fileTree(dir: "libs", include: "*.jar")
     implementation 'xyz.xenondevs:particle:1.8.3'
     implementation 'com.google.code.gson:gson:2.8.9'
+    compileOnly('net.citizensnpcs:citizens-main:2.0.30-SNAPSHOT') {
+        exclude group: '*', module: '*'
+    }
+    dependencies {
+        compileOnly group: "com.comphenix.protocol", name: "ProtocolLib", version: "4.8.0";
+    }
 }
 
 def targetJavaVersion = 8

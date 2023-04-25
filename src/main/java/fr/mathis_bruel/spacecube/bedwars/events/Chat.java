@@ -14,18 +14,27 @@ public class Chat implements org.bukkit.event.Listener {
         event.setCancelled(true);
         if(Manager.isCurrentlyInGame(event.getPlayer())) {
             Manager manager = Manager.getManager(event.getPlayer());
-            if(manager != null) Bukkit.broadcastMessage("§7[§b" + event.getPlayer().getName() + "§7] §f" + event.getMessage());
+            if(manager == null) {
+                Bukkit.broadcastMessage("§7[§b" + event.getPlayer().getName() + "§7] §f" + event.getMessage());
+                return;
+            }
             Arena arena = manager.getArena();
-            if(arena != null) Bukkit.broadcastMessage("§7[§b" + event.getPlayer().getName() + "§7] §f" + event.getMessage());
+            if(arena == null) {
+                Bukkit.broadcastMessage("§7[§b" + event.getPlayer().getName() + "§7] §f" + event.getMessage());
+                return;
+            }
+            Team team = manager.getTeam(event.getPlayer());
+            if(team == null) {
+                Bukkit.broadcastMessage("§7[§b" + event.getPlayer().getName() + "§7] §f" + event.getMessage());
+                return;
+            }
             if(arena.getPlayerPerTeam() == 1){
-                manager.broadcast("§7[§b" + manager.getTeam(event.getPlayer()).getName() + "§7] §b" + event.getPlayer().getName() + "§7: §f" + event.getMessage());
+                manager.broadcast("§7["+ team.getColor() + manager.getTeam(event.getPlayer()).getName() + "§7] §b" + event.getPlayer().getName() + "§7: §f" + event.getMessage());
             }else{
                 if(event.getMessage().startsWith("!")){
-                    manager.broadcast("§7[§b" + manager.getTeam(event.getPlayer()).getName() + "§7] §b" + event.getPlayer().getName() + "§7: §f" + event.getMessage().substring(1));
+                    manager.broadcast("§7["+ team.getColor() + manager.getTeam(event.getPlayer()).getName() + "§7] §b" + event.getPlayer().getName() + "§7: §f" + event.getMessage().substring(1));
                 }else{
-                    Team team = manager.getTeam(event.getPlayer());
-                    if(team != null) team.broadcast("§7[§2T§7] §7[§b" + team.getName() + "§7] §b" + event.getPlayer().getName() + "§7: §f" + event.getMessage());
-
+                    manager.broadcast("§7[§2T§7] ["+ team.getColor() + manager.getTeam(event.getPlayer()).getName() + "§7] §b" + event.getPlayer().getName() + "§7: §f" + event.getMessage());
                 }
             }
         }else{

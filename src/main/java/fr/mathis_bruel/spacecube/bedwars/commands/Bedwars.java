@@ -5,6 +5,7 @@ import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.gui.*;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
+import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -55,6 +56,30 @@ public class Bedwars implements CommandExecutor {
                     sender.sendMessage(prefix + "§cWebsite: §fhttps://mathisbruel.fr");
                     sender.sendMessage("--------------------------------");
                     break;
+                case "shop": {
+                    if (sender instanceof Player) {
+                        Player player = (Player) sender;
+                        if (Manager.isCurrentlyInGame(player)) {
+                            Team team = Manager.getManager(player).getTeam(player);
+                            if (team != null && player.getLocation().distance(team.getSpawn()) <= 25) {
+                                player.openInventory(ShopItems.getInventory(team));
+                            } else player.sendMessage(prefix + "§cYou must be in your base to open the shop!");
+                        } else sender.sendMessage(prefix + "§cYou are not in a game!");
+                    } else sender.sendMessage(prefix + "§cYou must be a player to execute this command!");
+                    break;
+                }
+                case "upgrade": {
+                    if(sender instanceof Player) {
+                        Player player = (Player) sender;
+                        if (Manager.isCurrentlyInGame(player)) {
+                            Team team = Manager.getManager(player).getTeam(player);
+                            if (team != null && player.getLocation().distance(team.getSpawn()) <= 25) {
+                                player.openInventory(ShopUpgrades.getInventory(team));
+                            } else player.sendMessage(prefix + "§cYou must be in your base to open the upgrade shop!");
+                        } else sender.sendMessage(prefix + "§cYou are not in a game!");
+                    } else sender.sendMessage(prefix + "§cYou must be a player to execute this command!");
+                    break;
+                }
                 case "list":
                     sender.sendMessage(prefix + "§cArenas:");
                     sender.sendMessage("--------------------------------");

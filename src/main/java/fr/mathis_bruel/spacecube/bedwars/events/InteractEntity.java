@@ -8,35 +8,66 @@ import fr.mathis_bruel.spacecube.bedwars.gui.ShopSpeTheSpecialist;
 import fr.mathis_bruel.spacecube.bedwars.gui.ShopUpgrades;
 import fr.mathis_bruel.spacecube.bedwars.manager.NPCManager;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
+import net.citizensnpcs.api.event.NPCLeftClickEvent;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.event.EventHandler;
 
 public class InteractEntity implements org.bukkit.event.Listener {
 
 
     @EventHandler
-    public void onInteractEntity(org.bukkit.event.player.PlayerInteractEntityEvent event){
-        System.out.println("InteractEntity, "+ event.getPlayer().getName() + " "+ event.getRightClicked().getName() + " " + event.getRightClicked().getUniqueId());
+    public void onInteractEntity(NPCRightClickEvent event){
+        if(!Manager.isCurrentlyInGame(event.getClicker())) return;
+        Manager manager = Manager.getManager(event.getClicker());
+        Team team = manager.getTeam(event.getClicker());
 
+        NPCManager npc = Main.getNpc(event.getNPC().getUniqueId());
 
-        if(!Manager.isCurrentlyInGame(event.getPlayer())) return;
-        Manager manager = Manager.getManager(event.getPlayer());
-        Team team = manager.getTeam(event.getPlayer());
-
-        NPCManager npc = Main.getNpc(event.getRightClicked().getUniqueId());
-
-        switch(manager.getArena().getShops().get(event.getRightClicked().getUniqueId())) {
+        switch(manager.getArena().getShops().get(event.getNPC().getUniqueId())) {
             case ITEMS:
-                event.getPlayer().openInventory(ShopItems.getInventory(team));
+                event.getClicker().openInventory(ShopItems.getInventory(team));
                 break;
             case UPGRADES:
-                event.getPlayer().openInventory(ShopUpgrades.getInventory(team));
+                event.getClicker().openInventory(ShopUpgrades.getInventory(team));
                 break;
             case THE_SPECIALIST:
-                event.getPlayer().openInventory(ShopSpeTheSpecialist.getInventory());
+                event.getClicker().openInventory(ShopSpeTheSpecialist.getInventory());
                 break;
             case ENCHANTER:
-                event.getPlayer().openInventory(ShopSpeEnchanter.getInventory());
+                event.getClicker().openInventory(ShopSpeEnchanter.getInventory());
                 break;
+        }
+
+        if(Main.getInstance().npcSpawn.containsKey(npc)){
+            event.getClicker().chat("/bw join " + Main.getInstance().npcSpawn.get(npc));
+        }
+
+    }
+    @EventHandler
+    public void onInteractEntity(NPCLeftClickEvent event){
+        if(!Manager.isCurrentlyInGame(event.getClicker())) return;
+        Manager manager = Manager.getManager(event.getClicker());
+        Team team = manager.getTeam(event.getClicker());
+
+        NPCManager npc = Main.getNpc(event.getNPC().getUniqueId());
+
+        switch(manager.getArena().getShops().get(event.getNPC().getUniqueId())) {
+            case ITEMS:
+                event.getClicker().openInventory(ShopItems.getInventory(team));
+                break;
+            case UPGRADES:
+                event.getClicker().openInventory(ShopUpgrades.getInventory(team));
+                break;
+            case THE_SPECIALIST:
+                event.getClicker().openInventory(ShopSpeTheSpecialist.getInventory());
+                break;
+            case ENCHANTER:
+                event.getClicker().openInventory(ShopSpeEnchanter.getInventory());
+                break;
+        }
+
+        if(Main.getInstance().npcSpawn.containsKey(npc)){
+            event.getClicker().chat("/bw join " + Main.getInstance().npcSpawn.get(npc));
         }
 
     }

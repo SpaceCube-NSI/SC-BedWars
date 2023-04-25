@@ -60,5 +60,6 @@ public class Join implements Listener {
         player.getInventory().setItem(4, headPlayer);
         for (PotionEffect effect : player.getActivePotionEffects())
             player.removePotionEffect(effect.getType());
+        Utils.resetPseudo(player);
     }
 }

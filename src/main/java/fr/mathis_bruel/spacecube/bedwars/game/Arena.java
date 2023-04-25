@@ -8,6 +8,7 @@ import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -37,7 +38,7 @@ public class Arena {
     private Location pos1Map;
     private Location pos2Map;
     private final HashMap<UUID, TypeShop> shops = new HashMap<>();
-    private ArrayList<NPCManager> npcs = new ArrayList<>();
+    private ArrayList<NPC> npcs = new ArrayList<>();
 
     public Arena(World world, String name) {
         this.world = world;
@@ -290,15 +291,15 @@ public class Arena {
         shops.clear();
     }
 
-    public void setNpcs(ArrayList<NPCManager> npcs) {
+    public void setNpcs(ArrayList<NPC> npcs) {
         this.npcs = npcs;
     }
 
-    public ArrayList<NPCManager> getNpcs() {
+    public ArrayList<NPC> getNpcs() {
         return npcs;
     }
 
-    public void addNpc(NPCManager npc) {
+    public void addNpc(NPC npc) {
         npcs.add(npc);
     }
 
@@ -419,6 +420,7 @@ public class Arena {
                         team.setSpawn(Utils.parseStringToLoc(config.getString("teams." + key + ".spawn")));
                     if (config.getString("teams." + key + ".bed") != null) {
                         Location bedLoc = Utils.parseStringToLoc(config.getString("teams." + key + ".bed"));
+                        System.out.println(key + " "+ config.getString("name"));
                         team.setBed(bedLoc.getBlock());
                     }
                     if (config.getString("teams." + key + ".generators") != null) {

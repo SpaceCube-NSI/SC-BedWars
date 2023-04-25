@@ -79,18 +79,22 @@ public class BlockPlace implements org.bukkit.event.Listener {
         }
         if(event.getBlock().getType() == Material.SKULL){
             // auto bridging 32 blocks
+            new ParticleBuilder(ParticleEffect.SMOKE_LARGE, event.getBlock().getLocation())
+                    .setSpeed(0.1f)
+                    .setAmount(50)
+                    .display();
+            event.getBlock().setType(Material.AIR);
             Location locB = event.getBlock().getLocation().clone();
             Location locP = event.getPlayer().getLocation().clone();
-            int distance = 32;
+            final int[] distance = {0};
             new BukkitRunnable() {
-                int i = 1;
                 @Override
                 public void run() {
-                    if (i <= distance) {
+                    if (distance[0] < 32) {
                         Player player = event.getPlayer();
-                        Location loc = locB.clone().add(locP.getDirection().multiply(i).setY(0));
+                        Location loc = locB.clone().add(locP.getDirection().multiply(distance[0]).setY(-1));
                         if(loc.getBlock().getType() == Material.AIR) loc.getBlock().setType(Material.WOOL);
-                        i++;
+                        distance[0]++;
                         new ParticleBuilder(ParticleEffect.FLAME, loc)
                                 .setSpeed(0.1f)
                                 .setAmount(50)
@@ -100,7 +104,9 @@ public class BlockPlace implements org.bukkit.event.Listener {
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(Main.getInstance(), 1L, 10L);
+            }.runTaskTimer(Main.getInstance(), 0, 2);
+
+
         }
     }
     private boolean isBlockInRegion(Location blockLocation, Location pos1, Location pos2) {

@@ -2,6 +2,7 @@ package fr.mathis_bruel.spacecube.bedwars;
 
 import fr.mathis_bruel.spacecube.bedwars.commands.Bedwars;
 import fr.mathis_bruel.spacecube.bedwars.commands.BedwarsAdmin;
+import fr.mathis_bruel.spacecube.bedwars.commands.Spawn;
 import fr.mathis_bruel.spacecube.bedwars.commands.Test;
 import fr.mathis_bruel.spacecube.bedwars.game.Arena;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
@@ -10,10 +11,13 @@ import fr.mathis_bruel.spacecube.bedwars.manager.ListenerManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.NPCManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 
@@ -29,6 +33,8 @@ public final class Main extends JavaPlugin implements Listener {
     public static ArrayList<Player> playersFreeze = new ArrayList<>();
     public static ArrayList<Player> godMode = new ArrayList<>();
     public static ArrayList<NPCManager> npcs = new ArrayList<>();
+    public static HashMap<Player, Team> teams = new HashMap<>();
+    public static HashMap<NPC, String> npcSpawn = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -44,6 +50,16 @@ public final class Main extends JavaPlugin implements Listener {
         this.getCommand("test").setExecutor(new Test());
         this.getCommand("bedwars").setExecutor(new Bedwars());
         this.getCommand("bedwars-a").setExecutor(new BedwarsAdmin());
+        this.getCommand("spawn").setExecutor(new Spawn());
+        // remove all scoreboard teams
+        Bukkit.getScoreboardManager().getMainScoreboard().getTeams().forEach(Team::unregister);
+        // register all npc in config (pnj.<name>.<type>)
+        if(getConfig().getConfigurationSection("pnj") != null) {
+            getConfig().getConfigurationSection("pnj").getKeys(false).forEach(s -> {
+                NPC npc = CitizensAPI.getNPCRegistry().getById(getConfig().getInt("pnj." + s));
+                npcSpawn.put(npc, s);
+            });
+        }
         instance = this;
         saveDefaultConfig();
         Arena.init();

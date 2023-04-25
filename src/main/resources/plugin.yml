@@ -23,6 +23,9 @@ commands:
       - bw-a
     description: Command bedwars for admins for config the plugin
     permission: bedwars.a
+  spawn:
+    aliases: spawn
+    description: Command for spawn
 permissions:
   bedwars.stats:
     description: Permet aux joueurs de voir ses stats

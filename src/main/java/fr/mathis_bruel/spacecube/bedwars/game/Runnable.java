@@ -5,11 +5,14 @@ import fr.Mathis_Bruel.spacecube.spacecubeapi.api.games.Games;
 import fr.Mathis_Bruel.spacecube.spacecubeapi.api.games.Stats;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGeneratorsTeams;
-import fr.mathis_bruel.spacecube.bedwars.manager.NPCManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
-import org.bukkit.*;
+import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -17,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,7 +64,7 @@ public class Runnable extends BukkitRunnable {
                 for (Team team : arena.getTeams()) {
                     if (team.getPlayers().size() == 0) {
                         team.setBedAlive(false);
-                        team.getBed().setType(Material.AIR);
+                        //team.getBed().setType(Material.AIR);
                     }
                 }
                 // teleport players to their team's spawn
@@ -71,7 +75,8 @@ public class Runnable extends BukkitRunnable {
                         player.getInventory().clear();
                         player.getInventory().setArmorContents(null);
                         // set player's team's color
-                        player.setDisplayName(team.getColor() + player.getName());
+                        String name = player.getName();
+                        Utils.changePseudoColor(player, team);
 
                     }
                     team.getGenerators().forEach(generator -> {
@@ -90,6 +95,8 @@ public class Runnable extends BukkitRunnable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (WorldEditException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
@@ -208,7 +215,8 @@ public class Runnable extends BukkitRunnable {
                 headPlayer.setItemMeta(headPlayerMeta);
                 player.getInventory().setItem(4, headPlayer);
                 // reset display name
-                player.setDisplayName(player.getName());
+                //NameManagerAPI.clearNametag(player);
+                Utils.resetPseudo(player);
             }
             for (Player player : manager.getSpecators()){
                 player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
@@ -248,7 +256,8 @@ public class Runnable extends BukkitRunnable {
                 headPlayer.setItemMeta(headPlayerMeta);
                 player.getInventory().setItem(4, headPlayer);
                 // reset display name
-                player.setDisplayName(player.getName());
+                //NameManagerAPI.clearNametag(player);
+                Utils.resetPseudo(player);
             }
             try {
                 Utils.restoreMap(arena.getName(), arena.getWorld(), arena.getPos1Map().getBlockX(), arena.getPos1Map().getBlockY(), arena.getPos1Map().getBlockZ());
@@ -281,7 +290,7 @@ public class Runnable extends BukkitRunnable {
                     generator.setLevelDiamond(0);
                 });
             });
-            arena.getNpcs().forEach(NPCManager::destroy);
+            arena.getNpcs().forEach(NPC::destroy);
 
             timeEnd = 10;
             manager.setStartingTime(30);
@@ -329,9 +338,9 @@ public class Runnable extends BukkitRunnable {
                 StringBuilder teamsLeft = new StringBuilder();
                 for (Team team : arena.getTeams()) {
                     if (team.isBedAlive()) {
-                        teamsLeft.append(team.getColor()).append("█ ");
+                        teamsLeft.append(team.getColor()).append("█");
                     } else if (team.getPlayers().size() > 0) {
-                        teamsLeft.append(team.getColor() + "" + team.getPlayers().size() + " ");
+                        teamsLeft.append(team.getColor() + "" + team.getPlayers().size());
                     }
                 }
                 Team team = manager.getTeam(player);

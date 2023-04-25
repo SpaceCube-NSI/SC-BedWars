@@ -9,6 +9,8 @@ import fr.mathis_bruel.spacecube.bedwars.generator.GeneratorType;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -37,6 +39,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
             sender.sendMessage("--------------------------------");
             sender.sendMessage(prefix + "§cBedwarsAdmin commands:");
             sender.sendMessage(prefix + "§c/bedwars-a arena §7 - §fManage arenas");
+            sender.sendMessage(prefix + "§c/bedwars-a setPnj <name> <gameID> §7 - §fSet a pnj for a game");
             sender.sendMessage(prefix + "§c/bedwars-a hologram §7 - §fManage holograms for stats");
             sender.sendMessage(prefix + "§c/bedwars-a setlobby §7 - §fSet the lobby");
             sender.sendMessage(prefix + "§c/bedwars-a forceStart §7 - §fForce start the game");
@@ -47,25 +50,23 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("reload")) {
-            }
             switch (args[0].toLowerCase()) {
-                case "reaload":
+                case "reload":
                     Main.getInstance().getPluginLoader().disablePlugin(Main.getInstance());
                     Main.getInstance().getPluginLoader().enablePlugin(Main.getInstance());
                     sender.sendMessage(prefix + "§aPlugin reloaded!");
                     return true;
                 case "forcestart":
-                    if(sender instanceof Player){
-                        if(Manager.isCurrentlyInGame((Player) sender)) {
+                    if (sender instanceof Player) {
+                        if (Manager.isCurrentlyInGame((Player) sender)) {
                             Manager manager = Manager.getManager((Player) sender);
-                            if(manager.getManagerState().getCurrentState() == State.STARTING){
+                            if (manager.getManagerState().getCurrentState() == State.STARTING) {
                                 manager.setStartingTime(1);
                                 sender.sendMessage(prefix + "§aThe game is starting!");
                                 ((Player) sender).playSound(((Player) sender).getLocation(), "random.levelup", 1, 1);
-                            }else sender.sendMessage(prefix + "§cThe game is not starting!");
-                        }else sender.sendMessage(prefix + "§cYou must be in a game to use this command!");
-                    }else sender.sendMessage(prefix + "§cYou must be a player to use this command!");
+                            } else sender.sendMessage(prefix + "§cThe game is not starting!");
+                        } else sender.sendMessage(prefix + "§cYou must be in a game to use this command!");
+                    } else sender.sendMessage(prefix + "§cYou must be a player to use this command!");
                     return true;
                 case "arena":
                     sender.sendMessage("--------------------------------");
@@ -247,18 +248,18 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                 if (args[0].equalsIgnoreCase("holograms")) {
                     sender.sendMessage(prefix + "§cIn development");
                 }
-            }else if (args[0].equalsIgnoreCase("holo")) {
+            } else if (args[0].equalsIgnoreCase("holo")) {
                 switch (args[1]) {
                     case "set":
-                        if(Main.getInstance().getConfig().getString("hologram") != null){
+                        if (Main.getInstance().getConfig().getString("hologram") != null) {
                             Location loc = Utils.parseStringToLoc(Main.getInstance().getConfig().getString("hologram"));
                             // get the entity from location
                             Entity entity = loc.getWorld().getNearbyEntities(loc, 1, 1, 1).stream().findFirst().orElse(null);
                             Player player = (Player) sender;
-                            if(entity != null && entity.getType() == EntityType.ARMOR_STAND){
+                            if (entity != null && entity.getType() == EntityType.ARMOR_STAND) {
                                 entity.teleport(player.getLocation());
-                            }else {
-                                
+                            } else {
+
                             }
 
                         }
@@ -274,6 +275,17 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
         if (args.length == 3) {
             if (!(sender instanceof Player)) {
                 sender.sendMessage(prefix + "§cYou must be a player to use this command.");
+                return true;
+            }
+            if (args[0].equalsIgnoreCase("setpnj")) {
+                String pnjName = args[1];
+                String id = args[2];
+                NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, pnjName);
+                npc.spawn(((Player) sender).getLocation());
+                Main.getInstance().getConfig().set("pnj." + npc.getId(), id);
+                Main.getInstance().saveConfig();
+                Main.getInstance().npcSpawn.put(npc, id);
+                sender.sendMessage(prefix + "§aThe pnj has been created.");
                 return true;
             }
             Player player = (Player) sender;
@@ -434,7 +446,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§aThe Specialist set to your location.");
                     break;
                 }
-                case "setpos1":{
+                case "setpos1": {
                     Arena arena = Arena.getArenaByName(args[2]);
                     if (arena == null) {
                         sender.sendMessage(prefix + "§cThis arena doesn't exist.");
@@ -445,7 +457,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§aPos1 set to your location.");
                     break;
                 }
-                case "setpos2":{
+                case "setpos2": {
                     Arena arena = Arena.getArenaByName(args[2]);
                     if (arena == null) {
                         sender.sendMessage(prefix + "§cThis arena doesn't exist.");
@@ -557,7 +569,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     }
                     switch (generatorType) {
                         case DIAMOND_MAP:
-                            if(arena.getDiamondGenerator(((Player) sender).getLocation()) == null) {
+                            if (arena.getDiamondGenerator(((Player) sender).getLocation()) == null) {
                                 sender.sendMessage(prefix + "§cThere is no generator here.");
                                 return true;
                             }
@@ -565,7 +577,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                             sender.sendMessage(prefix + "§aGenerator removed. §7(§6" + generatorType.getDisplayName() + "§7)");
                             break;
                         case EMERALD_MAP:
-                            if(arena.getEmeraldGenerator(((Player) sender).getLocation()) == null) {
+                            if (arena.getEmeraldGenerator(((Player) sender).getLocation()) == null) {
                                 sender.sendMessage(prefix + "§cThere is no generator here.");
                                 return true;
                             }
@@ -581,7 +593,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     sender.sendMessage(prefix + "§aGenerator removed. §7(§6" + generatorType.getDisplayName() + "§7)");
                     break;
                 }
-                case "generators":{
+                case "generators": {
                     Arena arena = Arena.getArenaByName(args[2]);
                     if (arena == null) {
                         sender.sendMessage(prefix + "§cThis arena doesn't exist.");
@@ -596,7 +608,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                         case DIAMOND_MAP:
                             sender.sendMessage(prefix + "§aDiamonds generators:");
                             // send textcomponents when tp when click
-                            for(Generator generator : arena.getDiamondsGenerators()) {
+                            for (Generator generator : arena.getDiamondsGenerators()) {
                                 TextComponent textComponent = new TextComponent(prefix + "§7- §6" + generator.getLocation().getBlockX() + "§7, §6" + generator.getLocation().getBlockY() + "§7, §6" + generator.getLocation().getBlockZ());
                                 textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + generator.getLocation().getBlockX() + " " + generator.getLocation().getBlockY() + " " + generator.getLocation().getBlockZ()));
                                 ((Player) sender).spigot().sendMessage(textComponent);
@@ -604,7 +616,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                             break;
                         case EMERALD_MAP:
                             sender.sendMessage(prefix + "§aEmeralds generators:");
-                            for(Generator generator : arena.getEmeraldsGenerators()) {
+                            for (Generator generator : arena.getEmeraldsGenerators()) {
                                 TextComponent textComponent = new TextComponent(prefix + "§7- §6" + generator.getLocation().getBlockX() + "§7, §6" + generator.getLocation().getBlockY() + "§7, §6" + generator.getLocation().getBlockZ());
                                 textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + generator.getLocation().getBlockX() + " " + generator.getLocation().getBlockY() + " " + generator.getLocation().getBlockZ()));
                                 ((Player) sender).spigot().sendMessage(textComponent);
@@ -627,7 +639,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     double radius;
                     try {
                         radius = Double.parseDouble(args[3]);
-                    }catch (NumberFormatException e) {
+                    } catch (NumberFormatException e) {
                         sender.sendMessage(prefix + "§cThis is not a number.");
                         return true;
                     }

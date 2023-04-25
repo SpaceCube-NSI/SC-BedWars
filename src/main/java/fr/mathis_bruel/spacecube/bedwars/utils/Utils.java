@@ -1,5 +1,7 @@
 package fr.mathis_bruel.spacecube.bedwars.utils;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import com.sk89q.worldedit.*;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
@@ -15,6 +17,8 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.registry.WorldData;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
+import fr.mathis_bruel.spacecube.bedwars.teams.Team;
+import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Location;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -24,10 +28,17 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.*;
+import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Utils {
     public static Location parseStringToLoc(String string) {
@@ -385,8 +396,89 @@ public class Utils {
             }
         }.runTask(Main.getInstance());
 
+
+
+
         return b;
     }
+
+    public static String[] getSkin(String id) throws IOException, ParseException {
+        String skinUrl = "https://api.mineskin.org/get/uuid/" + id;
+        URL url = new URL(skinUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+        connection.setRequestProperty("Accept", "application/json");
+
+        // put in json the response
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        // convert StringBuilder to json
+        JSONParser parser = new JSONParser();
+        JSONObject json = (JSONObject) parser.parse(response.toString());
+
+        // get the texture value and signature
+        String skinData = (String) ((JSONObject) ((JSONObject) json.get("data")).get("texture")).get("value");
+        String signature = (String) ((JSONObject) ((JSONObject) json.get("data")).get("texture")).get("signature");
+        return new String[]{skinData, signature};
+    }
+
+    public static ItemStack getSkull(String url) {
+        ItemStack skull = new ItemStack(Material.SKULL, 1);
+        if (url == null || url.isEmpty())
+            return skull;
+        SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
+        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        byte[] encodedData = Base64.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", url).getBytes());
+        profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
+        Field profileField = null;
+        try {
+            profileField = skullMeta.getClass().getDeclaredField("profile");
+        } catch (NoSuchFieldException | SecurityException e) {
+            e.printStackTrace();
+        }
+        profileField.setAccessible(true);
+        try {
+            profileField.set(skullMeta, profile);
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        skull.setItemMeta(skullMeta);
+        return skull;
+    }
+
+    public static void changePseudoColor(Player player, Team team) {
+        org.bukkit.scoreboard.Team scoreboardTeam = player.getScoreboard().getTeam(team.getName()+"_"+ Manager.getManager(player).getArena().getName());
+        if (scoreboardTeam == null) {
+            scoreboardTeam = player.getScoreboard().registerNewTeam(team.getName());
+            // set color name
+        }
+        scoreboardTeam.setPrefix(team.getColor().toString());
+        scoreboardTeam.addEntry(player.getName());
+        Main.getInstance().teams.put(player, scoreboardTeam);
+        // set tablist name
+        player.setPlayerListName(team.getColor() + player.getName());
+        // set name above head
+        player.setCustomName(team.getColor() + player.getName());
+        player.setCustomNameVisible(true);
+
+    }
+
+    // Fonction pour réinitialiser le pseudo d'un joueur
+    public static void  resetPseudo(Player player) {
+        player.setPlayerListName(player.getName());
+        player.setCustomName(player.getName());
+        player.setCustomNameVisible(false);
+        player.getScoreboard().getTeam(Main.getInstance().teams.get(player).getName()).unregister();
+        Main.getInstance().teams.remove(player);
+    }
+
 
 
 

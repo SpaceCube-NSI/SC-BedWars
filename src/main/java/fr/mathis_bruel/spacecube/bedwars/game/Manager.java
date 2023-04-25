@@ -5,24 +5,30 @@ import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
 import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGenerators;
 import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
-import fr.mathis_bruel.spacecube.bedwars.manager.NPCManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
+import net.agentlv.namemanager.api.NameManagerAPI;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import net.minecraft.server.v1_8_R3.PlayerList;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -256,7 +262,7 @@ public class Manager {
         playerBeds.clear();
     }
 
-    public void initGame() throws IOException, WorldEditException {
+    public void initGame() throws IOException, WorldEditException, ParseException {
         RunnableGenerators runnableGenerators = new RunnableGenerators();
         runnableGenerators.arena = arena;
         runnableGenerators.runTaskTimer(Main.getInstance(), 0, 20);
@@ -272,7 +278,21 @@ public class Manager {
         for (Team team : arena.getTeams()) {
             Location location = team.getPnjItems();
             Location loc2 = location.clone().add(0, 1.8, 0);
-            NPCManager npc = new NPCManager(location, EntityType.PLAYER, "SHOP-ITEMS", "f52dc72a8953457f972c0fecd8fd553d");
+            NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.VILLAGER, " ");
+            //  execute command in console: /npc select <id> /npc sound -n
+            npc.spawn(loc2);
+            ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+            Bukkit.dispatchCommand(console, "npc select " + npc.getId());
+            Bukkit.dispatchCommand(console, "npc sound -n");
+
+
+            //npc.getOrAddTrait(SkinTrait.class).setSkinPersistent("items", Utils.getSkin("6ac084a53d4c445b80ead69aad7cbfcc")[0], Utils.getSkin("6ac084a53d4c445b80ead69aad7cbfcc")[1]);
+            //npc.getOrAddTrait(SkinTrait.class).setSkinName("Pewki");
+            //npc.data().setPersistent(NPC.PLAYER_SKIN_UUID_METADATA, "6ac084a53d4c445b80ead69aad7cbfcc");
+            //npc.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_METADATA, Utils.getSkin("6ac084a53d4c445b80ead69aad7cbfcc")[0]);
+            //npc.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_SIGN_METADATA, Utils.getSkin("6ac084a53d4c445b80ead69aad7cbfcc")[1]);
+            //npc.data().setPersistent(NPC.PLAYER_SKIN_USE_LATEST, true);
+
             ArrayList<String> lines = new ArrayList<>();
             lines.add("§6§lSHOP ITEMS");
             lines.add("§7Click to open");
@@ -280,7 +300,18 @@ public class Manager {
             hologram.showHologram();
 
             Location location2 = team.getPnjUpgrades();
-            NPCManager npc2 = new NPCManager(location2, EntityType.PLAYER, "SHOP-UPGRADES", "f52dc72a8953457f972c0fecd8fd553d");
+            NPC npc2 = CitizensAPI.getNPCRegistry().createNPC(EntityType.VILLAGER, " ");
+            npc2.data().setPersistent(NPC.Metadata.SILENT, true);
+            //npc2.getOrAddTrait(SkinTrait.class).setSkinPersistent("upgrade", Utils.getSkin("75e2a07a19064eadb28ecbe76fbb0a78")[0], Utils.getSkin("75e2a07a19064eadb28ecbe76fbb0a78")[1]);
+            //npc2.getOrAddTrait(SkinTrait.class).setSkinName("Ant_playz11");
+            //npc2.data().setPersistent(NPC.PLAYER_SKIN_UUID_METADATA, "75e2a07a19064eadb28ecbe76fbb0a78");
+             //npc2.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_METADATA, Utils.getSkin("75e2a07a19064eadb28ecbe76fbb0a78")[0]);
+             //npc2.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_SIGN_METADATA, Utils.getSkin("75e2a07a19064eadb28ecbe76fbb0a78")[1]);
+             //npc2.data().setPersistent(NPC.PLAYER_SKIN_USE_LATEST, true);
+
+            npc2.spawn(location2);
+            Bukkit.dispatchCommand(console, "npc select " + npc2.getId());
+            Bukkit.dispatchCommand(console, "npc sound -n");
             Location loc = location2.clone().add(0, 1.8, 0);
             ArrayList<String> lines2 = new ArrayList<>();
             lines2.add("§6§lSHOP UPGRADES");
@@ -288,8 +319,8 @@ public class Manager {
             Hologram hologram2 = new Hologram(loc, lines2);
             hologram2.showHologram();
 
-            arena.addShop(npc.getNpcUUID(), TypeShop.ITEMS);
-            arena.addShop(npc2.getNpcUUID(), TypeShop.UPGRADES);
+            arena.addShop(npc.getUniqueId(), TypeShop.ITEMS);
+            arena.addShop(npc2.getUniqueId(), TypeShop.UPGRADES);
             arena.addNpc(npc);
             arena.addNpc(npc2);
 
@@ -301,6 +332,10 @@ public class Manager {
                 hologram3.showHologram();
                 team.addGeneratorHologram(hologram3);
             });
+
+            if(!team.isBedAlive()){
+                team.getBed().setType(Material.AIR);
+            }
 
         }
 
@@ -327,26 +362,48 @@ public class Manager {
         Location location = arena.getTheSpecialist();
         Location loc2 = location.clone().add(0, 1.8, 0);
         //TruenoNPC npc = TruenoNPCApi.createNPC(Main.getInstance(), location, skin);
-        NPCManager npc = new NPCManager(location, EntityType.PLAYER, "THE-SPECIALIST", "f1894a3e64e64fb483ade05ddf00fdff");
+        //NPCManager npc = new NPCManager(location, EntityType.PLAYER, "THE-SPECIALIST", "f1894a3e64e64fb483ade05ddf00fdff");
+        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.BLAZE, " ");
+        npc.data().setPersistent(NPC.Metadata.SILENT, true);
+        //npc.getOrAddTrait(SkinTrait.class).setSkinPersistent("specialist", Utils.getSkin("f1894a3e64e64fb483ade05ddf00fdff")[0], Utils.getSkin("f1894a3e64e64fb483ade05ddf00fdff")[1]);
+        //npc.getOrAddTrait(SkinTrait.class).setSkinName("XXHENRYXX123");
+
+         //npc.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_METADATA, Utils.getSkin("f1894a3e64e64fb483ade05ddf00fdff")[0]);
+         //npc.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_SIGN_METADATA, Utils.getSkin("f1894a3e64e64fb483ade05ddf00fdff")[1]);
+         //npc.data().setPersistent(NPC.PLAYER_SKIN_USE_LATEST, true);
+        npc.spawn(location);
+        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+        Bukkit.dispatchCommand(console, "npc select " + npc.getId());
+        Bukkit.dispatchCommand(console, "npc sound -n");
         ArrayList<String> lines = new ArrayList<>();
         lines.add("§6§lTHE SPECIALIST");
         lines.add("§7Click to open");
         Hologram hologram = new Hologram(loc2, lines);
         hologram.showHologram();
-        arena.addShop(npc.getNpcUUID(), TypeShop.THE_SPECIALIST);
+        arena.addShop(npc.getUniqueId(), TypeShop.THE_SPECIALIST);
         arena.addNpc(npc);
 
         //TruenoNPCSkin skin2 = TruenoNPCSkinBuilder.fromMineskin(Main.getInstance(), "473cae4d3c8e4d20857a01f6e52076b7");
         Location location2 = arena.getEnchanter();
         Location loc3 = location2.clone().add(0, 1.8, 0);
         //TruenoNPC npc2 = TruenoNPCApi.createNPC(Main.getInstance(), location2, skin2);
-        NPCManager npc2 = new NPCManager(location2, EntityType.PLAYER, "ENCHANTER", "473cae4d3c8e4d20857a01f6e52076b7");
+        NPC npc2 = CitizensAPI.getNPCRegistry().createNPC(EntityType.WITCH, " ");
+        npc2.data().setPersistent(NPC.Metadata.SILENT, true);
+        //npc2.getOrAddTrait(SkinTrait.class).setSkinPersistent("enchanter", Utils.getSkin("473cae4d3c8e4d20857a01f6e52076b7")[0], Utils.getSkin("473cae4d3c8e4d20857a01f6e52076b7")[1]);
+        //npc2.getOrAddTrait(SkinTrait.class).setSkinName("Ant_playz11");
+
+         //npc2.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_METADATA, Utils.getSkin("473cae4d3c8e4d20857a01f6e52076b7")[0]);
+         //npc2.data().setPersistent(NPC.PLAYER_SKIN_TEXTURE_PROPERTIES_SIGN_METADATA, Utils.getSkin("473cae4d3c8e4d20857a01f6e52076b7")[1]);
+         //npc2.data().setPersistent(NPC.PLAYER_SKIN_USE_LATEST, true);
+        npc2.spawn(location2);
+        Bukkit.dispatchCommand(console, "npc select " + npc2.getId());
+        Bukkit.dispatchCommand(console, "npc sound -n");
         ArrayList<String> lines2 = new ArrayList<>();
         lines2.add("§6§lENCHANTER");
         lines2.add("§7Click to open");
         Hologram hologram2 = new Hologram(loc3, lines2);
         hologram2.showHologram();
-        arena.addShop(npc2.getNpcUUID(), TypeShop.ENCHANTER);
+        arena.addShop(npc2.getUniqueId(), TypeShop.ENCHANTER);
         arena.addNpc(npc2);
 
         // get all blocks in the arena and add them to the list
@@ -613,6 +670,8 @@ public class Manager {
             tpMeta.setLore(Arrays.asList("Click for open menu for teleport to other player"));
             tp.setItemMeta(tpMeta);
             player.getInventory().setItem(0, tp);
+            player.setGameMode(GameMode.SPECTATOR);
+            NameManagerAPI.setNametagPrefix(player, "§7[§6Spectator§7] ");
             return "You joined the game as a spectator";
 
         } else {
@@ -640,6 +699,18 @@ public class Manager {
             player.setFlying(false);
             player.setGameMode(Main.getInstance().getServer().getDefaultGameMode());
             player.sendMessage("§aYou left the game!");
+            Team team = this.getTeam(player);
+            if(team != null) {
+                team.removePlayer(player);
+                if(team.getPlayers().size() == 0) {
+                    if(team.isBedAlive()) {
+                        team.setBedAlive(false);
+                        this.broadcast("§cThe bed of the team " + team.getColor() + team.getName() + " §chas been destroyed!");
+                        team.getBed().setType(Material.AIR);
+                    }
+                }
+            }
+            NameManagerAPI.clearNametag(player);
         } else if (isSpecator(player)) {
             this.removeSpecator(player);
             player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
@@ -654,6 +725,7 @@ public class Manager {
             player.setFlying(false);
             player.setGameMode(Main.getInstance().getServer().getDefaultGameMode());
             player.sendMessage("§aYou left the game!");
+            NameManagerAPI.clearNametag(player);
         } else {
             player.sendMessage("§cYou are not in this game!");
         }

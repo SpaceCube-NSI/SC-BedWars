@@ -65,6 +65,7 @@ public class ShopItemsBlock {
         planksMeta.setDisplayName("§6Planks");
         planksMeta.setLore(Arrays.asList("§7Price: §a6 irons", "§7Amount: §a32"));
         planks.setItemMeta(planksMeta);
+        ItemStack autobridgeWood = new ItemStack(Material.WOOD, 1);
 
         for (int i = 0; i < 9; i++) {
             inv.setItem(i, glass);
