@@ -2,6 +2,7 @@ package fr.mathis_bruel.spacecube.bedwars.utils;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import com.nametagedit.plugin.NametagEdit;
 import com.sk89q.worldedit.*;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
@@ -454,20 +455,13 @@ public class Utils {
     }
 
     public static void changePseudoColor(Player player, Team team) {
-        org.bukkit.scoreboard.Team scoreboardTeam = player.getScoreboard().getTeam(team.getName()+"_"+ Manager.getManager(player).getArena().getName());
-        if (scoreboardTeam == null) {
-            scoreboardTeam = player.getScoreboard().registerNewTeam(team.getName());
-            // set color name
-        }
-        scoreboardTeam.setPrefix(team.getColor().toString());
-        scoreboardTeam.addEntry(player.getName());
-        Main.getInstance().teams.put(player, scoreboardTeam);
-        // set tablist name
-        player.setPlayerListName(team.getColor() + player.getName());
-        // set name above head
-        player.setCustomName(team.getColor() + player.getName());
-        player.setCustomNameVisible(true);
+        if (team == null) {
+            NametagEdit.getApi().setNametag(player, "", "");
 
+            return;
+        }
+        // ColorTeam + FirstCharOfTeamName + " " + PlayerName
+        NametagEdit.getApi().setNametag(player, team.getColor() + "" + team.getName().charAt(0) + " " + player.getName(), "");
     }
 
     // Fonction pour réinitialiser le pseudo d'un joueur

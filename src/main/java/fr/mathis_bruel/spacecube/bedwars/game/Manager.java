@@ -9,7 +9,6 @@ import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
-import net.agentlv.namemanager.api.NameManagerAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
@@ -671,7 +670,6 @@ public class Manager {
             tp.setItemMeta(tpMeta);
             player.getInventory().setItem(0, tp);
             player.setGameMode(GameMode.SPECTATOR);
-            NameManagerAPI.setNametagPrefix(player, "§7[§6Spectator§7] ");
             return "You joined the game as a spectator";
 
         } else {
@@ -710,7 +708,6 @@ public class Manager {
                     }
                 }
             }
-            NameManagerAPI.clearNametag(player);
         } else if (isSpecator(player)) {
             this.removeSpecator(player);
             player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
@@ -725,7 +722,6 @@ public class Manager {
             player.setFlying(false);
             player.setGameMode(Main.getInstance().getServer().getDefaultGameMode());
             player.sendMessage("§aYou left the game!");
-            NameManagerAPI.clearNametag(player);
         } else {
             player.sendMessage("§cYou are not in this game!");
         }
