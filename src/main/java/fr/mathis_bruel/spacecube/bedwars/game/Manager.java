@@ -427,6 +427,8 @@ public class Manager {
         // get all blocks around team spawn in function of arena.getProtectionRadius()
         for (Team team : arena.getTeams()) {
             Location location3 = team.getSpawn();
+            System.out.println(team.toString());
+            System.out.println(location3.toString());
             int minX2 = (int) Math.min(location3.getBlockX() - arena.getProtectionRadius(), location3.getBlockX() + arena.getProtectionRadius());
             int maxX2 = (int) Math.max(location3.getBlockX() - arena.getProtectionRadius(), location3.getBlockX() + arena.getProtectionRadius());
             int minY2 = (int) Math.min(location3.getBlockY() - arena.getProtectionRadius(), location3.getBlockY() + arena.getProtectionRadius());
@@ -616,6 +618,9 @@ public class Manager {
 
     public void broadcast(String message) {
         for (Player player : players) {
+            player.sendMessage(message);
+        }
+        for (Player player : specators) {
             player.sendMessage(message);
         }
     }

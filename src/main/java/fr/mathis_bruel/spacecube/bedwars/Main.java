@@ -10,7 +10,6 @@ import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
 import fr.mathis_bruel.spacecube.bedwars.manager.ListenerManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.NPCManager;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
-import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -26,7 +25,6 @@ public final class Main extends JavaPlugin implements Listener {
     public static Main instance;
     public static String prefix = "§6[§eBedwars§6]§r ";
     public ArrayList<Arena> arenas = new ArrayList<>();
-    public static HeadDatabaseAPI hdb;
     public ArrayList<Manager> managers = new ArrayList<>();
     private static final Map<UUID, FastBoard> boards = new HashMap<>();
     public static ArrayList<Hologram> holograms = new ArrayList<>();
@@ -64,7 +62,6 @@ public final class Main extends JavaPlugin implements Listener {
         saveDefaultConfig();
         Arena.init();
         Manager.init();
-        hdb = new HeadDatabaseAPI();
         Bukkit.getOnlinePlayers().forEach(player -> {
             FastBoard board = new FastBoard(player);
             board.updateTitle("§6§lBedWars");
@@ -103,9 +100,6 @@ public final class Main extends JavaPlugin implements Listener {
         return instance;
     }
 
-    public static HeadDatabaseAPI getHdb() {
-        return hdb;
-    }
 
     public static  Map<UUID, FastBoard> getBoards() {
         return boards;

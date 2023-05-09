@@ -29,6 +29,7 @@ public class RunnableIronGolem extends BukkitRunnable {
             golem.setTarget(target);
         }
         if(golem.isDead()) {
+            Manager.getManager(Arena.getArenaByWorld(golem.getWorld())).getTeam(target).setGolem(false);
             cancel();
         }
     }

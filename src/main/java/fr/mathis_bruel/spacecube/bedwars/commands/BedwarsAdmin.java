@@ -100,6 +100,10 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     // pos 1 and pos 2 of the arena
                     sender.sendMessage(prefix + "§c/bedwars-a arena setPos1 <arenaName> §7 - §fSet the first position of the arena");
                     sender.sendMessage(prefix + "§c/bedwars-a arena setPos2 <arenaName> §7 - §fSet the second position of the arena");
+                    // enable arena
+                    sender.sendMessage(prefix + "§c/bedwars-a arena enable <arenaName> §7 - §fEnable an arena");
+                    // disable arena
+                    sender.sendMessage(prefix + "§c/bedwars-a arena disable <arenaName> §7 - §fDisable an arena");
                     sender.sendMessage("--------------------------------");
                     break;
                 case "hologram":
@@ -146,7 +150,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                         sender.sendMessage("--------------------------------");
                         sender.sendMessage(prefix + "§cList of arenas:");
                         for (Arena arena : Main.getInstance().arenas) {
-                            sender.sendMessage(prefix + "§c- §f" + arena.getName());
+                            sender.sendMessage(prefix + "§c- §f" + arena.getName() + " §7(§aEnable: §6" + arena.isEnabled() + "§7)");
 
                         }
                         sender.sendMessage("--------------------------------");
@@ -284,7 +288,7 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                 npc.spawn(((Player) sender).getLocation());
                 Main.getInstance().getConfig().set("pnj." + npc.getId(), id);
                 Main.getInstance().saveConfig();
-                Main.getInstance().npcSpawn.put(npc, id);
+                Main.npcSpawn.put(npc, id);
                 sender.sendMessage(prefix + "§aThe pnj has been created.");
                 return true;
             }
@@ -376,6 +380,46 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                     arena.setLobbySpawn(player.getLocation());
                     arena.save();
                     sender.sendMessage(prefix + "§aSpawn set.");
+                    break;
+                }
+                case "enable": {
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        break;
+                    }
+                    if (arena.isEnabled()) {
+                        sender.sendMessage(prefix + "§cThis arena is already enabled.");
+                        break;
+                    }
+                    if (arena.isPossibleForEnable()) {
+                        sender.sendMessage(prefix + "§aThis arena is now enabled.");
+                        arena.setEnable(true);
+                        arena.save();
+                        break;
+                    } else {
+                        ArrayList<String> listErrors = arena.getReasonNotEnabled();
+                        sender.sendMessage(prefix + "§cThis arena is not possible to enable.");
+                        for (String error : listErrors) {
+                            sender.sendMessage(prefix + "§c- " + error);
+                        }
+                        arena.save();
+                        break;
+                    }
+                }
+                case "disable": {
+                    Arena arena = Arena.getArenaByName(args[2]);
+                    if (arena == null) {
+                        sender.sendMessage(prefix + "§cThis arena doesn't exist.");
+                        break;
+                    }
+                    if (!arena.isEnabled()) {
+                        sender.sendMessage(prefix + "§cThis arena is already disabled.");
+                        break;
+                    }
+                    sender.sendMessage(prefix + "§aThis arena is now disabled.");
+                    arena.setEnable(false);
+                    arena.save();
                     break;
                 }
 

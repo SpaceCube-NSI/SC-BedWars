@@ -34,11 +34,14 @@ public class Chat implements org.bukkit.event.Listener {
                 if(event.getMessage().startsWith("!")){
                     manager.broadcast("§7["+ team.getColor() + manager.getTeam(event.getPlayer()).getName() + "§7] §b" + event.getPlayer().getName() + "§7: §f" + event.getMessage().substring(1));
                 }else{
-                    manager.broadcast("§7[§2T§7] ["+ team.getColor() + manager.getTeam(event.getPlayer()).getName() + "§7] §b" + event.getPlayer().getName() + "§7: §f" + event.getMessage());
+                    team.broadcast("§7[§2T§7] ["+ team.getColor() + manager.getTeam(event.getPlayer()).getName() + "§7] §b" + event.getPlayer().getName() + "§7: §f" + event.getMessage());
                 }
             }
         }else{
-            Bukkit.broadcastMessage("§7[§b" + event.getPlayer().getName() + "§7] §f" + event.getMessage());
+            Bukkit.getOnlinePlayers().forEach((player) -> {
+                if(Manager.isCurrentlyInGame(player)) return;
+                player.sendMessage("§7[§b" + event.getPlayer().getName() + "§7] §f" + event.getMessage());
+            });
         }
     }
 

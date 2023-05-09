@@ -193,6 +193,11 @@ public class ShopUpgradesBase {
                 event.getWhoClicked().closeInventory();
                 return;
             }
+            if(team.getLvlSpeed() == 0){
+                event.getWhoClicked().sendMessage("§cYou need to buy speed 1 first!");
+                event.getWhoClicked().closeInventory();
+                return;
+            }
             if (event.getWhoClicked().getInventory().contains(Material.EMERALD, 5)) {
                 if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.DIAMOND_BOOTS))) {
                     event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");

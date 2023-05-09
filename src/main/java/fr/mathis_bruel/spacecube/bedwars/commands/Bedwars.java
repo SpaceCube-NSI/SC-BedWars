@@ -6,6 +6,7 @@ import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.gui.*;
 import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
+import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -85,7 +86,7 @@ public class Bedwars implements CommandExecutor {
                     sender.sendMessage("--------------------------------");
                     sender.sendMessage(prefix + "§cList of arenas:");
                     for (Arena arena : Main.getInstance().arenas) {
-                        sender.sendMessage(prefix + "§c- §f" + arena.getName());
+                        sender.sendMessage(prefix + "§c- §f" + arena.getName() + " §7(§aEnable: §6"+ arena.isEnabled() +"§7)");
 
                     }
                     sender.sendMessage("--------------------------------");
@@ -105,6 +106,7 @@ public class Bedwars implements CommandExecutor {
                         Manager.getManager(player).leave(player);
                     } else sender.sendMessage(prefix + "§cYou are not in a game!");
                     FastBoard board = Main.getBoard(player.getUniqueId());
+                    Utils.resetPseudo(player);
                     board.updateLines(Arrays.asList(
                             "§f",
                             "§fNiveau: §f" + 0,
@@ -161,6 +163,10 @@ public class Bedwars implements CommandExecutor {
                                     Manager manager = Manager.getManager(arena);
                                     if(manager == null) sender.sendMessage(prefix + "§cThis arena is not ready yet!");
                                     else {
+                                        if(!manager.getArena().isEnabled()) {
+                                            sender.sendMessage(prefix + "§cThis arena is not ready yet!");
+                                            return false;
+                                        }
                                         player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                                         manager.join(player);
                                     }

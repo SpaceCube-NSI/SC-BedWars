@@ -51,7 +51,7 @@ public class Stats {
         ItemStack bedDestroyed = new ItemStack(Material.BED);
         ItemMeta bedDestroyedMeta = bedDestroyed.getItemMeta();
         bedDestroyedMeta.setDisplayName("§6Bed destroyed");
-        bedDestroyedMeta.setLore(Arrays.asList("§7----------------------", "§7Bed destroyed : §e"+stats.getDivers().get("Beds"), "§7----------------------"));
+        bedDestroyedMeta.setLore(Arrays.asList("§7----------------------", "§7Bed destroyed : §e"+stats.getDivers().get("beds"), "§7----------------------"));
         bedDestroyed.setItemMeta(bedDestroyedMeta);
         ItemStack win = new ItemStack(Material.NETHER_STAR);
         ItemMeta winMeta = win.getItemMeta();

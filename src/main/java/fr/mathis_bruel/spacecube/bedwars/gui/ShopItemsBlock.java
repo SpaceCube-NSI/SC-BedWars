@@ -2,6 +2,7 @@ package fr.mathis_bruel.spacecube.bedwars.gui;
 
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
+import fr.mathis_bruel.spacecube.bedwars.utils.Heads;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,6 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Arrays;
 
@@ -65,7 +67,35 @@ public class ShopItemsBlock {
         planksMeta.setDisplayName("§6Planks");
         planksMeta.setLore(Arrays.asList("§7Price: §a6 irons", "§7Amount: §a32"));
         planks.setItemMeta(planksMeta);
-        ItemStack autobridgeWood = new ItemStack(Material.WOOD, 1);
+        ItemStack autobridgeWool = Heads.autobridge_wool.getSkull();
+        ItemMeta autobridgeWoolMeta = autobridgeWool.getItemMeta();
+        autobridgeWoolMeta.setDisplayName("§6Autobridge Wool");
+        autobridgeWoolMeta.setLore(Arrays.asList("§7Price: §a25 irons", "§7Amount: §a1"));
+        autobridgeWool.setItemMeta(autobridgeWoolMeta);
+        ItemStack autobridgeWood = Heads.autobridge_wood.getSkull();
+        ItemMeta autobridgeWoodMeta = autobridgeWood.getItemMeta();
+        autobridgeWoodMeta.setDisplayName("§6Autobridge Wood");
+        autobridgeWoodMeta.setLore(Arrays.asList("§7Price: §a30 irons", "§7Amount: §a1"));
+        autobridgeWood.setItemMeta(autobridgeWoodMeta);
+        ItemStack autobridgeAndesite = Heads.autobridge_stone.getSkull();
+        ItemMeta autobridgeAndesiteMeta = autobridgeAndesite.getItemMeta();
+        autobridgeAndesiteMeta.setDisplayName("§6Autobridge Andesite");
+        autobridgeAndesiteMeta.setLore(Arrays.asList("§7Price: §a25 golds", "§7Amount: §a1"));
+        autobridgeAndesite.setItemMeta(autobridgeAndesiteMeta);
+        ItemStack autobridgeEndStone = Heads.autobridge_endstone.getSkull();
+        ItemMeta autobridgeEndStoneMeta = autobridgeEndStone.getItemMeta();
+        autobridgeEndStoneMeta.setDisplayName("§6Autobridge End Stone");
+        autobridgeEndStoneMeta.setLore(Arrays.asList("§7Price: §a30 golds", "§7Amount: §a1"));
+        autobridgeEndStone.setItemMeta(autobridgeEndStoneMeta);
+        ItemStack autobridgeClay = Heads.autobridge_argil.getSkull();
+        ItemMeta autobridgeClayMeta = autobridgeClay.getItemMeta();
+        autobridgeClayMeta.setDisplayName("§6Autobridge Clay");
+        autobridgeClayMeta.setLore(Arrays.asList("§7Price: §a30 diamonds", "§7Amount: §a1"));
+        autobridgeClay.setItemMeta(autobridgeClayMeta);
+
+
+
+
 
         for (int i = 0; i < 9; i++) {
             inv.setItem(i, glass);
@@ -86,7 +116,11 @@ public class ShopItemsBlock {
         inv.setItem(22, endStone);
         inv.setItem(24, planks);
         inv.setItem(31, obsidian);
-
+        inv.setItem(38, autobridgeWood);
+        inv.setItem(39, autobridgeWool);
+        inv.setItem(40, autobridgeAndesite);
+        inv.setItem(41, autobridgeEndStone);
+        inv.setItem(42, autobridgeClay);
         return inv;
 
 
@@ -215,6 +249,113 @@ public class ShopItemsBlock {
                 event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
             }
         }
+        // auto bridge wool
+        if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Autobridge Wool")){
+            if(event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 25)){
+                if(!Utils.canAddItemInInventory((Player) event.getWhoClicked(), Heads.autobridge_wool.getSkull())){
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 25));
+                ItemStack item = Heads.autobridge_wool.getSkull();
+                ItemMeta meta = item.getItemMeta();
+                meta.setDisplayName("§6Autobridge Wool");
+                meta.setLore(Arrays.asList("§7Place this block in floor to", "§7automatically bridge with wool."));
+                item.setItemMeta(meta);
+                event.getWhoClicked().getInventory().addItem(item);
+                ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
+            }
+        }
+        // auto bridge wood
+        if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Autobridge Wood")){
+            if(event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 25)){
+                if(!Utils.canAddItemInInventory((Player) event.getWhoClicked(), Heads.autobridge_wood.getSkull())){
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 25));
+                ItemStack item = Heads.autobridge_wood.getSkull();
+                ItemMeta meta = item.getItemMeta();
+                meta.setDisplayName("§6Autobridge Wood");
+                meta.setLore(Arrays.asList("§7Place this block in floor to", "§7automatically bridge with wood."));
+                item.setItemMeta(meta);
+                event.getWhoClicked().getInventory().addItem(item);
+                ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough iron ingots!");
+            }
+        }
+        // auto bridge andesite
+        if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Autobridge Andesite")){
+            if(event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 25)){
+                if(!Utils.canAddItemInInventory((Player) event.getWhoClicked(), Heads.autobridge_stone.getSkull())){
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 25));
+                ItemStack item = Heads.autobridge_stone.getSkull();
+                ItemMeta meta = item.getItemMeta();
+                meta.setDisplayName("§6Autobridge Andesite");
+                meta.setLore(Arrays.asList("§7Place this block in floor to", "§7automatically bridge with andesite."));
+                item.setItemMeta(meta);
+                event.getWhoClicked().getInventory().addItem(item);
+                ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
+            }
+        }
+        // auto bridge endstone
+        if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Autobridge End Stone")){
+            if(event.getWhoClicked().getInventory().contains(Material.IRON_INGOT, 25)){
+                if(!Utils.canAddItemInInventory((Player) event.getWhoClicked(), Heads.autobridge_endstone.getSkull())){
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.IRON_INGOT, 25));
+                ItemStack item = Heads.autobridge_endstone.getSkull();
+                SkullMeta meta = (SkullMeta) item.getItemMeta();
+                meta.setDisplayName("§6Autobridge End Stone");
+                meta.setLore(Arrays.asList("§7Place this block in floor to", "§7automatically bridge end stone"));
+                item.setItemMeta(meta);
+                event.getWhoClicked().getInventory().addItem(item);
+                ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough gold ingots!");
+            }
+        }
+        // auto bridge clay
+        if(event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Autobridge Clay")){
+            if(event.getWhoClicked().getInventory().contains(Material.DIAMOND, 30)){
+                if(!Utils.canAddItemInInventory((Player) event.getWhoClicked(), Heads.autobridge_argil.getSkull())){
+                    event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
+                    event.getWhoClicked().closeInventory();
+                    return;
+                }
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.DIAMOND, 25));
+                ItemStack item = Heads.autobridge_argil.getSkull();
+                ItemMeta meta = item.getItemMeta();
+                meta.setDisplayName("§6Autobridge Clay");
+                meta.setLore(Arrays.asList("§7Place this block in floor to", "§7automatically bridge with clay."));
+                item.setItemMeta(meta);
+                event.getWhoClicked().getInventory().addItem(item);
+                ((Player) event.getWhoClicked()).updateInventory();
+                ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
+            } else {
+                event.getWhoClicked().sendMessage("§cYou don't have enough diamonds!");
+            }
+        }
+
+
 
 
     }

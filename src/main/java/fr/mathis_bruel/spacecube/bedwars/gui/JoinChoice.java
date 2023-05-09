@@ -46,6 +46,7 @@ public class JoinChoice {
             inv.setItem(i, glass);
         }
         Main.getInstance().managers.forEach((manager) -> {
+            if(!manager.getArena().isEnabled()) return;
             ItemStack item = Utils.getIcon(manager);
             inv.addItem(item);
         });

@@ -254,6 +254,45 @@ public class Utils {
         }
     }
 
+    public static DyeColor getDyeColor(ChatColor color) {
+        switch (color.name().toUpperCase()) {
+            case "RED":
+                return DyeColor.RED;
+            case "BLUE":
+                return DyeColor.BLUE;
+            case "GREEN":
+                return DyeColor.GREEN;
+            case "YELLOW":
+                return DyeColor.YELLOW;
+            case "WHITE":
+                return DyeColor.WHITE;
+            case "BLACK":
+                return DyeColor.BLACK;
+            case "DARK_RED":
+                return DyeColor.RED;
+            case "DARK_BLUE":
+                return DyeColor.BLUE;
+            case "DARK_GREEN":
+                return DyeColor.GREEN;
+            case "DARK_AQUA":
+                return DyeColor.CYAN;
+            case "DARK_PURPLE":
+                return DyeColor.PURPLE;
+            case "DARK_GRAY":
+                return DyeColor.GRAY;
+            case "GOLD":
+                return DyeColor.ORANGE;
+            case "AQUA":
+                return DyeColor.CYAN;
+            case "LIGHT_PURPLE":
+                return DyeColor.PURPLE;
+            case "GRAY":
+                return DyeColor.GRAY;
+            default:
+                return null;
+        }
+    }
+
     public static ItemStack getHead(Player player) {
         ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
         SkullMeta skull = (SkullMeta) item.getItemMeta();
@@ -461,16 +500,12 @@ public class Utils {
             return;
         }
         // ColorTeam + FirstCharOfTeamName + " " + PlayerName
-        NametagEdit.getApi().setNametag(player, team.getColor() + "" + team.getName().charAt(0) + " " + player.getName(), "");
+        NametagEdit.getApi().setNametag(player, team.getColor() + "" + team.getName().charAt(0)+" ", "");
     }
 
     // Fonction pour réinitialiser le pseudo d'un joueur
     public static void  resetPseudo(Player player) {
-        player.setPlayerListName(player.getName());
-        player.setCustomName(player.getName());
-        player.setCustomNameVisible(false);
-        player.getScoreboard().getTeam(Main.getInstance().teams.get(player).getName()).unregister();
-        Main.getInstance().teams.remove(player);
+        NametagEdit.getApi().setNametag(player, "§r", "");
     }
 
 

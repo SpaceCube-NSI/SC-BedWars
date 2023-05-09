@@ -35,7 +35,7 @@ public class ShopSpeEnchanter {
         backMeta.setDisplayName("§5Back");
         back.setItemMeta(backMeta);
         back = new CustomNBT(back).setBoolean("clickable", true).build();
-        ItemStack next = Heads.next_green.getHead();
+        ItemStack next = Heads.next_green.getSkull();
         ItemMeta nextMeta = next.getItemMeta();
         nextMeta.setDisplayName("§aEnchant");
         nextMeta.setLore(Arrays.asList("§7Enchant your item", "§5Please set the item in the first slot", "§5and select the enchantment"));
@@ -134,7 +134,7 @@ public class ShopSpeEnchanter {
                 public void run() {
                     if (event.getInventory().getItem(10) != null) {
                         if (event.getInventory().getItem(10).getType() != Material.AIR) {
-                            ItemStack head = Heads.next_orange.getHead();
+                            ItemStack head = Heads.next_orange.getSkull();
                             ItemMeta meta = head.getItemMeta();
                             meta.setDisplayName("§aEnchant");
                             meta.setLore(Arrays.asList("§5Select an enchantment to enchant your item with", "§5and click here to enchant it !"));
@@ -161,7 +161,7 @@ public class ShopSpeEnchanter {
                     if (event.getSlot() == 10 || event.getSlot() == 16) {
                         if (event.getInventory().getItem(10) != null) {
                             if (event.getInventory().getItem(10).getType() != Material.AIR) {
-                                ItemStack head = Heads.next_orange.getHead();
+                                ItemStack head = Heads.next_orange.getSkull();
                                 ItemMeta meta = head.getItemMeta();
                                 meta.setDisplayName("§aEnchant");
                                 meta.setLore(Arrays.asList("§5Select an enchantment to enchant your item with", "§5and click here to enchant it !"));
@@ -190,7 +190,7 @@ public class ShopSpeEnchanter {
                 return;
             }
             /*if (event.getInventory().getItem(37).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(38).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(39).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(40).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(41).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(42).getType() == Material.STAINED_GLASS_PANE && event.getInventory().getItem(43).getType() == Material.STAINED_GLASS_PANE) {
-                ItemStack head = Heads.next_orange.getHead();
+                ItemStack head = Heads.next_orange.getSkull();
                 ItemMeta meta = head.getItemMeta();
                 meta.setDisplayName("§aEnchant");
                 meta.setLore(Arrays.asList("§5Select an enchantment to enchant your item with", "§5and click here to enchant it !"));
@@ -237,20 +237,44 @@ public class ShopSpeEnchanter {
                 event.getInventory().setItem(37 + i, glass);
             }
             if (item.getType() == Material.DIAMOND_SWORD || item.getType() == Material.IRON_SWORD || item.getType() == Material.STONE_SWORD || item.getType() == Material.GOLD_SWORD || item.getType() == Material.WOOD_SWORD) {
+
+
                 if (current.getItemMeta().getLore().get(1).equals("§7compatibility: §aSword")) {
                     /*int price = Integer.parseInt(current.getItemMeta().getLore().get(0).split(" ")[1]);
                     if (event.getWhoClicked().getInventory().contains(Material.EMERALD, price)) {
                         event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, price));
                         item.addUnsafeEnchantment(current.getEnchantments().keySet().iterator().next(), current.getEnchantments().values().iterator().next());
                         event.getWhoClicked().sendMessage("§aYou have successfully enchanted your item!");*/
-                    ItemStack head2 = Heads.up_green.getHead();
+
+                    // si l'item est déjà enchanté, on ne peut pas l'enchanté
+                    if (item.getEnchantments().size() != 0) {
+                        event.getWhoClicked().sendMessage("§cYou can't enchant this item with this enchantment!");
+                        ItemStack head2 = Heads.up_red.getSkull();
+                        ItemMeta meta2 = head2.getItemMeta();
+                        meta2.setDisplayName("§cEnchant not compatible");
+                        meta2.setLore(Arrays.asList("§cYou can't enchant your item because it's already enchanted !", "§cYou can't enchant an enchanted item !"));
+                        head2.setItemMeta(meta2);
+                        head2 = new CustomNBT(head2).setBoolean("clickable", true).build();
+                        event.getInventory().setItem(event.getSlot() + 9, head2);
+                        ItemStack head = Heads.next_red.getSkull();
+                        ItemMeta meta = head.getItemMeta();
+                        meta.setDisplayName("§cEnchant not compatible");
+                        meta.setLore(Arrays.asList("§cYou can't enchant your item because it's already enchanted !", "§cYou can't enchant an enchanted item !"));
+                        head.setItemMeta(meta);
+                        head = new CustomNBT(head).setBoolean("clickable", true).build();
+                        event.getInventory().setItem(12, head);
+                        event.getInventory().setItem(13, head);
+                        event.getInventory().setItem(14, head);
+                        return;
+                    }
+                    ItemStack head2 = Heads.up_green.getSkull();
                     ItemMeta meta2 = head2.getItemMeta();
                     meta2.setDisplayName("§aEnchant compatible");
                     meta2.setLore(Arrays.asList("§5You can enchant your item with this enchantment !", "§5Click in the 3 arrows to enchant it !"));
                     head2.setItemMeta(meta2);
                     head2 = new CustomNBT(head2).setBoolean("clickable", true).build();
                     event.getInventory().setItem(event.getSlot() + 9, head2);
-                    ItemStack head = Heads.next_green.getHead();
+                    ItemStack head = Heads.next_green.getSkull();
                     ItemMeta meta = head.getItemMeta();
                     meta.setDisplayName("§aEnchant compatible");
                     meta.setLore(Arrays.asList("§7Enchant: " + current.getItemMeta().getDisplayName(), "§7Price: §a" + current.getItemMeta().getLore().get(0).split(" ")[1], "§5You can enchant your item with this enchantment !", "§5Just click here to enchant it !"));
@@ -261,14 +285,14 @@ public class ShopSpeEnchanter {
                     event.getInventory().setItem(14, head);
                 } else {
                     event.getWhoClicked().sendMessage("§cYou can't enchant this item with this enchantment!");
-                    ItemStack head2 = Heads.up_red.getHead();
+                    ItemStack head2 = Heads.up_red.getSkull();
                     ItemMeta meta2 = head2.getItemMeta();
                     meta2.setDisplayName("§cEnchant not compatible");
                     meta2.setLore(Arrays.asList("§cYou can't enchant your item with this enchantment !", "§cThis enchantment is not compatible with your item !"));
                     head2.setItemMeta(meta2);
                     head2 = new CustomNBT(head2).setBoolean("clickable", true).build();
                     event.getInventory().setItem(event.getSlot() + 9, head2);
-                    ItemStack head = Heads.next_red.getHead();
+                    ItemStack head = Heads.next_red.getSkull();
                     ItemMeta meta = head.getItemMeta();
                     meta.setDisplayName("§cEnchant not compatible");
                     meta.setLore(Arrays.asList("§cYou can't enchant your item with this enchantment !", "§cThis enchantment is not compatible with your item !"));
@@ -280,15 +304,37 @@ public class ShopSpeEnchanter {
                 }
             }
             if (item.getType() == Material.DIAMOND_PICKAXE || item.getType() == Material.IRON_PICKAXE || item.getType() == Material.STONE_PICKAXE || item.getType() == Material.GOLD_PICKAXE || item.getType() == Material.WOOD_PICKAXE || item.getType() == Material.DIAMOND_AXE || item.getType() == Material.IRON_AXE || item.getType() == Material.STONE_AXE || item.getType() == Material.GOLD_AXE || item.getType() == Material.WOOD_AXE) {
+
                 if (current.getItemMeta().getLore().get(1).equals("§7compatibility: §aPickaxe, Axe")) {
-                    ItemStack head2 = Heads.up_green.getHead();
+                    // si l'item est déjà enchanté, on ne peut pas l'enchanté
+                    if (item.getEnchantments().size() != 0) {
+                        event.getWhoClicked().sendMessage("§cYou can't enchant this item with this enchantment!");
+                        ItemStack head2 = Heads.up_red.getSkull();
+                        ItemMeta meta2 = head2.getItemMeta();
+                        meta2.setDisplayName("§cEnchant not compatible");
+                        meta2.setLore(Arrays.asList("§cYou can't enchant your item because it's already enchanted !", "§cYou can't enchant an enchanted item !"));
+                        head2.setItemMeta(meta2);
+                        head2 = new CustomNBT(head2).setBoolean("clickable", true).build();
+                        event.getInventory().setItem(event.getSlot() + 9, head2);
+                        ItemStack head = Heads.next_red.getSkull();
+                        ItemMeta meta = head.getItemMeta();
+                        meta.setDisplayName("§cEnchant not compatible");
+                        meta.setLore(Arrays.asList("§cYou can't enchant your item because it's already enchanted !", "§cYou can't enchant an enchanted item !"));
+                        head.setItemMeta(meta);
+                        head = new CustomNBT(head).setBoolean("clickable", true).build();
+                        event.getInventory().setItem(12, head);
+                        event.getInventory().setItem(13, head);
+                        event.getInventory().setItem(14, head);
+                        return;
+                    }
+                    ItemStack head2 = Heads.up_green.getSkull();
                     ItemMeta meta2 = head2.getItemMeta();
                     meta2.setDisplayName("§aEnchant compatible");
                     meta2.setLore(Arrays.asList("§5You can enchant your item with this enchantment !", "§5Click in the 3 arrows to enchant it !"));
                     head2.setItemMeta(meta2);
                     head2 = new CustomNBT(head2).setBoolean("clickable", true).build();
                     event.getInventory().setItem(event.getSlot() + 9, head2);
-                    ItemStack head = Heads.next_green.getHead();
+                    ItemStack head = Heads.next_green.getSkull();
                     ItemMeta meta = head.getItemMeta();
                     meta.setDisplayName("§aEnchant compatible");
                     meta.setLore(Arrays.asList("§7Enchant: " + current.getItemMeta().getDisplayName(), "§7Price: §a" + current.getItemMeta().getLore().get(0).split(" ")[1], "§5You can enchant your item with this enchantment !", "§5Just click here to enchant it !"));
@@ -299,14 +345,14 @@ public class ShopSpeEnchanter {
                     event.getInventory().setItem(14, head);
                 } else {
                     event.getWhoClicked().sendMessage("§cYou can't enchant this item with this enchantment!");
-                    ItemStack head2 = Heads.up_red.getHead();
+                    ItemStack head2 = Heads.up_red.getSkull();
                     ItemMeta meta2 = head2.getItemMeta();
                     meta2.setDisplayName("§cEnchant not compatible");
                     meta2.setLore(Arrays.asList("§cYou can't enchant your item with this enchantment !", "§cThis enchantment is not compatible with your item !"));
                     head2.setItemMeta(meta2);
                     head2 = new CustomNBT(head2).setBoolean("clickable", true).build();
                     event.getInventory().setItem(event.getSlot() + 9, head2);
-                    ItemStack head = Heads.next_red.getHead();
+                    ItemStack head = Heads.next_red.getSkull();
                     ItemMeta meta = head.getItemMeta();
                     meta.setDisplayName("§cEnchant not compatible");
                     meta.setLore(Arrays.asList("§cYou can't enchant your item with this enchantment !", "§cThis enchantment is not compatible with your item !"));
@@ -320,14 +366,35 @@ public class ShopSpeEnchanter {
             // bow
             if (item.getType() == Material.BOW) {
                 if (current.getItemMeta().getLore().get(1).equals("§7compatibility: §aBow")) {
-                    ItemStack head2 = Heads.up_green.getHead();
+                    // si l'item est déjà enchanté, on ne peut pas l'enchanté
+                    if (item.getEnchantments().size() != 0) {
+                        event.getWhoClicked().sendMessage("§cYou can't enchant this item with this enchantment!");
+                        ItemStack head2 = Heads.up_red.getSkull();
+                        ItemMeta meta2 = head2.getItemMeta();
+                        meta2.setDisplayName("§cEnchant not compatible");
+                        meta2.setLore(Arrays.asList("§cYou can't enchant your item because it's already enchanted !", "§cYou can't enchant an enchanted item !"));
+                        head2.setItemMeta(meta2);
+                        head2 = new CustomNBT(head2).setBoolean("clickable", true).build();
+                        event.getInventory().setItem(event.getSlot() + 9, head2);
+                        ItemStack head = Heads.next_red.getSkull();
+                        ItemMeta meta = head.getItemMeta();
+                        meta.setDisplayName("§cEnchant not compatible");
+                        meta.setLore(Arrays.asList("§cYou can't enchant your item because it's already enchanted !", "§cYou can't enchant an enchanted item !"));
+                        head.setItemMeta(meta);
+                        head = new CustomNBT(head).setBoolean("clickable", true).build();
+                        event.getInventory().setItem(12, head);
+                        event.getInventory().setItem(13, head);
+                        event.getInventory().setItem(14, head);
+                        return;
+                    }
+                    ItemStack head2 = Heads.up_green.getSkull();
                     ItemMeta meta2 = head2.getItemMeta();
                     meta2.setDisplayName("§aEnchant compatible");
                     meta2.setLore(Arrays.asList("§5You can enchant your item with this enchantment !", "§5Click in the 3 arrows to enchant it !"));
                     head2.setItemMeta(meta2);
                     head2 = new CustomNBT(head2).setBoolean("clickable", true).build();
                     event.getInventory().setItem(event.getSlot() + 9, head2);
-                    ItemStack head = Heads.next_green.getHead();
+                    ItemStack head = Heads.next_green.getSkull();
                     ItemMeta meta = head.getItemMeta();
                     meta.setDisplayName("§aEnchant compatible");
                     meta.setLore(Arrays.asList("§7Enchant: " + current.getItemMeta().getDisplayName(), "§7Price: §a" + current.getItemMeta().getLore().get(0).split(" ")[1], "§5You can enchant your item with this enchantment !", "§5Just click here to enchant it !"));
@@ -338,14 +405,14 @@ public class ShopSpeEnchanter {
                     event.getInventory().setItem(14, head);
                 } else {
                     event.getWhoClicked().sendMessage("§cYou can't enchant this item with this enchantment!");
-                    ItemStack head2 = Heads.up_red.getHead();
+                    ItemStack head2 = Heads.up_red.getSkull();
                     ItemMeta meta2 = head2.getItemMeta();
                     meta2.setDisplayName("§cEnchant not compatible");
                     meta2.setLore(Arrays.asList("§cYou can't enchant your item with this enchantment !", "§cThis enchantment is not compatible with your item !"));
                     head2.setItemMeta(meta2);
                     head2 = new CustomNBT(head2).setBoolean("clickable", true).build();
                     event.getInventory().setItem(event.getSlot() + 9, head2);
-                    ItemStack head = Heads.next_red.getHead();
+                    ItemStack head = Heads.next_red.getSkull();
                     ItemMeta meta = head.getItemMeta();
                     meta.setDisplayName("§cEnchant not compatible");
                     meta.setLore(Arrays.asList("§cYou can't enchant your item with this enchantment !", "§cThis enchantment is not compatible with your item !"));

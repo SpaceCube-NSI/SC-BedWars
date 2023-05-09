@@ -25,6 +25,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Runnable extends BukkitRunnable {
     public Manager manager;
@@ -144,28 +145,46 @@ public class Runnable extends BukkitRunnable {
             manager.getPlayerKills().forEach((player, integer) -> {
                 Stats stats = new Stats(Games.BedWars, player.getUniqueId());
                 stats.init();
-                stats.addKills(integer);
+                stats.setKills(integer+stats.getKills());
                 stats.updateStats();
             });
             manager.getPlayerDeaths().forEach((player, integer) -> {
                 Stats stats = new Stats(Games.BedWars, player.getUniqueId());
                 stats.init();
-                stats.addDeath(integer);
+                stats.setDeath(integer+stats.getDeath());
                 stats.updateStats();
             });
             manager.getPlayerBeds().forEach((player, integer) -> {
                 Stats stats = new Stats(Games.BedWars, player.getUniqueId());
                 stats.init();
-                stats.addDivers("Beds", integer);
+                Integer beds = (Integer) (stats.getDivers().get("beds") != null ? stats.getDivers().get("beds") : 0);
+                stats.setDivers( new HashMap<Object, Object>(){{put("beds", beds+integer);}});
                 stats.updateStats();
             });
 
             manager.getWinners().forEach(player -> {
                 Stats stats = new Stats(Games.BedWars, player.getUniqueId());
                 stats.init();
-                stats.addWins(1);
+                stats.setWins(stats.getWins()+1);
                 stats.updateStats();
             });
+
+            manager.getPlayers().forEach(player-> {
+                Stats stats = new Stats(Games.BedWars, player.getUniqueId());
+                stats.init();
+                stats.setGames(stats.getGames()+1);
+                if(!manager.getWinners().contains(player)) stats.setLoses(stats.getLoses()+1);
+                stats.updateStats();
+            });
+
+            manager.getSpecators().forEach(player-> {
+                Stats stats = new Stats(Games.BedWars, player.getUniqueId());
+                stats.init();
+                stats.setGames(stats.getGames()+1);
+                if(!manager.getWinners().contains(player)) stats.setLoses(stats.getLoses()+1);
+                stats.updateStats();
+            });
+
             
 
             arena.getTeams().forEach(team -> {
@@ -173,6 +192,7 @@ public class Runnable extends BukkitRunnable {
                 team.setAlarm(false);
                 team.setHealpool(false);
                 team.setLvlSpeed(0);
+                team.setGolem(false);
             });
 
 

@@ -28,6 +28,7 @@ public class Team {
     private int lvlSpeed;
     private boolean alarm;
     private boolean healpool;
+    private boolean golem;
 
     public Team(String name, ChatColor ChatColor, Location spawn, ArrayList<GeneratorTeam> generators, Location pnjItems, Location pnjUpgrades, Block bed) {
         this.name = name;
@@ -41,6 +42,7 @@ public class Team {
         lvlSpeed = 0;
         alarm = false;
         healpool = false;
+        golem = false;
     }
 
     public Team(String name, ChatColor ChatColor) {
@@ -55,6 +57,7 @@ public class Team {
         lvlSpeed = 0;
         alarm = false;
         healpool = false;
+        golem = false;
     }
 
     public String getName() {
@@ -347,6 +350,18 @@ public class Team {
 
     public void disableHealpool(){
         healpool = false;
+    }
+
+    public boolean isAlreadyGolem(){
+        return golem;
+    }
+
+    public void setGolem(boolean golem){
+        this.golem = golem;
+    }
+
+    public void toggleGolem(){
+        golem = !golem;
     }
 
     public void broadcast(String message){

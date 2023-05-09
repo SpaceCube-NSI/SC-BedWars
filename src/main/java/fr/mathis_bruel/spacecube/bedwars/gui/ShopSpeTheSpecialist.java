@@ -53,7 +53,7 @@ public class ShopSpeTheSpecialist {
         ItemStack gap = new ItemStack(Material.GOLDEN_APPLE, 1);
         ItemMeta gapMeta = gap.getItemMeta();
         gapMeta.setDisplayName("§6Golden Apple");
-        gapMeta.setLore(Arrays.asList("§7Price: §a15 emerald", "§7Amount: §a1"));
+        gapMeta.setLore(Arrays.asList("§7Price: §a5 emerald", "§7Amount: §a1"));
         gap.setItemMeta(gapMeta);
         ItemStack healingPot = new ItemStack(Material.POTION, 1, (short) 16453);
         ItemMeta healingPotMeta = healingPot.getItemMeta();
@@ -238,13 +238,13 @@ public class ShopSpeTheSpecialist {
         }
         // golden apple
         if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§6Golden Apple")) {
-            if (event.getWhoClicked().getInventory().contains(Material.EMERALD, 15)) {
+            if (event.getWhoClicked().getInventory().contains(Material.EMERALD, 5)) {
                 if (!Utils.canAddItemInInventory((Player) event.getWhoClicked(), new ItemStack(Material.GOLDEN_APPLE, 1))) {
                     event.getWhoClicked().sendMessage("§cYou don't have enough space in your inventory!");
                     event.getWhoClicked().closeInventory();
                     return;
                 }
-                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 15));
+                event.getWhoClicked().getInventory().removeItem(new ItemStack(Material.EMERALD, 5));
                 event.getWhoClicked().getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 1));
                 ((Player) event.getWhoClicked()).updateInventory();
                 ((Player) event.getWhoClicked()).playSound(((Player) event.getWhoClicked()).getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);

@@ -6,12 +6,15 @@ import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.game.RunnableIronGolem;
 import fr.mathis_bruel.spacecube.bedwars.game.State;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
+import fr.mathis_bruel.spacecube.bedwars.utils.Heads;
+import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftIronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
@@ -23,42 +26,48 @@ public class BlockPlace implements org.bukkit.event.Listener {
 
     @EventHandler
     public void BlockPlaceEvent(BlockPlaceEvent event) {
-        if(!Manager.isCurrentlyInGame(event.getPlayer()) && !event.getPlayer().hasPermission("bw.admin")) {
+        if (!Manager.isCurrentlyInGame(event.getPlayer()) && !event.getPlayer().hasPermission("bw.admin")) {
             event.setCancelled(true);
             event.getPlayer().sendMessage("§cYou can't place blocks in this world!");
         }
-        if(Main.isGodMode(event.getPlayer()))
+        if (Main.isGodMode(event.getPlayer()))
             Main.removeGodMode(event.getPlayer());
-        if(Manager.isCurrentlyInGame(event.getPlayer())) {
+        if (Manager.isCurrentlyInGame(event.getPlayer())) {
             Manager manager = Manager.getManager(event.getPlayer());
-            if(manager == null)
+            if (manager == null)
                 return;
             Arena arena = manager.getArena();
-            if(arena == null)
+            if (arena == null)
                 return;
-            if(manager.getManagerState().getCurrentState() != State.RUNNING) event.setCancelled(true);
+            if (manager.getManagerState().getCurrentState() != State.RUNNING) event.setCancelled(true);
             Team team = manager.getTeam(event.getPlayer());
-            if(team == null)
+            if (team == null)
                 return;
-            if(manager.isLocationNotPlaceable(event.getBlock().getLocation())) {
+            if (manager.isLocationNotPlaceable(event.getBlock().getLocation())) {
                 event.setCancelled(true);
                 event.getPlayer().sendMessage("§cYou can't place blocks here!");
                 return;
             }
             // if is left the region of arena (manager.getArena().getPos1Map() and manager.getArena().getPos2Map())
-            if(!isBlockInRegion(event.getBlock().getLocation(), manager.getArena().getPos1Map(), manager.getArena().getPos2Map())) {
+            if (!isBlockInRegion(event.getBlock().getLocation(), manager.getArena().getPos1Map(), manager.getArena().getPos2Map())) {
                 event.setCancelled(true);
                 event.getPlayer().sendMessage("§cYou can't place blocks here!");
                 return;
             }
 
-            if(event.getBlock().getType() == Material.TNT){
+            if (event.getBlock().getType() == Material.TNT) {
                 event.getBlock().setType(Material.AIR);
                 event.getBlock().getWorld().spawn(event.getBlock().getLocation(), org.bukkit.entity.TNTPrimed.class);
             }
 
-            if(event.getBlock().getType() == Material.PUMPKIN){
+            if (event.getBlock().getType() == Material.PUMPKIN) {
                 // create iron golem
+                if (team.isAlreadyGolem()) {
+                    event.setCancelled(true);
+                    event.getPlayer().sendMessage("§cYour team already has a golem!");
+                    return;
+                }
+                team.toggleGolem();
                 CraftIronGolem golem = (CraftIronGolem) event.getBlock().getWorld().spawn(event.getBlock().getLocation(), org.bukkit.entity.IronGolem.class);
                 golem.setPlayerCreated(true);
                 golem.setCustomName(team.getColor() + "§l" + team.getName() + "§r§f's golem");
@@ -77,38 +86,189 @@ public class BlockPlace implements org.bukkit.event.Listener {
             }
 
         }
-        if(event.getBlock().getType() == Material.SKULL){
-            // auto bridging 32 blocks
-            new ParticleBuilder(ParticleEffect.SMOKE_LARGE, event.getBlock().getLocation())
-                    .setSpeed(0.1f)
-                    .setAmount(50)
-                    .display();
-            event.getBlock().setType(Material.AIR);
-            Location locB = event.getBlock().getLocation().clone();
-            Location locP = event.getPlayer().getLocation().clone();
-            final int[] distance = {0};
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (distance[0] < 32) {
-                        Player player = event.getPlayer();
-                        Location loc = locB.clone().add(locP.getDirection().multiply(distance[0]).setY(-1));
-                        if(loc.getBlock().getType() == Material.AIR) loc.getBlock().setType(Material.WOOL);
-                        distance[0]++;
-                        new ParticleBuilder(ParticleEffect.FLAME, loc)
-                                .setSpeed(0.1f)
-                                .setAmount(50)
-                                .display();
+        if (event.getBlock().getType() == Material.SKULL) {
+            if (!Manager.isCurrentlyInGame(event.getPlayer()))
+                return;
+            Manager manager = Manager.getManager(event.getPlayer());
+            if (manager == null)
+                return;
+            Team team = manager.getTeam(event.getPlayer());
+            if (team == null)
+                return;
+            switch (event.getItemInHand().getItemMeta().getDisplayName()) {
+                case "§6Autobridge Wool": {
+                    // auto bridging 32 blocks
+                    event.getPlayer().getInventory().removeItem(Heads.autobridge_wool.getSkull());
+                    new ParticleBuilder(ParticleEffect.SMOKE_LARGE, event.getBlock().getLocation())
+                            .setSpeed(0.1f)
+                            .setAmount(50)
+                            .display();
+                    event.getBlock().setType(Material.AIR);
+                    Location locB = event.getBlock().getLocation().clone();
+                    Location locP = event.getPlayer().getLocation().clone();
+                    final int[] distance = {0};
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (distance[0] < 32) {
+                                Player player = event.getPlayer();
+                                Location loc = locB.clone().add(locP.getDirection().multiply(distance[0]).setY(-1));
 
-                    } else {
-                        this.cancel();
-                    }
+                                if (loc.getBlock().getType() == Material.AIR) {
+                                    loc.getBlock().setTypeIdAndData(35, Utils.getDyeColor(team.getColor()).getData(), true);
+                                }
+                                distance[0]++;
+                                new ParticleBuilder(ParticleEffect.FLAME, loc)
+                                        .setSpeed(0.1f)
+                                        .setAmount(50)
+                                        .display();
+
+                            } else {
+                                this.cancel();
+                            }
+                        }
+                    }.runTaskTimer(Main.getInstance(), 0, 2);
+                    break;
                 }
-            }.runTaskTimer(Main.getInstance(), 0, 2);
+                case "§6Autobridge Wood": {
+                    // auto bridging 32 blocks
+                    event.getPlayer().getInventory().removeItem(Heads.autobridge_wood.getSkull());
+                    new ParticleBuilder(ParticleEffect.SMOKE_LARGE, event.getBlock().getLocation())
+                            .setSpeed(0.1f)
+                            .setAmount(50)
+                            .display();
+                    event.getBlock().setType(Material.AIR);
+                    Location locB = event.getBlock().getLocation().clone();
+                    Location locP = event.getPlayer().getLocation().clone();
+                    final int[] distance = {0};
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (distance[0] < 32) {
+                                Player player = event.getPlayer();
+                                Location loc = locB.clone().add(locP.getDirection().multiply(distance[0]).setY(-1));
+                                if (loc.getBlock().getType() == Material.AIR) {
+                                    loc.getBlock().setType(Material.WOOD);
+                                }
+                                distance[0]++;
+                                new ParticleBuilder(ParticleEffect.FLAME, loc)
+                                        .setSpeed(0.1f)
+                                        .setAmount(50)
+                                        .display();
 
+                            } else {
+                                this.cancel();
+                            }
+                        }
+                    }.runTaskTimer(Main.getInstance(), 0, 2);
+                    break;
+                }
+                case "§6Autobridge Andesite": {
+                    // auto bridging 32 blocks
+                    event.getPlayer().getInventory().removeItem(Heads.autobridge_stone.getSkull());
+                    new ParticleBuilder(ParticleEffect.SMOKE_LARGE, event.getBlock().getLocation())
+                            .setSpeed(0.1f)
+                            .setAmount(50)
+                            .display();
+                    event.getBlock().setType(Material.AIR);
+                    Location locB = event.getBlock().getLocation().clone();
+                    Location locP = event.getPlayer().getLocation().clone();
+                    final int[] distance = {0};
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (distance[0] < 32) {
+                                Player player = event.getPlayer();
+                                Location loc = locB.clone().add(locP.getDirection().multiply(distance[0]).setY(-1));
 
+                                if (loc.getBlock().getType() == Material.AIR) {
+                                    loc.getBlock().setTypeIdAndData(1, (byte) 6, true);
+                                }
+                                distance[0]++;
+                                new ParticleBuilder(ParticleEffect.FLAME, loc)
+                                        .setSpeed(0.1f)
+                                        .setAmount(50)
+                                        .display();
+
+                            } else {
+                                this.cancel();
+                            }
+                        }
+                    }.runTaskTimer(Main.getInstance(), 0, 2);
+                    break;
+                }
+                case "§6Autobridge End Stone": {
+                    // auto bridging 32 blocks
+                    event.getPlayer().getInventory().removeItem(Heads.autobridge_endstone.getSkull());
+                    new ParticleBuilder(ParticleEffect.SMOKE_LARGE, event.getBlock().getLocation())
+                            .setSpeed(0.1f)
+                            .setAmount(50)
+                            .display();
+                    event.getBlock().setType(Material.AIR);
+                    Location locB = event.getBlock().getLocation().clone();
+                    Location locP = event.getPlayer().getLocation().clone();
+                    final int[] distance = {0};
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (distance[0] < 32) {
+                                Player player = event.getPlayer();
+                                Location loc = locB.clone().add(locP.getDirection().multiply(distance[0]).setY(-1));
+                                ItemStack item = new ItemStack(Material.ENDER_STONE);
+                                if (loc.getBlock().getType() == Material.AIR) {
+                                    loc.getBlock().setType(item.getType());
+                                }
+                                distance[0]++;
+                                new ParticleBuilder(ParticleEffect.FLAME, loc)
+                                        .setSpeed(0.1f)
+                                        .setAmount(50)
+                                        .display();
+
+                            } else {
+                                this.cancel();
+                            }
+                        }
+                    }.runTaskTimer(Main.getInstance(), 0, 2);
+                    break;
+                }
+                case "§6Autobridge Clay": {
+                    // auto bridging 32 blocks
+                    event.getPlayer().getInventory().removeItem(Heads.autobridge_argil.getSkull());
+                    new ParticleBuilder(ParticleEffect.SMOKE_LARGE, event.getBlock().getLocation())
+                            .setSpeed(0.1f)
+                            .setAmount(50)
+                            .display();
+                    event.getBlock().setType(Material.AIR);
+                    Location locB = event.getBlock().getLocation().clone();
+                    Location locP = event.getPlayer().getLocation().clone();
+                    final int[] distance = {0};
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (distance[0] < 32) {
+                                Player player = event.getPlayer();
+                                Location loc = locB.clone().add(locP.getDirection().multiply(distance[0]).setY(-1));
+
+                                if (loc.getBlock().getType() == Material.AIR) {
+                                    loc.getBlock().setTypeIdAndData(159, Utils.getDyeColor(team.getColor()).getData(), true);
+                                }
+                                distance[0]++;
+                                new ParticleBuilder(ParticleEffect.FLAME, loc)
+                                        .setSpeed(0.1f)
+                                        .setAmount(50)
+                                        .display();
+
+                            } else {
+                                this.cancel();
+                            }
+                        }
+                    }.runTaskTimer(Main.getInstance(), 0, 2);
+                    break;
+                }
+            }
         }
     }
+
     private boolean isBlockInRegion(Location blockLocation, Location pos1, Location pos2) {
         int x1 = Math.min(pos1.getBlockX(), pos2.getBlockX());
         int y1 = Math.min(pos1.getBlockY(), pos2.getBlockY());

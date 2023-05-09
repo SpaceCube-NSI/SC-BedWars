@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Arena {
     private World world;
@@ -39,6 +40,7 @@ public class Arena {
     private Location pos2Map;
     private final HashMap<UUID, TypeShop> shops = new HashMap<>();
     private ArrayList<NPC> npcs = new ArrayList<>();
+    private boolean enable = false;
 
     public Arena(World world, String name) {
         this.world = world;
@@ -311,6 +313,138 @@ public class Arena {
         npcs.clear();
     }
 
+    public boolean isEnabled() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public boolean isPossibleForEnable(){
+        AtomicReference<Boolean> possibleForEnable = new AtomicReference<>(true);
+        if (this.getName() == null) {
+            possibleForEnable.set(false);
+        }
+        if (this.getWorld() == null) {
+            possibleForEnable.set(false);
+        }
+        if (this.getLobbySpawn() == null) {
+            possibleForEnable.set(false);
+        }
+        if (this.getSpecSpawn() == null) {
+            possibleForEnable.set(false);
+        }
+        if (this.getTheSpecialist() == null) {
+            possibleForEnable.set(false);
+        }
+        if (this.getEnchanter() == null) {
+            possibleForEnable.set(false);
+        }
+        if (this.getPos1Map() == null) {
+            possibleForEnable.set(false);
+        }
+        if (this.getPos2Map() == null) {
+            possibleForEnable.set(false);
+        }
+        if (this.getTeams().size() == 0) {
+            possibleForEnable.set(false);
+        }
+        if (this.getEmeraldsGenerators().size() == 0) {
+            possibleForEnable.set(false);
+        }
+        if (this.getDiamondsGenerators().size() == 0) {
+            possibleForEnable.set(false);
+        }
+        if (this.getPlayerPerTeam() == 0) {
+            possibleForEnable.set(false);
+        }
+        if (this.getProtectionRadius() == 0) {
+            possibleForEnable.set(false);
+        }
+        this.teams.forEach(team -> {
+            if (team.getSpawn() == null) {
+                possibleForEnable.set(false);
+            }
+            if (team.getBed() == null) {
+                possibleForEnable.set(false);
+            }
+            if(team.getGenerators().size() == 0){
+                possibleForEnable.set(false);
+            }
+            if(team.getPnjItems() == null){
+                possibleForEnable.set(false);
+            }
+            if(team.getPnjUpgrades() == null){
+                possibleForEnable.set(false);
+            }
+        });
+        return possibleForEnable.get();
+
+    }
+
+    public ArrayList<String> getReasonNotEnabled(){
+        ArrayList<String> reasons = new ArrayList<>();
+        if (this.getName() == null) {
+            reasons.add("Name");
+        }
+        if (this.getWorld() == null) {
+            reasons.add("World");
+        }
+        if (this.getLobbySpawn() == null) {
+            reasons.add("LobbySpawn");
+        }
+        if (this.getSpecSpawn() == null) {
+            reasons.add("SpecSpawn");
+        }
+        if (this.getTheSpecialist() == null) {
+            reasons.add("TheSpecialist");
+        }
+        if (this.getEnchanter() == null) {
+            reasons.add("Enchanter");
+        }
+        if (this.getPos1Map() == null) {
+            reasons.add("Pos1Map");
+        }
+        if (this.getPos2Map() == null) {
+            reasons.add("Pos2Map");
+        }
+        if (this.getTeams().size() == 0) {
+            reasons.add("Teams");
+        }
+        if (this.getEmeraldsGenerators().size() == 0) {
+            reasons.add("EmeraldsGenerators");
+        }
+        if (this.getDiamondsGenerators().size() == 0) {
+            reasons.add("DiamondsGenerators");
+        }
+        if (this.getPlayerPerTeam() == 0) {
+            reasons.add("PlayerPerTeam");
+        }
+        if (this.getProtectionRadius() == 0) {
+            reasons.add("ProtectionRadius");
+        }
+        this.teams.forEach(team -> {
+            if (team.getSpawn() == null) {
+                reasons.add("TeamSpawn " + team.getName());
+            }
+            if (team.getBed() == null) {
+                reasons.add("TeamBed " + team.getName());
+            }
+            if(team.getGenerators().size() == 0){
+                reasons.add("TeamGenerators " + team.getName());
+            }
+            if(team.getPnjItems() == null){
+                reasons.add("TeamPnjItems " + team.getName());
+            }
+            if(team.getPnjUpgrades() == null){
+                reasons.add("TeamPnjUpgrades " + team.getName());
+            }
+        });
+        return reasons;
+    }
+
+
     public void clearAll() {
         this.clearTeams();
         this.clearEmeraldsGenerators();
@@ -352,6 +486,7 @@ public class Arena {
         config.set("playerPerTeam", this.getPlayerPerTeam());
         config.set("maxPlayers", this.getMaxPlayers());
         config.set("minPlayers", this.getMinPlayers());
+        config.set("enabled", this.isEnabled());
         if (this.getSpecSpawn() != null) config.set("specSpawn", Utils.parseLocToString(this.getSpecSpawn()));
         if (this.getLobbySpawn() != null) config.set("lobbySpawn", Utils.parseLocToString(this.getLobbySpawn()));
         for (int i = 0; i < this.getTeams().size(); i++) {
@@ -412,6 +547,7 @@ public class Arena {
                 arena.setLobbySpawn(Utils.parseStringToLoc(config.getString("lobbySpawn")));
             if (config.getInt("maxPlayers") != 0) arena.setMaxPlayers(config.getInt("maxPlayers"));
             if (config.getInt("minPlayers") != 0) arena.setMinPlayers(config.getInt("minPlayers"));
+            if (config.getBoolean("enabled")) arena.setEnable(config.getBoolean("enabled"));
 
             if (config.getConfigurationSection("teams") != null)
                 for (String key : config.getConfigurationSection("teams").getKeys(false)) {
