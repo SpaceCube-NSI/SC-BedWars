@@ -68,6 +68,19 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
                         } else sender.sendMessage(prefix + "§cYou must be in a game to use this command!");
                     } else sender.sendMessage(prefix + "§cYou must be a player to use this command!");
                     return true;
+                case "wait": {
+                    if (sender instanceof Player) {
+                        if (Manager.isCurrentlyInGame((Player) sender)) {
+                            Manager manager = Manager.getManager((Player) sender);
+                            if (manager.getManagerState().getCurrentState() == State.STARTING) {
+                                manager.setStartingTime(manager.getStartingTime()+30);
+                                sender.sendMessage(prefix + "§aThe time has been added!");
+                                ((Player) sender).playSound(((Player) sender).getLocation(), "random.levelup", 1, 1);
+                            }else sender.sendMessage(prefix + "§cThe game is not starting!");
+                        } else sender.sendMessage(prefix + "§cYou must be in a game to use this command!");
+                    } else sender.sendMessage(prefix + "§cYou must be a player to use this command!");
+                    return true;
+                }
                 case "arena":
                     sender.sendMessage("--------------------------------");
                     sender.sendMessage(prefix + "§cBedwarsAdmin arena commands:");

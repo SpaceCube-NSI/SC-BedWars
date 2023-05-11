@@ -53,8 +53,16 @@ public class Runnable extends BukkitRunnable {
                         team = arena.getTeams().get(Utils.randomInt(0, arena.getTeams().size() - 1));
                     }
                     teamsAlreadyUsed.add(team);
+                    ArrayList<Player> playerUsed = new ArrayList<>();
+                    manager.getSelectTeam().forEach((team2, players) -> {
+                        players.forEach(player -> {
+                            team2.addPlayer(player);
+                            playerUsed.add(player);
+                        });
+                    });
+
                     for (int j = 0; j < arena.getPlayerPerTeam(); j++) {
-                        if (i + j < manager.getPlayers().size()) {
+                        if (i + j < manager.getPlayers().size() && !playerUsed.contains(manager.getPlayers().get(i + j))) {
                             team.addPlayer(manager.getPlayers().get(i + j));
                         }
                     }
@@ -185,7 +193,7 @@ public class Runnable extends BukkitRunnable {
                 stats.updateStats();
             });
 
-            
+            manager.clearSelectTeam();
 
             arena.getTeams().forEach(team -> {
                 team.getEnderchest().clear();

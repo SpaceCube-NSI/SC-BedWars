@@ -37,6 +37,7 @@ public class ListenerManager {
         this.listeners.add(new EntitySpawn());
         this.listeners.add(new PlayerInteract());
         this.listeners.add(new Chat());
+        this.listeners.add(new Drop());
 
 
 

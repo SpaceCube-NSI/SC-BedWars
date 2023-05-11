@@ -49,6 +49,7 @@ public class Manager {
     private final HashMap<Player, Integer> playerDeaths = new HashMap<>();
     private final HashMap<Player, Integer> playerBeds = new HashMap<>();
     private final HashMap<Player, PlayerList> playerLists = new HashMap<>();
+    private final HashMap<Team, ArrayList<Player>> selectTeam = new HashMap<>();
 
 
     public Manager(Arena arena) {
@@ -255,6 +256,34 @@ public class Manager {
         } else {
             playerBeds.put(player, 0);
         }
+    }
+
+    public HashMap<Team, ArrayList<Player>> getSelectTeam() {
+        return selectTeam;
+    }
+
+    public void addSelectTeam(Team team, Player player) {
+        if (selectTeam.containsKey(team)) {
+            selectTeam.get(team).add(player);
+        } else {
+            ArrayList<Player> players = new ArrayList<>();
+            players.add(player);
+            selectTeam.put(team, players);
+        }
+    }
+
+    public void removeSelectTeam(Team team, Player player) {
+        if (selectTeam.containsKey(team)) {
+            selectTeam.get(team).remove(player);
+        }
+    }
+
+    public void clearSelectTeam() {
+        selectTeam.clear();
+    }
+
+    public void clearSelectTeam(Team team) {
+        selectTeam.get(team).clear();
     }
 
     public void clearPlayerBeds() {
@@ -644,6 +673,12 @@ public class Manager {
             headPlayerMeta.setDisplayName("§6Your stats");
             headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
             headPlayer.setItemMeta(headPlayerMeta);
+            ItemStack armorstand = new ItemStack(Material.ARMOR_STAND, 1);
+            ItemMeta armorstandMeta = armorstand.getItemMeta();
+            armorstandMeta.setDisplayName("§6Select your team");
+            armorstandMeta.setLore(Arrays.asList("§7Click for select your team"));
+            armorstand.setItemMeta(armorstandMeta);
+            player.getInventory().setItem(0, armorstand);
             player.getInventory().setItem(4, headPlayer);
             this.players.forEach(p -> {
                 p.sendMessage("§a" + player.getName() + " §7joined the game ! §7(§3" + this.players.size() + "§7/§4" + arena.getMaxPlayers() + "§7)");

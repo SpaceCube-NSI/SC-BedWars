@@ -2,6 +2,7 @@ package fr.mathis_bruel.spacecube.bedwars.events;
 
 import fr.mathis_bruel.spacecube.bedwars.game.Manager;
 import fr.mathis_bruel.spacecube.bedwars.game.State;
+import fr.mathis_bruel.spacecube.bedwars.gui.SelectTeam;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -28,6 +29,12 @@ public class PlayerInteract implements org.bukkit.event.Listener {
             if(event.getItem().getItemMeta().getDisplayName() == "§6Your stats"){
                 event.setCancelled(true);
                 event.getPlayer().performCommand("bw stats");
+            }
+        }
+        if(event.getItem().getType() == Material.ARMOR_STAND){
+            if(event.getItem().getItemMeta().getDisplayName() =="§6Select your team"){
+                event.setCancelled(true);
+                event.getPlayer().openInventory(SelectTeam.getInventory(Manager.getManager(event.getPlayer()).getArena(), event.getPlayer()));
             }
         }
     }
