@@ -217,19 +217,15 @@ public class Runnable extends BukkitRunnable {
                 Stats state = new Stats(Games.BedWars, player.getUniqueId());
                 state.init();
                 board.updateLines(Arrays.asList(
-                        "§f",
-                        "§fNiveau: §f" + 0,
-                        "§f",
-                        "§fProgrès: §b" + 0 + "§7/§a"+ 0,
-                        "§8[§7 §a▊▊▊                §8]",
-                        "§f",
-                        "§fCoins: §e" + 0,
+                        "§7§m-----------§6§m-----------",
+                        "§6§l SpaceCube §7- §eBedWars",
                         "§f",
                         "§fKills: §a" + state.getKills(),
                         "§fDeaths: §a" + state.getDeath(),
                         "§fWins: §a" + state.getWins(),
                         "§fStreak: §a" + 0,
                         "§f",
+                        "§7§m-----------§6§m-----------",
                         "§6§lwww.spacecube.games"
 
                 ));
@@ -258,19 +254,15 @@ public class Runnable extends BukkitRunnable {
                 Stats state = new Stats(Games.BedWars, player.getUniqueId());
                 state.init();
                 board.updateLines(Arrays.asList(
-                        "§f",
-                        "§fNiveau: §f" + 0,
-                        "§f",
-                        "§fProgrès: §b" + 0 + "§7/§a"+ 0,
-                        "§8[§7 §a▊▊▊                §8]",
-                        "§f",
-                        "§fCoins: §e" + 0,
+                        "§7§m-----------§6§m-----------",
+                        "§6§l SpaceCube §7- §eBedWars",
                         "§f",
                         "§fKills: §a" + state.getKills(),
                         "§fDeaths: §a" + state.getDeath(),
                         "§fWins: §a" + state.getWins(),
                         "§fStreak: §a" + 0,
                         "§f",
+                        "§7§m-----------§6§m-----------",
                         "§6§lwww.spacecube.games"
 
                 ));
@@ -332,13 +324,16 @@ public class Runnable extends BukkitRunnable {
                 FastBoard board = Main.getBoard(player.getUniqueId());
                 board.updateTitle("§6§lBedWars");
                 board.updateLines(Arrays.asList(
-                        "§7",
+                        "§7§m-----------§6§m-----------",
+                        "§6§l SpaceCube §7- §eBedWars",
+                        "§f",
                         "§7Map: §f" + arena.getName(),
                         "§7",
                         "§7Players: §f" + manager.getPlayers().size() + "/" + arena.getMaxPlayers(),
                         "§7",
                         "§7WAITING...",
                         "§7",
+                        "§7§m-----------§6§m-----------",
                         "§6§lwww.spacecube.games"
 
                 ));
@@ -348,13 +343,16 @@ public class Runnable extends BukkitRunnable {
                 FastBoard board = Main.getBoard(player.getUniqueId());
                 board.updateTitle("§6§lBedWars");
                 board.updateLines(Arrays.asList(
-                        "§7",
+                        "§7§m-----------§6§m-----------",
+                        "§6§l SpaceCube §7- §eBedWars",
+                        "§f",
                         "§7Map: §f" + arena.getName(),
                         "§7",
                         "§7Players: §f" + manager.getPlayers().size() + "/" + arena.getMaxPlayers(),
                         "§7",
                         "§7Starting in: §f" + (manager.getStartingTime() == 30 ? "WAITING..." : manager.getStartingTime() + "s"),
-                        "§7",
+                        "§f",
+                        "§7§m-----------§6§m-----------",
                         "§6§lwww.spacecube.games"
 
                 ));

@@ -1,11 +1,14 @@
 package fr.mathis_bruel.spacecube.bedwars.game;
 
 import com.sk89q.worldedit.WorldEditException;
+import fr.Mathis_Bruel.spacecube.spacecubeapi.api.games.Games;
+import fr.Mathis_Bruel.spacecube.spacecubeapi.api.games.Stats;
 import fr.mathis_bruel.spacecube.bedwars.Main;
 import fr.mathis_bruel.spacecube.bedwars.generator.Generator;
 import fr.mathis_bruel.spacecube.bedwars.generator.RunnableGenerators;
 import fr.mathis_bruel.spacecube.bedwars.manager.Hologram;
 import fr.mathis_bruel.spacecube.bedwars.manager.TypeShop;
+import fr.mathis_bruel.spacecube.bedwars.manager.scoreboard.FastBoard;
 import fr.mathis_bruel.spacecube.bedwars.teams.GeneratorTeam;
 import fr.mathis_bruel.spacecube.bedwars.teams.Team;
 import fr.mathis_bruel.spacecube.bedwars.utils.Utils;
@@ -748,6 +751,29 @@ public class Manager {
                     }
                 }
             }
+            FastBoard board = new FastBoard(player);
+            board.updateTitle("§6§lBedWars");
+            Stats state = new Stats(Games.BedWars, player.getUniqueId());
+            state.init();
+            board.updateLines(Arrays.asList(
+                    "§7§m-----------§6§m-----------",
+                    "§6§l SpaceCube §7- §eBedWars",
+                    "§f",
+                    "§fKills: §a" + state.getKills(),
+                    "§fDeaths: §a" + state.getDeath(),
+                    "§fWins: §a" + state.getWins(),
+                    "§fStreak: §a" + 0,
+                    "§f",
+                    "§7§m-----------§6§m-----------",
+                    "§6§lwww.spacecube.games"
+
+            ));
+            ItemStack headPlayer = Utils.getHead(player);
+            ItemMeta headPlayerMeta = headPlayer.getItemMeta();
+            headPlayerMeta.setDisplayName("§6Your stats");
+            headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
+            headPlayer.setItemMeta(headPlayerMeta);
+            player.getInventory().setItem(2, headPlayer);
         } else if (isSpecator(player)) {
             this.removeSpecator(player);
             player.teleport(Utils.parseStringToLoc(Main.getInstance().getConfig().getString("lobby")));
@@ -762,6 +788,29 @@ public class Manager {
             player.setFlying(false);
             player.setGameMode(Main.getInstance().getServer().getDefaultGameMode());
             player.sendMessage("§aYou left the game!");
+            FastBoard board = new FastBoard(player);
+            board.updateTitle("§6§lBedWars");
+            Stats state = new Stats(Games.BedWars, player.getUniqueId());
+            state.init();
+            board.updateLines(Arrays.asList(
+                    "§7§m-----------§6§m-----------",
+                    "§6§l SpaceCube §7- §eBedWars",
+                    "§f",
+                    "§fKills: §a" + state.getKills(),
+                    "§fDeaths: §a" + state.getDeath(),
+                    "§fWins: §a" + state.getWins(),
+                    "§fStreak: §a" + 0,
+                    "§f",
+                    "§7§m-----------§6§m-----------",
+                    "§6§lwww.spacecube.games"
+
+            ));
+            ItemStack headPlayer = Utils.getHead(player);
+            ItemMeta headPlayerMeta = headPlayer.getItemMeta();
+            headPlayerMeta.setDisplayName("§6Your stats");
+            headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
+            headPlayer.setItemMeta(headPlayerMeta);
+            player.getInventory().setItem(2, headPlayer);
         } else {
             player.sendMessage("§cYou are not in this game!");
         }

@@ -33,19 +33,15 @@ public class Join implements Listener {
         Stats state = new Stats(Games.BedWars, player.getUniqueId());
         state.init();
         board.updateLines(Arrays.asList(
-                "§f",
-                "§fNiveau: §f" + 0,
-                "§f",
-                "§fProgrès: §b" + 0 + "§7/§a" + 0,
-                "§8[§7 §a▊▊▊                §8]",
-                "§f",
-                "§fCoins: §e" + 0,
+                "§7§m-----------§6§m-----------",
+                "§6§l SpaceCube §7- §eBedWars",
                 "§f",
                 "§fKills: §a" + state.getKills(),
                 "§fDeaths: §a" + state.getDeath(),
                 "§fWins: §a" + state.getWins(),
                 "§fStreak: §a" + 0,
                 "§f",
+                "§7§m-----------§6§m-----------",
                 "§6§lwww.spacecube.games"
 
         ));
@@ -57,7 +53,7 @@ public class Join implements Listener {
         headPlayerMeta.setDisplayName("§6Your stats");
         headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
         headPlayer.setItemMeta(headPlayerMeta);
-        player.getInventory().setItem(4, headPlayer);
+        player.getInventory().setItem(2, headPlayer);
         for (PotionEffect effect : player.getActivePotionEffects())
             player.removePotionEffect(effect.getType());
         Utils.resetPseudo(player);
