@@ -45,29 +45,26 @@ public class Runnable extends BukkitRunnable {
                 manager.getManagerState().setState(State.WAITING);
                 manager.setStartingTime(30);
             } else if (manager.getStartingTime() == 0) {
-                // set all players in a random team
-                ArrayList<Team> teamsAlreadyUsed = new ArrayList<>();
-                for (int i = 0; i < manager.getPlayers().size(); i+= arena.getPlayerPerTeam()) {
-                    Team team = arena.getTeams().get(Utils.randomInt(0, arena.getTeams().size() - 1));
-                    while (teamsAlreadyUsed.contains(team)) {
-                        team = arena.getTeams().get(Utils.randomInt(0, arena.getTeams().size() - 1));
-                    }
-                    teamsAlreadyUsed.add(team);
-                    ArrayList<Player> playerUsed = new ArrayList<>();
-                    manager.getSelectTeam().forEach((team2, players) -> {
-                        players.forEach(player -> {
-                            team2.addPlayer(player);
-                            playerUsed.add(player);
-                        });
+                ArrayList<Player> playerAlreadyInTeam = new ArrayList<>();
+                manager.getSelectTeam().forEach((team2, players) -> {
+                    players.forEach(player -> {
+                        team2.addPlayer(player);
+                        playerAlreadyInTeam.add(player);
                     });
-
-                    for (int j = 0; j < arena.getPlayerPerTeam(); j++) {
-                        if (i + j < manager.getPlayers().size() && !playerUsed.contains(manager.getPlayers().get(i + j))) {
-                            team.addPlayer(manager.getPlayers().get(i + j));
+                });
+                while (manager.getPlayers().size() != playerAlreadyInTeam.size()) {
+                    for (Team team : arena.getTeams()) {
+                        if (team.getPlayers().size() < arena.getPlayerPerTeam()) {
+                            for (Player player : manager.getPlayers()) {
+                                if (!playerAlreadyInTeam.contains(player)) {
+                                    team.addPlayer(player);
+                                    playerAlreadyInTeam.add(player);
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
-
 
                 // if a team has no players, set bed to dead
                 for (Team team : arena.getTeams()) {
@@ -237,7 +234,7 @@ public class Runnable extends BukkitRunnable {
                 headPlayerMeta.setDisplayName("§6Your stats");
                 headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
                 headPlayer.setItemMeta(headPlayerMeta);
-                player.getInventory().setItem(4, headPlayer);
+                player.getInventory().setItem(2, headPlayer);
                 // reset display name
                 //NameManagerAPI.clearNametag(player);
                 Utils.resetPseudo(player);
@@ -274,7 +271,7 @@ public class Runnable extends BukkitRunnable {
                 headPlayerMeta.setDisplayName("§6Your stats");
                 headPlayerMeta.setLore(Arrays.asList("Click for see your stats", "§7Kills: §a0", "§7Deaths: §c0", "§7K/D: §e0"));
                 headPlayer.setItemMeta(headPlayerMeta);
-                player.getInventory().setItem(4, headPlayer);
+                player.getInventory().setItem(2, headPlayer);
                 // reset display name
                 //NameManagerAPI.clearNametag(player);
                 Utils.resetPseudo(player);
@@ -341,10 +338,10 @@ public class Runnable extends BukkitRunnable {
         } else if (manager.getManagerState().getCurrentState() == State.STARTING) {
             manager.getPlayers().forEach(player -> {
                 FastBoard board = Main.getBoard(player.getUniqueId());
-                board.updateTitle("§6§lBedWars");
+                board.updateTitle("§6§lSpaceCube");
                 board.updateLines(Arrays.asList(
                         "§7§m-----------§6§m-----------",
-                        "§6§l SpaceCube §7- §eBedWars",
+                        "§7             §eBedWars",
                         "§f",
                         "§7Map: §f" + arena.getName(),
                         "§7",
@@ -361,64 +358,118 @@ public class Runnable extends BukkitRunnable {
             manager.getPlayers().forEach(player -> {
                 FastBoard board = Main.getBoard(player.getUniqueId());
                 board.updateTitle("§6§lBedWars");
-                StringBuilder teamsLeft = new StringBuilder();
+                ArrayList<StringBuilder> teamsLeft = new ArrayList<>();
+                Integer teamsLeftList = 0;
+                Integer i = 0;
                 for (Team team : arena.getTeams()) {
+                    if(teamsLeft.size() <= teamsLeftList){
+                        teamsLeft.add(new StringBuilder());
+                    }
                     if (team.isBedAlive()) {
-                        teamsLeft.append(team.getColor()).append("█");
+                        teamsLeft.get(teamsLeftList).append(team.getColor()).append("█");
                     } else if (team.getPlayers().size() > 0) {
-                        teamsLeft.append(team.getColor() + "" + team.getPlayers().size());
+                        String str = "";
+                        if(team.getPlayers().size() == 1){
+                            str = "➀";
+                        }else if(team.getPlayers().size() == 2){
+                            str = "➁";
+                        }else if(team.getPlayers().size() == 3){
+                            str = "➂";
+                        }else if(team.getPlayers().size() == 4){
+                            str = "➃";
+                        }else if(team.getPlayers().size() == 5){
+                            str = "➄";
+                        }else str = team.getPlayers().size() + "";
+                        teamsLeft.get(teamsLeftList).append(team.getColor() + str);
+                    }
+                    i++;
+                    if(i >= 6){
+                        teamsLeftList++;
+                        i = 0;
                     }
                 }
-                Team team = manager.getTeam(player);
-                board.updateLines(Arrays.asList(
-                        "",
-                        "§e§lTeams Left",
-                        "§l"+teamsLeft.toString(),
-                        "",
-                        "§f§lYour Team",
-                        "§7Color: " + (team != null ? team.getColor() + team.getName() : "§cEliminated"),
-                        "§7Bed: " + (team != null ? (team.isBedAlive() ? "§aAlive" : "§cDead") : "§cEliminated"),
-                        "",
-                        "§4§lYour Stats",
-                        "§7Kills: §f" + manager.getPlayerKills().get(player),
-                        "§7Deaths: §f" + manager.getPlayerDeaths().get(player),
-                        "§7Beds: §f" + manager.getPlayerBeds().get(player),
-                        "§7§n                ",
-                        "",
-                        "§6§lwww.spacecube.games"
 
-                ));
+                Team team = manager.getTeam(player);
+                ArrayList<String> lines = new ArrayList<>();
+                lines.add("");
+                lines.add("§e§lTeams Left");
+                teamsLeft.forEach(stringBuilder -> {
+                    lines.add(stringBuilder.toString());
+                });
+                lines.add("");
+                lines.add("§f§lYour Team");
+                lines.add("§7Color: " + (team != null ? team.getColor() + team.getName() : "§cEliminated"));
+                lines.add("§7Bed: " + (team != null ? (team.isBedAlive() ? "§aAlive" : "§cDead") : "§cEliminated"));
+                lines.add("");
+                lines.add("§4§lYour Stats");
+                lines.add("§7Kills: §f" + manager.getPlayerKills().get(player));
+                lines.add("§7Deaths: §f" + manager.getPlayerDeaths().get(player));
+                lines.add("§7Beds: §f" + manager.getPlayerBeds().get(player));
+                lines.add("§7§n                ");
+                lines.add("");
+                lines.add("§6§lwww.spacecube.games");
+
+                board.updateLines(
+                        lines
+                );
             });
             manager.getSpecators().forEach(player -> {
                 FastBoard board = Main.getBoard(player.getUniqueId());
                 board.updateTitle("§6§lBedWars");
-                StringBuilder teamsLeft = new StringBuilder();
+                ArrayList<StringBuilder> teamsLeft = new ArrayList<>();
+                Integer teamsLeftList = 0;
+                Integer i = 0;
                 for (Team team : arena.getTeams()) {
+                    if(teamsLeft.size() <= teamsLeftList){
+                        teamsLeft.add(new StringBuilder());
+                    }
                     if (team.isBedAlive()) {
-                        teamsLeft.append(team.getColor()).append("■ ");
+                        teamsLeft.get(teamsLeftList).append(team.getColor()).append("█");
                     } else if (team.getPlayers().size() > 0) {
-                        teamsLeft.append(team.getColor() + "" + team.getPlayers().size() + " ");
+                        String str = "";
+                        if(team.getPlayers().size() == 1){
+                            str = "➀";
+                        }else if(team.getPlayers().size() == 2){
+                            str = "➁";
+                        }else if(team.getPlayers().size() == 3){
+                            str = "➂";
+                        }else if(team.getPlayers().size() == 4){
+                            str = "➃";
+                        }else if(team.getPlayers().size() == 5){
+                            str = "➄";
+                        }else str = team.getPlayers().size() + "";
+                        teamsLeft.get(teamsLeftList).append(team.getColor() + str);
+                    }
+                    i++;
+                    if(i >= 6){
+                        teamsLeftList++;
+                        i = 0;
                     }
                 }
-                Team team = manager.getTeam(player);
-                board.updateLines(Arrays.asList(
-                        "",
-                        "§e§lTeams Left",
-                        "§l"+teamsLeft.toString(),
-                        "",
-                        "§f§lYour Team",
-                        "§7Color: " + (team != null ? team.getColor() + team.getName() : "§cEliminated"),
-                        "§7Bed: " + (team != null ? (team.isBedAlive() ? "§aAlive" : "§cDead") : "§cEliminated"),
-                        "",
-                        "§4§lYour Stats",
-                        "§7Kills: §f" + manager.getPlayerKills().get(player),
-                        "§7Deaths: §f" + manager.getPlayerDeaths().get(player),
-                        "§7Beds: §f" + manager.getPlayerBeds().get(player),
-                        "§7§n                ",
-                        "",
-                        "§6§lwww.spacecube.games"
 
-                ));
+                Team team = manager.getTeam(player);
+                ArrayList<String> lines = new ArrayList<>();
+                lines.add("");
+                lines.add("§e§lTeams Left");
+                teamsLeft.forEach(stringBuilder -> {
+                    lines.add(stringBuilder.toString());
+                });
+                lines.add("");
+                lines.add("§f§lYour Team");
+                lines.add("§7Color: " + (team != null ? team.getColor() + team.getName() : "§cEliminated"));
+                lines.add("§7Bed: " + (team != null ? (team.isBedAlive() ? "§aAlive" : "§cDead") : "§cEliminated"));
+                lines.add("");
+                lines.add("§4§lYour Stats");
+                lines.add("§7Kills: §f" + manager.getPlayerKills().get(player));
+                lines.add("§7Deaths: §f" + manager.getPlayerDeaths().get(player));
+                lines.add("§7Beds: §f" + manager.getPlayerBeds().get(player));
+                lines.add("§7§n                ");
+                lines.add("");
+                lines.add("§6§lwww.spacecube.games");
+
+                board.updateLines(
+                        lines
+                );
             });
         }
 

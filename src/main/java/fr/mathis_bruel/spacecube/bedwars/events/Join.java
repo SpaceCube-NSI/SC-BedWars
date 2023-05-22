@@ -29,12 +29,12 @@ public class Join implements Listener {
         player.setFlying(false);
         player.getInventory().setArmorContents(null);
         FastBoard board = new FastBoard(event.getPlayer());
-        board.updateTitle("§6§lBedWars");
         Stats state = new Stats(Games.BedWars, player.getUniqueId());
         state.init();
+        board.updateTitle("§6§lSpaceCube");
         board.updateLines(Arrays.asList(
                 "§7§m-----------§6§m-----------",
-                "§6§l SpaceCube §7- §eBedWars",
+                "§7             §eBedWars",
                 "§f",
                 "§fKills: §a" + state.getKills(),
                 "§fDeaths: §a" + state.getDeath(),

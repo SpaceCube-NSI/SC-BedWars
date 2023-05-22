@@ -218,6 +218,7 @@ public class EntityDamageByEntity implements org.bukkit.event.Listener {
                                 } else if (team.getLvlSpeed() == 1) {
                                     player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 999999999, 0, true));
                                 }
+                                player.getInventory().clear();
 
 
                                 if (team.isBedAlive()) {

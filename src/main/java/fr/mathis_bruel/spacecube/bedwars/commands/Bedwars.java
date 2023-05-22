@@ -165,7 +165,11 @@ public class Bedwars implements CommandExecutor {
                                     else {
                                         if(!manager.getArena().isEnabled()) {
                                             sender.sendMessage(prefix + "§cThis arena is not ready yet!");
-                                            return false;
+                                            return true;
+                                        }
+                                        if (manager.getPlayers().size() >= manager.getArena().getMaxPlayers()) {
+                                            player.sendMessage(Main.getPrefix() + "§cThis game is full.");
+                                            return true;
                                         }
                                         player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1, 1);
                                         manager.join(player);

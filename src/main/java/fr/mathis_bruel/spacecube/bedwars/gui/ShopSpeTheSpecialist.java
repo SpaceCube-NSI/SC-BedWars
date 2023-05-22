@@ -85,7 +85,7 @@ public class ShopSpeTheSpecialist {
         inv.setItem(35, back);
         inv.setItem(27, close);
         inv.setItem(11, pumpkin);
-        inv.setItem(12, wolfEgg);
+        //inv.setItem(12, wolfEgg);
         inv.setItem(13, enderPearl);
         inv.setItem(14, tnt);
         inv.setItem(15, gap);

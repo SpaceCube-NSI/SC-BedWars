@@ -117,10 +117,10 @@ public class ShopItemsBlock {
         inv.setItem(24, planks);
         inv.setItem(31, obsidian);
         inv.setItem(38, autobridgeWood);
-        inv.setItem(39, autobridgeWool);
+        //inv.setItem(39, autobridgeWool);
         inv.setItem(40, autobridgeAndesite);
         inv.setItem(41, autobridgeEndStone);
-        inv.setItem(42, autobridgeClay);
+        //inv.setItem(42, autobridgeClay);
         return inv;
 
 
