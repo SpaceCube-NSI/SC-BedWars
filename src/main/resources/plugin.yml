@@ -1,4 +1,4 @@
-name: SC BedWars
+name: SC_BedWars
 version: '${version}'
 main: fr.mathis_bruel.spacecube.bedwars.Main
 authors: [ Mathis_Bruel ]
@@ -9,6 +9,7 @@ depend:
   - WorldEdit
   - SpaceCubeApi
   - HeadDatabase
+  - Citizens
 load: POSTWORLD
 commands:
   test:

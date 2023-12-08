@@ -34,7 +34,6 @@ public class BedwarsAdmin implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String prefix = Main.getPrefix();
-
         if (args.length == 0) {
             sender.sendMessage("--------------------------------");
             sender.sendMessage(prefix + "§cBedwarsAdmin commands:");

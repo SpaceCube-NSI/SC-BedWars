@@ -19,7 +19,6 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
 import net.minecraft.server.v1_8_R3.PlayerConnection;
 import net.minecraft.server.v1_8_R3.PlayerList;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -688,10 +687,7 @@ public class Manager {
             });
             return "You joined the game!";
         } else if (managerState.getCurrentState() == State.RUNNING) {
-            this.getPlayers().forEach(p -> {
-                p.hidePlayer(player);
-            });
-            player.getInventory().clear();
+            /*player.getInventory().clear();
             player.teleport(arena.getLobbySpawn());
             this.specators.add(player);
             ItemStack leave = new ItemStack(Material.BED, 1);
@@ -712,7 +708,8 @@ public class Manager {
             tpMeta.setLore(Arrays.asList("Click for open menu for teleport to other player"));
             tp.setItemMeta(tpMeta);
             player.getInventory().setItem(0, tp);
-            player.setGameMode(GameMode.SPECTATOR);
+            player.setGameMode(GameMode.SPECTATOR);*/
+            player.sendMessage("§cYou can't join this game, it's already started.");
             return "You joined the game as a spectator";
 
         } else {

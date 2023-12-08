@@ -13,6 +13,11 @@ import java.util.Arrays;
 
 public class Join {
 
+    /**
+     * This function creates an inventory menu for players to join different game modes and maps in a Minecraft server.
+     *
+     * @return An inventory object is being returned.
+     */
     public static Inventory getInventory() {
         Inventory inv = Bukkit.createInventory(null, 9*4, "§6Join game");
         ItemStack close = new ItemStack(Material.BARRIER);

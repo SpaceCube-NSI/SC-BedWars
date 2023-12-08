@@ -36,12 +36,6 @@ public final class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-
-        /*RegisteredListener registeredListener = new RegisteredListener(this, (listener, event) -> {
-            System.out.println(event.getEventName());
-        }, EventPriority.NORMAL, this, false);
-        for (HandlerList handler : HandlerList.getHandlerLists())
-            handler.register(registeredListener);*/
         // Plugin startup logic
         this.listenerManager = new ListenerManager(this);
         this.listenerManager.registerListener();
