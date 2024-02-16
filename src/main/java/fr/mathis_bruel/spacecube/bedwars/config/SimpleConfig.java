@@ -29,7 +29,7 @@ public class SimpleConfig extends YamlConfiguration {
     private JavaPlugin plugin;
     private int comments;
     private SimpleConfigManager manager;
-
+  
     private File file;
     private FileConfiguration config;
     private boolean useDefaults;
